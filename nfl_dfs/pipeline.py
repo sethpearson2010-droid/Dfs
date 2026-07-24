@@ -65,7 +65,8 @@ class DfsPipeline:
         output_path: str | Path,
         risk_levels: dict[float, str] | None = None,
         single_risk_level: float | None = None,
-        num_lineups: int = 1,
+        num_lineups: int | None = None,
+        randomness: float = 1.0,
         skip_redzone: bool = False,
     ) -> None:
         weekly_stats = self._data_source.fetch_weekly_stats(season)
@@ -105,13 +106,21 @@ class DfsPipeline:
         self._write_sleepers(sleeper_picks, output_path)
         self._write_regression_candidates(regression_candidates, output_path)
 
-        if num_lineups and num_lineups > 1:
-            level = single_risk_level if single_risk_level is not None else 1.0
-            lineups = self._lineup_builder.build_many(player_values, level, min(num_lineups, MAX_LINEUPS))
-            self._write_lineup_set(lineups, level, output_path, sleeper_keys)
-        elif single_risk_level is not None:
-            lineup = self._lineup_builder.build(player_values, single_risk_level)
-            self._write_lineup_set([lineup] if lineup else [], single_risk_level, output_path, sleeper_keys)
+        if single_risk_level is not None:
+            # the slider drives lineup count directly when num_lineups
+            # isn't explicitly overridden: 0.0 (cash) still builds just
+            # 1 lineup, 1.0 (max GPP) builds the full MAX_LINEUPS batch,
+            # scaling linearly in between — "all the way right builds
+            # every lineup GPP" is the whole point of this slider now.
+            effective_count = num_lineups if num_lineups is not None else max(1, round(single_risk_level * MAX_LINEUPS))
+            if effective_count > 1:
+                lineups = self._lineup_builder.build_many(
+                    player_values, single_risk_level, effective_count, randomness=randomness
+                )
+                self._write_lineup_set(lineups, single_risk_level, output_path, sleeper_keys)
+            else:
+                lineup = self._lineup_builder.build(player_values, single_risk_level)
+                self._write_lineup_set([lineup] if lineup else [], single_risk_level, output_path, sleeper_keys)
         else:
             self._write_lineups(player_values, output_path, risk_levels or DEFAULT_RISK_LEVELS, sleeper_keys)
 
@@ -145,6 +154,14 @@ class DfsPipeline:
                 "is_sleeper": (pv.player_name, pv.team) in sleeper_keys,
                 "is_regression_candidate": (pv.player_name, pv.team) in regression_keys,
                 "projected_ownership_pct": pv.projected_ownership_pct,
+                "smash_score": pv.smash_score,
+                "smash_alignment": pv.smash_alignment,
+                "signal_multipliers": {
+                    "vulnerability": pv.vulnerability_multiplier,
+                    "game_script": pv.game_script_multiplier,
+                    "pace": pv.pace_multiplier,
+                    "opportunity": pv.opportunity_multiplier,
+                },
             }
             if pv.matchup_vulnerability:
                 row["matchup_vulnerability"] = {
@@ -285,6 +302,8 @@ class DfsPipeline:
             "projected_points": lineup.projected_points,
             "floor_points": lineup.floor_points,
             "ceiling_points": lineup.ceiling_points,
+            "stack_players": lineup.stack_players,
+            "bring_back_players": lineup.bring_back_players,
             "slots": [
                 {
                     "slot": s.slot,

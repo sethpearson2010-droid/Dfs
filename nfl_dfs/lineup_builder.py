@@ -5,11 +5,20 @@ cash-to-GPP risk slider.
 risk_level=0.0 optimizes toward each player's floor_projection (safer,
 consistent, cash-game style). risk_level=1.0 optimizes toward
 ceiling_projection (boom-or-bust, GPP style). Anything in between
-blends the two linearly. At higher risk levels, the objective also
-rewards lower projected_ownership (see ownership.py) — real GPP
-strategy values "leverage" (a strong play few others have), which
-matters far less in cash games where you just want raw expected
-points regardless of chalk.
+blends the two linearly. At higher risk levels, the objective also:
+
+  - rewards lower projected_ownership (see ownership.py) — "leverage",
+    a strong play few others have, matters far less in cash where you
+    just want raw expected points regardless of chalk
+  - rewards stacking: a QB plus one of their own pass-catchers scores
+    together on the same play (the TD that boosts the QB's line is the
+    same TD that boosts the receiver's), so correlated players raise a
+    lineup's *ceiling* even though they don't raise its *average* —
+    valuable for GPP variance, actively unhelpful for cash, so this
+    bonus scales with risk_level same as leverage
+  - uses more random noise per candidate lineup in build_many(), so a
+    batch of GPP lineups is genuinely differentiated instead of nine
+    near-copies of the single "best" lineup
 
 Why not an ILP solver: getting an exactly-optimal lineup needs a
 proper solver (PuLP/mip), which is a real dependency this project
@@ -21,7 +30,11 @@ standard two-phase heuristic:
      no swap helps or the iteration budget runs out
 This reliably finds a strong (if not always perfectly optimal)
 lineup, and is transparent/debuggable in a way a black-box solver
-wouldn't be.
+wouldn't be. Stacking bonuses only affect the local-search phase (not
+the initial greedy fill, which scores players independently) — that's
+enough in practice, since local search runs thousands of swap trials
+and will readily find and lock in a stack once it's worth more than
+the alternative.
 
 build_many() generates multiple lineups for GPP mass multi-entry (up
 to MAX_LINEUPS), using per-lineup random noise on the objective plus
@@ -34,7 +47,7 @@ from __future__ import annotations
 
 import random
 
-from nfl_dfs.models import Lineup, LineupSlot, PlayerValue
+from nfl_dfs.models import Lineup, LineupSlot, PlayerValue, Position
 from nfl_dfs.roster_rules import ROSTER_SLOTS, SALARY_CAP
 
 LOCAL_SEARCH_ITERATIONS = 3000
@@ -44,6 +57,15 @@ MAX_LINEUPS = 50
 # scales linearly with risk_level, so it's a no-op in cash (risk=0)
 # and fully active at max GPP (risk=1)
 LEVERAGE_WEIGHT = 0.15
+
+# stacking: a flat fantasy-point-equivalent bonus per pass-catcher
+# rostered alongside the QB (same team), and a smaller "bring-back"
+# bonus for also rostering a player from the QB's opponent in the same
+# game (a full game stack) — both scale with risk_level, same reasoning
+# as the ownership leverage bonus above.
+STACK_BONUS_PER_PLAYER = 8.0
+BRING_BACK_BONUS = 4.0
+STACK_ELIGIBLE_POSITIONS = {Position.RB, Position.WR, Position.TE}
 
 # diversity controls for build_many(): a new lineup must differ from
 # every previously accepted one by more than (9 - DEFAULT_MAX_OVERLAP)
@@ -58,7 +80,12 @@ DEFAULT_MAX_OVERLAP = 6
 BUILD_MANY_LOCAL_SEARCH_ITERATIONS = 250
 MAX_ATTEMPTS_PER_LINEUP = 40
 MAX_TOTAL_ATTEMPTS = 2500
-NOISE_MAGNITUDE = 0.10
+
+# base noise magnitude for build_many()'s diversity; actual noise used
+# is scaled by risk_level (cash batches stay close to "the" best
+# lineup; GPP batches differentiate much more) and by the caller's
+# randomness multiplier (default 1.0 — see build_many's docstring)
+BASE_NOISE_MAGNITUDE = 0.10
 
 
 class LineupBuilder:
@@ -97,6 +124,7 @@ class LineupBuilder:
         risk_level: float,
         count: int,
         max_overlap: int = DEFAULT_MAX_OVERLAP,
+        randomness: float = 1.0,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
@@ -105,18 +133,33 @@ class LineupBuilder:
         already accepted. Returns fewer than `count` if the pool is
         too small/thin to keep finding sufficiently different legal
         lineups within the attempt budget — this is reported, not
-        silently padded with near-duplicates."""
+        silently padded with near-duplicates.
+
+        `randomness` is a multiplier (default 1.0) on top of the
+        risk-scaled base noise — pass >1 for more differentiated/wild
+        batches, <1 for tighter ones closer to "the" optimal lineup at
+        that risk level, 0 to disable noise-driven diversity entirely
+        (in which case only genuinely different local-search optima,
+        if any, will pass the overlap check)."""
         count = max(1, min(count, MAX_LINEUPS))
         accepted: list[Lineup] = []
         attempts = 0
         max_attempts = min(count * MAX_ATTEMPTS_PER_LINEUP, MAX_TOTAL_ATTEMPTS)
         seed_counter = 0
 
+        # noise scales with risk_level: cash batches should stay close
+        # to the single best lineup, GPP batches should differentiate
+        # much more — 0.3 is a floor so risk_level=0 still gets a
+        # little jitter (otherwise every "cash" attempt is identical
+        # and build_many would only ever return 1 lineup regardless of
+        # count requested)
+        noise_magnitude = BASE_NOISE_MAGNITUDE * (0.3 + 0.7 * risk_level) * max(0.0, randomness)
+
         while len(accepted) < count and attempts < max_attempts:
             attempts += 1
             seed_counter += 1
             rng = random.Random(seed_counter)
-            noise = {p.player_name: 1 + rng.uniform(-NOISE_MAGNITUDE, NOISE_MAGNITUDE) for p in players}
+            noise = {p.player_name: 1 + rng.uniform(-noise_magnitude, noise_magnitude) for p in players}
 
             self._random = random.Random(seed_counter)
             candidate = self.build(
@@ -244,13 +287,53 @@ class LineupBuilder:
         return current
 
     def _total_objective(self, assigned: dict[str, PlayerValue], risk_level: float, noise: dict[str, float]) -> float:
-        return sum(self._objective(p, risk_level, noise) for p in assigned.values())
+        return sum(self._objective(p, risk_level, noise) for p in assigned.values()) + self._stack_bonus(
+            assigned, risk_level
+        )
+
+    def _stack_bonus(self, assigned: dict[str, PlayerValue], risk_level: float) -> float:
+        if risk_level <= 0:
+            return 0.0  # correlation only helps ceiling/variance, irrelevant (or mildly bad) for cash
+
+        qb = next((p for p in assigned.values() if p.position == Position.QB), None)
+        if qb is None:
+            return 0.0
+
+        roster = list(assigned.values())
+        teammates = [
+            p for p in roster if p is not qb and p.team == qb.team and p.position in STACK_ELIGIBLE_POSITIONS
+        ]
+        bring_backs = [p for p in roster if p.team == qb.opponent and p.position in STACK_ELIGIBLE_POSITIONS]
+
+        bonus = STACK_BONUS_PER_PLAYER * len(teammates) * risk_level
+        if teammates and bring_backs:
+            bonus += BRING_BACK_BONUS * risk_level
+        return bonus
 
     def _total_salary(self, assigned: dict[str, PlayerValue]) -> int:
         return sum(p.salary for p in assigned.values())
 
     def _to_lineup_model(self, assigned: dict[str, PlayerValue], risk_level: float) -> Lineup:
         slots = [LineupSlot(slot=slot_name, player=player) for slot_name, player in assigned.items()]
+
+        # only report stack info when risk_level > 0 — at cash the
+        # stack bonus never applied (see _stack_bonus), so any
+        # coincidental correlation in the roster wasn't a deliberate
+        # construction choice and shouldn't be labeled as a "stack"
+        qb = next((p for p in assigned.values() if p.position == Position.QB), None)
+        stack_players: list[str] = []
+        bring_back_players: list[str] = []
+        if qb is not None and risk_level > 0:
+            roster = list(assigned.values())
+            stack_players = [
+                p.player_name
+                for p in roster
+                if p is not qb and p.team == qb.team and p.position in STACK_ELIGIBLE_POSITIONS
+            ]
+            bring_back_players = [
+                p.player_name for p in roster if p.team == qb.opponent and p.position in STACK_ELIGIBLE_POSITIONS
+            ]
+
         # report un-noised floor/ceiling totals — noise only influenced
         # selection, it shouldn't appear in the reported point values
         return Lineup(
@@ -266,4 +349,6 @@ class LineupBuilder:
             ),
             floor_points=round(sum(p.floor_projection for p in assigned.values()), 2),
             ceiling_points=round(sum(p.ceiling_projection for p in assigned.values()), 2),
+            stack_players=stack_players,
+            bring_back_players=bring_back_players,
         )

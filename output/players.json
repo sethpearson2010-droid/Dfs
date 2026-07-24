@@ -13,6 +13,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 40.0,
+    "smash_score": 5.112,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.12,
+      "game_script": 1.085,
+      "pace": 1.006,
+      "opportunity": 0.945
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 22.37,
       "season_avg_allowed": 19.05,
@@ -50,6 +58,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 40.0,
+    "smash_score": 6.109,
+    "smash_alignment": 3,
+    "signal_multipliers": {
+      "vulnerability": 1.021,
+      "game_script": 1.114,
+      "pace": 1.02,
+      "opportunity": 1.128
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 31.96,
       "season_avg_allowed": 30.16,
@@ -87,6 +103,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 27.4,
+    "smash_score": 4.46,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.105,
+      "game_script": 1.114,
+      "pace": 1.02,
+      "opportunity": 0.91
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 22.35,
       "season_avg_allowed": 16.95,
@@ -124,6 +148,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 40.0,
+    "smash_score": 5.585,
+    "smash_alignment": 3,
+    "signal_multipliers": {
+      "vulnerability": 1.066,
+      "game_script": 1.074,
+      "pace": 1.009,
+      "opportunity": 1.2
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 28.1,
       "season_avg_allowed": 21.85,
@@ -161,6 +193,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 33.7,
+    "smash_score": 6.404,
+    "smash_alignment": 3,
+    "signal_multipliers": {
+      "vulnerability": 1.06,
+      "game_script": 1.023,
+      "pace": 1.008,
+      "opportunity": 1.2
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 34.46,
       "season_avg_allowed": 35.53,
@@ -198,6 +238,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 28.1,
+    "smash_score": 5.233,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.074,
+      "game_script": 0.949,
+      "pace": 0.995,
+      "opportunity": 1.2
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 37.72,
       "season_avg_allowed": 31.71,
@@ -235,6 +283,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 31.6,
+    "smash_score": 5.723,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 0.949,
+      "game_script": 1.023,
+      "pace": 1.004,
+      "opportunity": 1.141
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.04,
       "season_avg_allowed": 20.72,
@@ -272,6 +328,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 17.5,
+    "smash_score": 3.925,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.909,
+      "game_script": 1.006,
+      "pace": 1.004,
+      "opportunity": 0.889
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 10.84,
       "season_avg_allowed": 14.0,
@@ -309,6 +373,14 @@
     "is_sleeper": false,
     "is_regression_candidate": true,
     "projected_ownership_pct": 24.4,
+    "smash_score": 4.801,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.938,
+      "game_script": 1.006,
+      "pace": 1.004,
+      "opportunity": 1.2
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.04,
       "season_avg_allowed": 18.48,
@@ -346,6 +418,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 10.2,
+    "smash_score": 3.558,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 1.08,
+      "game_script": 0.98,
+      "pace": 0.988,
+      "opportunity": 1.0
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 19.63,
       "season_avg_allowed": 19.45,
@@ -383,6 +463,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 40.0,
+    "smash_score": 6.386,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 0.939,
+      "game_script": 1.023,
+      "pace": 1.004,
+      "opportunity": 1.2
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 10.36,
       "season_avg_allowed": 12.48,
@@ -420,6 +508,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 27.4,
+    "smash_score": 5.383,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.979,
+      "game_script": 0.949,
+      "pace": 0.995,
+      "opportunity": 1.2
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 12.24,
       "season_avg_allowed": 13.13,
@@ -457,6 +553,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 5.2,
+    "smash_score": 3.736,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.976,
+      "game_script": 0.989,
+      "pace": 1.009,
+      "opportunity": 0.955
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 15.73,
       "season_avg_allowed": 12.82,
@@ -494,6 +598,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 17.5,
+    "smash_score": 4.19,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.96,
+      "game_script": 1.006,
+      "pace": 1.004,
+      "opportunity": 1.121
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 10.56,
       "season_avg_allowed": 14.68,
@@ -531,6 +643,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 2.2,
+    "smash_score": 4.533,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.908,
+      "game_script": 1.017,
+      "pace": 0.989,
+      "opportunity": 1.2
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 11.39,
       "season_avg_allowed": 12.58,
@@ -568,6 +688,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 18.3,
+    "smash_score": 4.143,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 1.096,
+      "game_script": 1.02,
+      "pace": 1.0,
+      "opportunity": 1.007
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 29.54,
       "season_avg_allowed": 24.89,
@@ -605,6 +733,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 40.0,
+    "smash_score": 3.31,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 1.0,
+      "game_script": 1.0,
+      "pace": 1.0,
+      "opportunity": 1.0
+    },
     "game_context": {
       "implied_team_total": 21.0,
       "spread_line": -8.5,
@@ -626,6 +762,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 23.1,
+    "smash_score": 3.192,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.083,
+      "game_script": 1.006,
+      "pace": 1.0,
+      "opportunity": 1.083
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 37.1,
       "season_avg_allowed": 35.7,
@@ -663,6 +807,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 18.7,
+    "smash_score": 3.788,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.06,
+      "game_script": 1.023,
+      "pace": 1.008,
+      "opportunity": 0.996
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 34.46,
       "season_avg_allowed": 35.53,
@@ -700,6 +852,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 13.3,
+    "smash_score": 3.725,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 1.011,
+      "game_script": 0.92,
+      "pace": 0.996,
+      "opportunity": 1.101
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 24.52,
       "season_avg_allowed": 18.76,
@@ -737,6 +897,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 9.2,
+    "smash_score": 2.924,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.987,
+      "game_script": 0.952,
+      "pace": 0.983,
+      "opportunity": 1.079
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.58,
       "season_avg_allowed": 22.75,
@@ -774,6 +942,14 @@
     "is_sleeper": true,
     "is_regression_candidate": false,
     "projected_ownership_pct": 10.2,
+    "smash_score": 3.776,
+    "smash_alignment": 3,
+    "signal_multipliers": {
+      "vulnerability": 1.142,
+      "game_script": 1.045,
+      "pace": 1.008,
+      "opportunity": 1.065
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.16,
       "season_avg_allowed": 15.23,
@@ -811,6 +987,14 @@
     "is_sleeper": true,
     "is_regression_candidate": false,
     "projected_ownership_pct": 5.2,
+    "smash_score": 3.47,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.133,
+      "game_script": 0.966,
+      "pace": 0.993,
+      "opportunity": 1.084
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.14,
       "season_avg_allowed": 14.16,
@@ -848,6 +1032,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 14.8,
+    "smash_score": 3.712,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.966,
+      "game_script": 0.972,
+      "pace": 0.986,
+      "opportunity": 1.137
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 24.78,
       "season_avg_allowed": 31.46,
@@ -885,6 +1077,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 19.7,
+    "smash_score": 2.795,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 1.0,
+      "game_script": 1.0,
+      "pace": 1.0,
+      "opportunity": 1.0
+    },
     "game_context": {
       "implied_team_total": 25.0,
       "spread_line": -2.5,
@@ -906,6 +1106,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 0.8,
+    "smash_score": 2.806,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.961,
+      "game_script": 0.926,
+      "pace": 0.993,
+      "opportunity": 0.8
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 14.61,
       "season_avg_allowed": 13.09,
@@ -943,6 +1151,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 7.5,
+    "smash_score": 2.542,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 1.0,
+      "game_script": 1.0,
+      "pace": 1.0,
+      "opportunity": 1.0
+    },
     "game_context": {
       "implied_team_total": 25.2,
       "spread_line": -3.0,
@@ -964,6 +1180,14 @@
     "is_sleeper": false,
     "is_regression_candidate": true,
     "projected_ownership_pct": 2.2,
+    "smash_score": 2.1,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.91,
+      "game_script": 0.96,
+      "pace": 1.003,
+      "opportunity": 1.095
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 9.44,
       "season_avg_allowed": 10.92,
@@ -1001,6 +1225,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 11.5,
+    "smash_score": 2.34,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.056,
+      "game_script": 1.034,
+      "pace": 0.99,
+      "opportunity": 0.954
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 35.76,
       "season_avg_allowed": 31.25,
@@ -1038,6 +1270,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 1.7,
+    "smash_score": 2.42,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 1.0,
+      "game_script": 1.0,
+      "pace": 1.0,
+      "opportunity": 1.0
+    },
     "game_context": {
       "implied_team_total": 25.5,
       "spread_line": -13.5,
@@ -1059,6 +1299,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 0.5,
+    "smash_score": 2.715,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.94,
+      "game_script": 1.074,
+      "pace": 1.009,
+      "opportunity": 0.994
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 13.12,
       "season_avg_allowed": 13.31,
@@ -1096,6 +1344,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 0.5,
+    "smash_score": 2.239,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 1.0,
+      "game_script": 1.0,
+      "pace": 1.0,
+      "opportunity": 1.0
+    },
     "game_context": {
       "implied_team_total": 30.0,
       "spread_line": 7.5,
@@ -1117,6 +1373,14 @@
     "is_sleeper": false,
     "is_regression_candidate": true,
     "projected_ownership_pct": 8.7,
+    "smash_score": 1.08,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.994,
+      "game_script": 1.014,
+      "pace": 1.006,
+      "opportunity": 1.045
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 30.3,
       "season_avg_allowed": 26.58,
@@ -1154,6 +1418,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 6.4,
+    "smash_score": 0.973,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 1.06,
+      "game_script": 1.0,
+      "pace": 0.99,
+      "opportunity": 0.945
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 34.46,
       "season_avg_allowed": 35.53,
@@ -1191,6 +1463,14 @@
     "is_sleeper": false,
     "is_regression_candidate": true,
     "projected_ownership_pct": 6.0,
+    "smash_score": 1.458,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 1.011,
+      "game_script": 0.923,
+      "pace": 0.986,
+      "opportunity": 0.982
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 24.52,
       "season_avg_allowed": 18.76,
@@ -1228,6 +1508,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 3.6,
+    "smash_score": 0.89,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.959,
+      "game_script": 0.892,
+      "pace": 0.98,
+      "opportunity": 0.98
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 19.32,
       "season_avg_allowed": 19.97,
@@ -1265,6 +1553,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 4.5,
+    "smash_score": 0.76,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.941,
+      "game_script": 0.938,
+      "pace": 0.98,
+      "opportunity": 1.021
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 23.48,
       "season_avg_allowed": 27.34,
@@ -1302,6 +1598,14 @@
     "is_sleeper": false,
     "is_regression_candidate": true,
     "projected_ownership_pct": 3.0,
+    "smash_score": 1.485,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.054,
+      "game_script": 1.085,
+      "pace": 1.006,
+      "opportunity": 1.013
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.72,
       "season_avg_allowed": 35.58,
@@ -1339,6 +1643,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 2.0,
+    "smash_score": 1.002,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.941,
+      "game_script": 0.966,
+      "pace": 0.993,
+      "opportunity": 0.988
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.06,
       "season_avg_allowed": 21.41,
@@ -1376,6 +1688,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 2.0,
+    "smash_score": 0.985,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.956,
+      "game_script": 0.909,
+      "pace": 0.997,
+      "opportunity": 0.91
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 25.94,
       "season_avg_allowed": 25.94,
@@ -1413,6 +1733,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 1.2,
+    "smash_score": 0.988,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.889,
+      "game_script": 0.952,
+      "pace": 0.983,
+      "opportunity": 0.915
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
       "season_avg_allowed": 26.49,
@@ -1450,6 +1778,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 1.1,
+    "smash_score": 0.68,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.949,
+      "game_script": 1.045,
+      "pace": 1.006,
+      "opportunity": 0.885
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.4,
       "season_avg_allowed": 19.94,
@@ -1487,6 +1823,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 0.6,
+    "smash_score": 0.698,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 1.06,
+      "game_script": 0.986,
+      "pace": 1.002,
+      "opportunity": 0.895
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 26.08,
       "season_avg_allowed": 25.45,
@@ -1524,6 +1868,14 @@
     "is_sleeper": false,
     "is_regression_candidate": true,
     "projected_ownership_pct": 0.8,
+    "smash_score": 0.58,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 1.004,
+      "game_script": 0.903,
+      "pace": 0.996,
+      "opportunity": 1.038
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 29.42,
       "season_avg_allowed": 31.24,
@@ -1561,6 +1913,14 @@
     "is_sleeper": false,
     "is_regression_candidate": true,
     "projected_ownership_pct": 0.5,
+    "smash_score": 1.12,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.949,
+      "game_script": 1.017,
+      "pace": 1.006,
+      "opportunity": 0.917
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.4,
       "season_avg_allowed": 19.94,
@@ -1598,6 +1958,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 0.5,
+    "smash_score": 0.978,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.966,
+      "game_script": 0.963,
+      "pace": 1.004,
+      "opportunity": 0.859
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 24.78,
       "season_avg_allowed": 31.46,
@@ -1635,6 +2003,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 0.8,
+    "smash_score": 0.662,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.955,
+      "game_script": 1.074,
+      "pace": 1.009,
+      "opportunity": 0.935
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 11.38,
       "season_avg_allowed": 12.11,
@@ -1672,6 +2048,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 0.5,
+    "smash_score": 0.562,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.927,
+      "game_script": 0.943,
+      "pace": 1.0,
+      "opportunity": 0.959
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 8.7,
       "season_avg_allowed": 14.78,
@@ -1709,6 +2093,14 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 0.5,
+    "smash_score": 0.713,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.921,
+      "game_script": 0.966,
+      "pace": 0.993,
+      "opportunity": 0.954
+    },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,
       "season_avg_allowed": 25.27,

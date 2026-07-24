@@ -9,6 +9,8 @@
     "projected_points": 102.08,
     "floor_points": 102.08,
     "ceiling_points": 266.22,
+    "stack_players": [],
+    "bring_back_players": [],
     "slots": [
       {
         "slot": "D",
@@ -130,6 +132,8 @@
     "projected_points": 145.78,
     "floor_points": 102.43,
     "ceiling_points": 275.83,
+    "stack_players": [],
+    "bring_back_players": [],
     "slots": [
       {
         "slot": "D",
@@ -251,6 +255,10 @@
     "projected_points": 191.91,
     "floor_points": 89.97,
     "ceiling_points": 293.84,
+    "stack_players": [
+      "Dyami Brown"
+    ],
+    "bring_back_players": [],
     "slots": [
       {
         "slot": "D",
@@ -372,6 +380,8 @@
     "projected_points": 249.76,
     "floor_points": 80.67,
     "ceiling_points": 306.12,
+    "stack_players": [],
+    "bring_back_players": [],
     "slots": [
       {
         "slot": "D",
@@ -493,6 +503,8 @@
     "projected_points": 306.12,
     "floor_points": 80.67,
     "ceiling_points": 306.12,
+    "stack_players": [],
+    "bring_back_players": [],
     "slots": [
       {
         "slot": "D",

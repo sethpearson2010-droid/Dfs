@@ -98,6 +98,8 @@ class Lineup:
     projected_points: float  # blended floor/ceiling objective the lineup was built on
     floor_points: float
     ceiling_points: float
+    stack_players: list[str] = field(default_factory=list)  # QB's own pass-catchers rostered alongside them
+    bring_back_players: list[str] = field(default_factory=list)  # opponent's pass-catchers (full game stack)
 
 
 @dataclass(frozen=True)
@@ -223,8 +225,25 @@ class PlayerValue:
     ceiling_projection: float = 0.0  # projection plus recent game-to-game variance
     advanced_metrics: AdvancedMetrics | None = None
     projected_ownership_pct: float = 0.0  # heuristic estimate, not real crowd data — see ownership.py
+    vulnerability_multiplier: float = 1.0
+    game_script_multiplier: float = 1.0
+    pace_multiplier: float = 1.0
+    opportunity_multiplier: float = 1.0
     value_score: float = field(init=False)
+    smash_score: float = field(init=False)  # ceiling per $1000 salary — "value" using upside, not the mean
+    smash_alignment: int = field(init=False)  # how many of the 4 matchup signals are pointing up (0-4)
 
     def __post_init__(self) -> None:
         # value per $1000 of salary — standard DFS value convention
         self.value_score = round((self.projection / self.salary) * 1000, 3) if self.salary else 0.0
+        self.smash_score = round((self.ceiling_projection / self.salary) * 1000, 3) if self.salary else 0.0
+        self.smash_alignment = sum(
+            1
+            for m in (
+                self.vulnerability_multiplier,
+                self.game_script_multiplier,
+                self.pace_multiplier,
+                self.opportunity_multiplier,
+            )
+            if m > 1.02  # small threshold so near-1.0 noise doesn't count as "aligned"
+        )

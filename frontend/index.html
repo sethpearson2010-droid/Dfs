@@ -156,6 +156,7 @@
         <th data-key="implied_total">Implied Total</th>
         <th data-key="projected_ownership_pct">Own%</th>
         <th data-key="wopr">WOPR / RZ Share</th>
+        <th data-key="smash_score">Smash</th>
       </tr>
     </thead>
     <tbody id="tableBody"></tbody>
@@ -245,6 +246,13 @@ function renderSelectedLineup(index) {
     <div>Floor: <b>${lineup.floor_points}</b></div>
     <div>Ceiling: <b>${lineup.ceiling_points}</b></div>
   `;
+
+  if (lineup.stack_players && lineup.stack_players.length) {
+    const bringBack = lineup.bring_back_players && lineup.bring_back_players.length
+      ? ` + bring-back: ${lineup.bring_back_players.join(", ")}`
+      : "";
+    summary.innerHTML += `<div style="width:100%;color:#a78bfa;margin-top:4px;">🔗 Stacked: ${lineup.stack_players.join(", ")}${bringBack}</div>`;
+  }
 
   const slotOrder = ["QB", "RB1", "RB2", "WR1", "WR2", "WR3", "TE", "FLEX", "D"];
   const bySlot = Object.fromEntries(lineup.slots.map(s => [s.slot, s]));
@@ -354,6 +362,8 @@ function render() {
     const advanced = p.advanced_metrics
       ? `${p.advanced_metrics.wopr} / ${Math.round(p.advanced_metrics.redzone_share * 100)}%`
       : "—";
+    const stars = "★".repeat(p.smash_alignment || 0) + "☆".repeat(4 - (p.smash_alignment || 0));
+    const smashDisplay = `${p.smash_score} <span style="color:#a78bfa;" title="${p.smash_alignment}/4 matchup signals aligned (vulnerability, game script, pace, opportunity)">${stars}</span>`;
     const nameWarning = p.name_match_quality === "unmatched"
       ? `<span class="warn-badge unmatched" title="No stats found for this name">no match</span>`
       : p.name_match_quality === "fuzzy"
@@ -378,6 +388,7 @@ function render() {
       <td>${impliedTotal}</td>
       <td>${ownership}</td>
       <td title="WOPR (target share + air yards share) / red zone touch share — see README for how these are used">${advanced}</td>
+      <td title="Ceiling per $1000 salary, plus how many of the 4 matchup signals are pointing up">${smashDisplay}</td>
     `;
     tbody.appendChild(tr);
   });

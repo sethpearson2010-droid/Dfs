@@ -119,7 +119,9 @@ class ValueCalculator:
         player_id = self._name_to_id.get(canonical_name) if canonical_name else None
         advanced = self._advanced_metrics.get(player_id) if player_id else None
 
-        projection = self._project(entry.position, base_projection, vuln, game_context, pace_profile)
+        projection, vuln_multiplier, script_multiplier, pace_multiplier = self._project(
+            entry.position, base_projection, vuln, game_context, pace_profile
+        )
         # scale the raw variance by the same combined multiplier as the
         # point estimate, so a plus-matchup game raises floor/ceiling
         # together rather than just the average
@@ -128,7 +130,9 @@ class ValueCalculator:
 
         floor_projection = max(0.0, projection - FLOOR_STDEV_MULTIPLIER * scaled_stdev)
         ceiling_projection = projection + CEILING_STDEV_MULTIPLIER * scaled_stdev
-        ceiling_projection = self._apply_opportunity_ceiling(entry.position, ceiling_projection, advanced)
+        ceiling_projection, opportunity_multiplier = self._apply_opportunity_ceiling(
+            entry.position, ceiling_projection, advanced
+        )
 
         return PlayerValue(
             player_name=entry.player_name,
@@ -145,18 +149,23 @@ class ValueCalculator:
             floor_projection=round(floor_projection, 2),
             ceiling_projection=round(ceiling_projection, 2),
             advanced_metrics=advanced,
+            vulnerability_multiplier=round(vuln_multiplier, 3),
+            game_script_multiplier=round(script_multiplier, 3),
+            pace_multiplier=round(pace_multiplier, 3),
+            opportunity_multiplier=round(opportunity_multiplier, 3),
         )
 
     def _apply_opportunity_ceiling(
         self, position: Position, ceiling_projection: float, advanced: AdvancedMetrics | None
-    ) -> float:
+    ) -> tuple[float, float]:
+        """Returns (adjusted_ceiling, opportunity_multiplier)."""
         if advanced is None:
-            return ceiling_projection
+            return ceiling_projection, 1.0
 
         league_wopr = self._league_avg_wopr_by_position.get(position, 0.0)
         league_rz_share = self._league_avg_rz_share_by_position.get(position, 0.0)
         if not league_wopr and not league_rz_share:
-            return ceiling_projection  # e.g. QB/K — these metrics aren't meaningful for this position
+            return ceiling_projection, 1.0  # e.g. QB/K — these metrics aren't meaningful for this position
 
         wopr_rel = _clamp((advanced.recent_wopr - league_wopr) / league_wopr, -1, 1) if league_wopr else 0.0
         rz_rel = (
@@ -165,8 +174,9 @@ class ValueCalculator:
             else 0.0
         )
         opportunity_score = 0.5 * wopr_rel + 0.5 * rz_rel
+        opportunity_multiplier = 1 + OPPORTUNITY_CEILING_WEIGHT * opportunity_score
 
-        return ceiling_projection * (1 + OPPORTUNITY_CEILING_WEIGHT * opportunity_score)
+        return ceiling_projection * opportunity_multiplier, opportunity_multiplier
 
     def _value_dst(self, entry: SalaryEntry) -> PlayerValue:
         # the opposing offense's own game context tells us their
@@ -203,11 +213,18 @@ class ValueCalculator:
         vuln: VulnerabilityScore | None,
         game_context: GameContext | None,
         pace_profile: PaceProfile | None,
-    ) -> float:
+    ) -> tuple[float, float, float, float]:
+        """Returns (projection, vuln_multiplier, script_multiplier, pace_multiplier) —
+        the individual multipliers are exposed (not just their combined
+        effect) so smash_alignment can report how many signals are
+        actually pointing the same direction for a given player."""
         if base_projection == 0.0:
-            return base_projection
+            return base_projection, 1.0, 1.0, 1.0
 
         projection = base_projection
+        vuln_multiplier = 1.0
+        script_multiplier = 1.0
+        pace_multiplier = 1.0
 
         if vuln is not None:
             league_avg = self._league_avg_by_position.get(position, vuln.blended_score)
@@ -227,7 +244,7 @@ class ValueCalculator:
             )
             projection *= pace_multiplier
 
-        return projection
+        return projection, vuln_multiplier, script_multiplier, pace_multiplier
 
     def _build_player_averages(self, weekly_stats: list[WeeklyStatLine]) -> dict[str, float]:
         by_player: dict[str, list[float]] = defaultdict(list)

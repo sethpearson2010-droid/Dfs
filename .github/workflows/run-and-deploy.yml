@@ -16,13 +16,17 @@ on:
         required: true
         default: "2026"
       risk_level:
-        description: "Single risk level 0.0 (cash) to 1.0 (max GPP). Leave blank for the default 5-point exploration spread."
+        description: "Cash-to-GPP slider: 0.0 builds 1 cash lineup, 1.0 builds up to 50 max-GPP lineups (scales in between). Leave blank for the old 5-point exploration spread instead."
         required: false
         default: ""
       num_lineups:
-        description: "Number of diverse lineups to build (only applies if risk_level is set; capped at 50)"
+        description: "Override the lineup count risk_level would auto-derive (leave blank to let the slider decide)"
         required: false
-        default: "1"
+        default: ""
+      randomness:
+        description: "Multiplier on how differentiated a multi-lineup batch is (1.0 = default; >1 wilder, <1 tighter)"
+        required: false
+        default: "1.0"
       skip_redzone:
         description: "Skip the play-by-play red-zone fetch for a faster run"
         type: boolean
@@ -61,7 +65,10 @@ jobs:
         run: |
           ARGS="--season ${{ inputs.season }} --salary-csv inputs/salary.csv --output output/players.json"
           if [ -n "${{ inputs.risk_level }}" ]; then
-            ARGS="$ARGS --risk-level ${{ inputs.risk_level }} --num-lineups ${{ inputs.num_lineups }}"
+            ARGS="$ARGS --risk-level ${{ inputs.risk_level }} --randomness ${{ inputs.randomness }}"
+            if [ -n "${{ inputs.num_lineups }}" ]; then
+              ARGS="$ARGS --num-lineups ${{ inputs.num_lineups }}"
+            fi
           fi
           if [ "${{ inputs.skip_redzone }}" = "true" ]; then
             ARGS="$ARGS --skip-redzone"

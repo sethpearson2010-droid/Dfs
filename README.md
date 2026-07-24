@@ -150,24 +150,32 @@ last-minute news.
 `nfl_dfs.main` writes `output/lineups.json` in one of two modes:
 
 **Exploration mode** (default, no `--risk-level` passed): one legal
-lineup at each of 5 points on the risk slider — see table below.
+lineup at each of 5 points on the risk slider — see table below. Good
+for a quick look at how the model's picks shift across the slider.
 
-**Multi-lineup mode** (`--risk-level X --num-lineups N`): up to
-`N` (capped at 50) diverse lineups at a single risk level, for GPP
-mass multi-entry. Diversity is enforced by rejecting any candidate
-that shares more than 6 of 9 players with an already-accepted lineup
-— if your player pool is thin (as in `test_data/full_slate.csv`'s 49
+**Slider-driven GPP mode** (`--risk-level X`, the main workflow): the
+slider now drives *both* risk and lineup count directly — `0.0` builds
+1 cash lineup, `1.0` builds up to `MAX_LINEUPS` (50) diverse GPP
+lineups, scaling linearly in between (`round(risk_level × 50)`).
+That's the entire point of the slider: drag it all the way right to
+build every lineup as pure GPP for mass multi-entry. Pass
+`--num-lineups N` to override the auto-derived count explicitly if you
+want a specific number instead.
+
+Diversity across a batch is enforced by rejecting any candidate that
+shares more than 6 of 9 players with an already-accepted lineup — if
+your player pool is thin (as in `test_data/full_slate.csv`'s 49
 players — a real slate has hundreds), you may get fewer than
 requested rather than near-duplicate lineups; the output is honest
 about the shortfall rather than padding it.
 
-| risk_level | style | optimizes toward |
-|---|---|---|
-| 0.0 | cash | each player's `floor_projection` |
-| 0.25 | safe GPP | mostly floor, some ceiling |
-| 0.5 | balanced | even blend |
-| 0.75 | risky GPP | mostly ceiling |
-| 1.0 | max upside | each player's `ceiling_projection`, plus a leverage bonus that rewards lower `projected_ownership_pct` (scaled by risk_level — a no-op in cash, fully active at max GPP) |
+| risk_level | style | optimizes toward | lineups built (auto) |
+|---|---|---|---|
+| 0.0 | cash | each player's `floor_projection` | 1 |
+| 0.25 | safe GPP | mostly floor, some ceiling | ~13 |
+| 0.5 | balanced | even blend | ~25 |
+| 0.75 | risky GPP | mostly ceiling | ~38 |
+| 1.0 | max upside | each player's `ceiling_projection`, plus ownership leverage + stacking (below) | 50 |
 
 Floor/ceiling come from each player's own recent-game standard
 deviation (`value.py`), scaled by the same matchup/script/pace
@@ -181,24 +189,81 @@ offense's Vegas-implied total, with a wide fixed floor/ceiling spread
 — this is a rough approximation, not real defensive-stat modeling
 (sacks, takeaways, def TDs aren't in it).
 
+### Smash factor
+
+Every player row carries `smash_score` (ceiling ÷ $1000 salary — the
+same convention as `value_score`, but using upside instead of the
+mean) and `smash_alignment` (0-4: how many of vulnerability, game
+script, pace, and the opportunity ceiling adjustment are individually
+pointing up for this player, each exposed as its own multiplier in
+`signal_multipliers`). A high smash_score with high alignment is a
+player where every signal agrees, not just one metric happening to be
+favorable — the dashboard shows this as a star rating (★☆☆☆ to
+★★★★). This doesn't change the lineup-building objective by itself;
+it's a transparency/diagnostic layer so you can see *why* a pick
+looks good, not just that it does.
+
+### Stacking
+
+At `risk_level > 0`, the local-search phase of lineup construction
+rewards rostering one of the QB's own pass-catchers (`STACK_BONUS_PER_PLAYER`,
+scaled by risk_level) and, on top of that, a smaller bonus for also
+rostering a player from the QB's opponent — a full "game stack" /
+bring-back (`BRING_BACK_BONUS`). The reasoning: a QB's passing TD and
+his receiver's receiving TD are the *same play* — correlated players
+raise a lineup's ceiling (the good games get better together) even
+though they don't raise its average, which is exactly the tradeoff GPP
+wants and cash doesn't. That's why the bonus is zero at `risk_level=0`
+— correlation is irrelevant-to-mildly-harmful for cash's pure
+expected-value optimization. Verified: a strengthened bonus (bumped
+from an initial value that was too weak to actually influence
+construction) produced real double-stacks (QB + 2 teammates) and full
+game stacks with bring-back in test batches. Each lineup's `slots`
+output includes `stack_players` and `bring_back_players` so you can
+see exactly what's correlated, not just trust a black-box score;
+cash-tier lineups always report these as empty (see the code comment
+in `_to_lineup_model` — at risk_level=0 the bonus never applied, so
+any coincidental same-team roster overlap isn't a deliberate stack and
+shouldn't be labeled as one).
+
+### Randomness
+
+`build_many()`'s per-candidate noise (needed for genuine diversity
+across a batch — see below) scales with `risk_level` by design: cash
+batches stay close to "the" single best lineup, GPP batches
+differentiate much more. `--randomness` (default 1.0) is an additional
+multiplier on top of that scaling — pass `>1` for wilder, more
+contrarian batches, `<1` for tighter ones closer to the model's single
+best pick at that risk level, or `0` to disable noise-driven diversity
+entirely (only genuinely different local-search optima, if any, would
+then differ between lineups).
+
 **Why greedy + local search, not an exact solver**: getting a
 provably-optimal lineup needs a real ILP solver (PuLP/mip), which is a
 dependency this project deliberately avoids (see `requirements.txt`).
 The greedy-fill-then-swap-improve approach reliably finds a strong
 lineup and is transparent/debuggable, at the cost of not guaranteeing
-the mathematical optimum. `build_many()` uses fewer local-search
-iterations per candidate than a single-lineup build — quantity of
-diverse attempts matters more than per-candidate perfection when
-generating many lineups, and this keeps a 50-lineup request from
-taking an unreasonable amount of time (verified: ~8s against the
-49-player test slate, including the diversity rejection-sampling).
+the mathematical optimum. Stacking bonuses and ownership leverage only
+affect the local-search phase (not the initial greedy fill, which
+scores players independently) — in practice this is enough, since
+local search runs thousands of swap trials and reliably finds and
+locks in a stack once it's worth more than the alternative.
+`build_many()` also uses fewer local-search iterations per candidate
+than a single-lineup build — quantity of diverse attempts matters more
+than per-candidate perfection when generating many lineups, and this
+keeps a 50-lineup request from taking an unreasonable amount of time
+(verified: a handful of seconds against the 49-player test slate,
+including diversity rejection-sampling).
 
 Verified against `test_data/full_slate.csv` (49 real 2025 nflverse
 players): all 5 exploration-mode risk levels produced legal lineups
 with genuinely different rosters (cash: Stafford/Kittle/McCaffrey;
-max upside: Lawrence/Pitts/Bijan Robinson), and multi-lineup mode
-produced correctly diverse, salary-legal lineups up to the pool's
-real diversity limit.
+max upside: Lawrence/Pitts/Bijan Robinson), slider-driven GPP mode at
+`risk_level=1.0` correctly attempted the full 50-lineup batch and
+honestly reported a smaller real count once the thin test pool's
+diversity limit was reached, and stacking produced genuine correlated
+rosters (QB + 2 teammates; full game stacks with bring-back) once the
+bonus was strong enough to matter.
 
 ## Positive TD regression (buy-low candidates)
 
