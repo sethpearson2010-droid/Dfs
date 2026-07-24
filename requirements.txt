@@ -1,0 +1,5 @@
+# The pipeline is stdlib-only on purpose (csv, urllib) — nfl_data_py
+# pins pandas<2.0, which has no prebuilt wheel for modern Python and
+# fails to build from source in clean environments (missing
+# setuptools/pkg_resources). Reading nflverse's CSV release assets
+# directly avoids that dependency entirely.

@@ -1,0 +1,1686 @@
+[
+  {
+    "player_name": "Trevor Lawrence",
+    "position": "QB",
+    "team": "JAX",
+    "opponent": "TEN",
+    "salary": 9400,
+    "projection": 34.54,
+    "floor_projection": 23.66,
+    "ceiling_projection": 48.05,
+    "value_score": 3.674,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 40.0,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 22.37,
+      "season_avg_allowed": 19.05,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 29.5,
+      "spread_line": 12.5,
+      "total_line": 46.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 63.2,
+      "season_avg_plays": 64.29
+    },
+    "advanced_metrics": {
+      "target_share": 0.0,
+      "air_yards_share": 0.0,
+      "wopr": 0.0,
+      "redzone_touches_per_game": 1.4,
+      "redzone_share": 0.104
+    }
+  },
+  {
+    "player_name": "Puka Nacua",
+    "position": "WR",
+    "team": "LA",
+    "opponent": "ARI",
+    "salary": 9800,
+    "projection": 35.2,
+    "floor_projection": 23.27,
+    "ceiling_projection": 59.87,
+    "value_score": 3.592,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 40.0,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 31.96,
+      "season_avg_allowed": 30.16,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 32.0,
+      "spread_line": 14.5,
+      "total_line": 49.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 71.4,
+      "season_avg_plays": 63.88
+    },
+    "advanced_metrics": {
+      "target_share": 0.311,
+      "air_yards_share": 0.336,
+      "wopr": 0.701,
+      "redzone_touches_per_game": 1.8,
+      "redzone_share": 0.143
+    }
+  },
+  {
+    "player_name": "Matthew Stafford",
+    "position": "QB",
+    "team": "LA",
+    "opponent": "ARI",
+    "salary": 8200,
+    "projection": 28.74,
+    "floor_projection": 21.11,
+    "ceiling_projection": 36.57,
+    "value_score": 3.505,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 27.4,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 22.35,
+      "season_avg_allowed": 16.95,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 32.0,
+      "spread_line": 14.5,
+      "total_line": 49.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 71.4,
+      "season_avg_plays": 63.88
+    },
+    "advanced_metrics": {
+      "target_share": 0.0,
+      "air_yards_share": 0.0,
+      "wopr": 0.0,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.079
+    }
+  },
+  {
+    "player_name": "Chase Brown",
+    "position": "RB",
+    "team": "CIN",
+    "opponent": "CLE",
+    "salary": 8200,
+    "projection": 26.67,
+    "floor_projection": 19.0,
+    "ceiling_projection": 45.8,
+    "value_score": 3.252,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 40.0,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 28.1,
+      "season_avg_allowed": 21.85,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 28.5,
+      "spread_line": 9.5,
+      "total_line": 47.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 65.6,
+      "season_avg_plays": 62.18
+    },
+    "advanced_metrics": {
+      "target_share": 0.137,
+      "air_yards_share": 0.027,
+      "wopr": 0.224,
+      "redzone_touches_per_game": 3.8,
+      "redzone_share": 0.396
+    }
+  },
+  {
+    "player_name": "Amon-Ra St. Brown",
+    "position": "WR",
+    "team": "DET",
+    "opponent": "CHI",
+    "salary": 7800,
+    "projection": 23.1,
+    "floor_projection": 10.75,
+    "ceiling_projection": 49.95,
+    "value_score": 2.962,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 33.7,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 34.46,
+      "season_avg_allowed": 35.53,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 24.0,
+      "spread_line": 3.5,
+      "total_line": 51.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 64.8,
+      "season_avg_plays": 62.53
+    },
+    "advanced_metrics": {
+      "target_share": 0.36,
+      "air_yards_share": 0.359,
+      "wopr": 0.792,
+      "redzone_touches_per_game": 3.4,
+      "redzone_share": 0.254
+    }
+  },
+  {
+    "player_name": "Michael Wilson",
+    "position": "WR",
+    "team": "ARI",
+    "opponent": "LA",
+    "salary": 7900,
+    "projection": 21.83,
+    "floor_projection": 13.41,
+    "ceiling_projection": 41.34,
+    "value_score": 2.763,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 28.1,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 37.72,
+      "season_avg_allowed": 31.71,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 17.5,
+      "spread_line": 14.5,
+      "total_line": 49.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 57.4,
+      "season_avg_plays": 63.18
+    },
+    "advanced_metrics": {
+      "target_share": 0.266,
+      "air_yards_share": 0.461,
+      "wopr": 0.721,
+      "redzone_touches_per_game": 2.2,
+      "redzone_share": 0.297
+    }
+  },
+  {
+    "player_name": "Bijan Robinson",
+    "position": "RB",
+    "team": "ATL",
+    "opponent": "NO",
+    "salary": 8200,
+    "projection": 22.58,
+    "floor_projection": 10.22,
+    "ceiling_projection": 46.93,
+    "value_score": 2.754,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 31.6,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 18.04,
+      "season_avg_allowed": 20.72,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 24.0,
+      "spread_line": 4.5,
+      "total_line": 43.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 63.0,
+      "season_avg_plays": 61.65
+    },
+    "advanced_metrics": {
+      "target_share": 0.233,
+      "air_yards_share": 0.02,
+      "wopr": 0.363,
+      "redzone_touches_per_game": 2.8,
+      "redzone_share": 0.269
+    }
+  },
+  {
+    "player_name": "Brock Purdy",
+    "position": "QB",
+    "team": "SF",
+    "opponent": "SEA",
+    "salary": 8300,
+    "projection": 21.34,
+    "floor_projection": 11.14,
+    "ceiling_projection": 32.58,
+    "value_score": 2.571,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 17.5,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 10.84,
+      "season_avg_allowed": 14.0,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 22.5,
+      "spread_line": -2.5,
+      "total_line": 47.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 62.0,
+      "season_avg_plays": 63.65
+    },
+    "advanced_metrics": {
+      "target_share": 0.0,
+      "air_yards_share": 0.0,
+      "wopr": 0.0,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.064
+    }
+  },
+  {
+    "player_name": "Christian McCaffrey",
+    "position": "RB",
+    "team": "SF",
+    "opponent": "SEA",
+    "salary": 7800,
+    "projection": 19.98,
+    "floor_projection": 12.49,
+    "ceiling_projection": 37.45,
+    "value_score": 2.562,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 24.4,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 18.04,
+      "season_avg_allowed": 18.48,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 22.5,
+      "spread_line": -2.5,
+      "total_line": 47.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 62.0,
+      "season_avg_plays": 63.65
+    },
+    "advanced_metrics": {
+      "target_share": 0.179,
+      "air_yards_share": 0.072,
+      "wopr": 0.318,
+      "redzone_touches_per_game": 7.2,
+      "redzone_share": 0.462
+    }
+  },
+  {
+    "player_name": "Bryce Young",
+    "position": "QB",
+    "team": "CAR",
+    "opponent": "TB",
+    "salary": 6700,
+    "projection": 16.94,
+    "floor_projection": 12.34,
+    "ceiling_projection": 23.84,
+    "value_score": 2.528,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 10.2,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 19.63,
+      "season_avg_allowed": 19.45,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 20.2,
+      "spread_line": 3.0,
+      "total_line": 43.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 54.6,
+      "season_avg_plays": 59.47
+    },
+    "advanced_metrics": {
+      "target_share": 0.0,
+      "air_yards_share": 0.0,
+      "wopr": 0.0,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.217
+    }
+  },
+  {
+    "player_name": "Kyle Pitts",
+    "position": "TE",
+    "team": "ATL",
+    "opponent": "NO",
+    "salary": 7300,
+    "projection": 18.27,
+    "floor_projection": 4.54,
+    "ceiling_projection": 46.62,
+    "value_score": 2.503,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 40.0,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 10.36,
+      "season_avg_allowed": 12.48,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 24.0,
+      "spread_line": 4.5,
+      "total_line": 43.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 63.0,
+      "season_avg_plays": 61.65
+    },
+    "advanced_metrics": {
+      "target_share": 0.273,
+      "air_yards_share": 0.3,
+      "wopr": 0.62,
+      "redzone_touches_per_game": 2.4,
+      "redzone_share": 0.231
+    }
+  },
+  {
+    "player_name": "Trey McBride",
+    "position": "TE",
+    "team": "ARI",
+    "opponent": "LA",
+    "salary": 7200,
+    "projection": 17.02,
+    "floor_projection": 6.82,
+    "ceiling_projection": 38.76,
+    "value_score": 2.364,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 27.4,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 12.24,
+      "season_avg_allowed": 13.13,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 17.5,
+      "spread_line": 14.5,
+      "total_line": 49.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 57.4,
+      "season_avg_plays": 63.18
+    },
+    "advanced_metrics": {
+      "target_share": 0.296,
+      "air_yards_share": 0.215,
+      "wopr": 0.595,
+      "redzone_touches_per_game": 2.4,
+      "redzone_share": 0.324
+    }
+  },
+  {
+    "player_name": "Justin Herbert",
+    "position": "QB",
+    "team": "LAC",
+    "opponent": "HOU",
+    "salary": 6700,
+    "projection": 15.72,
+    "floor_projection": 8.72,
+    "ceiling_projection": 25.03,
+    "value_score": 2.346,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 5.2,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 15.73,
+      "season_avg_allowed": 12.82,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 21.0,
+      "spread_line": 1.5,
+      "total_line": 40.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 64.6,
+      "season_avg_plays": 64.41
+    },
+    "advanced_metrics": {
+      "target_share": 0.0,
+      "air_yards_share": 0.0,
+      "wopr": 0.0,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.111
+    }
+  },
+  {
+    "player_name": "George Kittle",
+    "position": "TE",
+    "team": "SF",
+    "opponent": "SEA",
+    "salary": 6700,
+    "projection": 15.45,
+    "floor_projection": 9.06,
+    "ceiling_projection": 28.07,
+    "value_score": 2.306,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 17.5,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 10.56,
+      "season_avg_allowed": 14.68,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 22.5,
+      "spread_line": -2.5,
+      "total_line": 47.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 62.0,
+      "season_avg_plays": 63.65
+    },
+    "advanced_metrics": {
+      "target_share": 0.271,
+      "air_yards_share": 0.237,
+      "wopr": 0.572,
+      "redzone_touches_per_game": 2.0,
+      "redzone_share": 0.128
+    }
+  },
+  {
+    "player_name": "Patrick Mahomes",
+    "position": "QB",
+    "team": "KC",
+    "opponent": "LAC",
+    "salary": 6600,
+    "projection": 14.47,
+    "floor_projection": 7.49,
+    "ceiling_projection": 29.92,
+    "value_score": 2.192,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 2.2,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 11.39,
+      "season_avg_allowed": 12.58,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 23.5,
+      "spread_line": 5.5,
+      "total_line": 41.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 54.0,
+      "season_avg_plays": 62.41
+    },
+    "advanced_metrics": {
+      "target_share": 0.007,
+      "air_yards_share": -0.006,
+      "wopr": 0.006,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.152
+    }
+  },
+  {
+    "player_name": "Devin Singletary",
+    "position": "RB",
+    "team": "NYG",
+    "opponent": "DAL",
+    "salary": 5600,
+    "projection": 12.26,
+    "floor_projection": 5.07,
+    "ceiling_projection": 23.2,
+    "value_score": 2.189,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 18.3,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 29.54,
+      "season_avg_allowed": 24.89,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 23.8,
+      "spread_line": -3.0,
+      "total_line": 50.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 60.0,
+      "season_avg_plays": 63.82
+    },
+    "advanced_metrics": {
+      "target_share": 0.074,
+      "air_yards_share": -0.03,
+      "wopr": 0.089,
+      "redzone_touches_per_game": 1.6,
+      "redzone_share": 0.145
+    }
+  },
+  {
+    "player_name": "BUF D/ST",
+    "position": "DST",
+    "team": "BUF",
+    "opponent": "MIA",
+    "salary": 4200,
+    "projection": 7.9,
+    "floor_projection": 4.9,
+    "ceiling_projection": 13.9,
+    "value_score": 1.881,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 40.0,
+    "game_context": {
+      "implied_team_total": 21.0,
+      "spread_line": -8.5,
+      "total_line": 50.5,
+      "is_home": true
+    }
+  },
+  {
+    "player_name": "Mack Hollins",
+    "position": "WR",
+    "team": "NE",
+    "opponent": "BAL",
+    "salary": 5000,
+    "projection": 9.3,
+    "floor_projection": 5.67,
+    "ceiling_projection": 15.96,
+    "value_score": 1.86,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 23.1,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 37.1,
+      "season_avg_allowed": 35.7,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 22.5,
+      "spread_line": 3.5,
+      "total_line": 48.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 60.6,
+      "season_avg_plays": 61.41
+    },
+    "advanced_metrics": {
+      "target_share": 0.209,
+      "air_yards_share": 0.305,
+      "wopr": 0.527,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.093
+    }
+  },
+  {
+    "player_name": "Isaac TeSlaa",
+    "position": "WR",
+    "team": "DET",
+    "opponent": "CHI",
+    "salary": 5000,
+    "projection": 9.16,
+    "floor_projection": 2.58,
+    "ceiling_projection": 18.94,
+    "value_score": 1.832,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 18.7,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 34.46,
+      "season_avg_allowed": 35.53,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 24.0,
+      "spread_line": 3.5,
+      "total_line": 51.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 64.8,
+      "season_avg_plays": 62.53
+    },
+    "advanced_metrics": {
+      "target_share": 0.085,
+      "air_yards_share": 0.149,
+      "wopr": 0.231,
+      "redzone_touches_per_game": 1.6,
+      "redzone_share": 0.119
+    }
+  },
+  {
+    "player_name": "Breece Hall",
+    "position": "RB",
+    "team": "NYJ",
+    "opponent": "NE",
+    "salary": 5600,
+    "projection": 10.16,
+    "floor_projection": 4.3,
+    "ceiling_projection": 20.86,
+    "value_score": 1.814,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 13.3,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 24.52,
+      "season_avg_allowed": 18.76,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 15.0,
+      "spread_line": -12.5,
+      "total_line": 42.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 59.4,
+      "season_avg_plays": 59.41
+    },
+    "advanced_metrics": {
+      "target_share": 0.068,
+      "air_yards_share": -0.028,
+      "wopr": 0.082,
+      "redzone_touches_per_game": 2.4,
+      "redzone_share": 0.343
+    }
+  },
+  {
+    "player_name": "Chris Rodriguez Jr.",
+    "position": "RB",
+    "team": "WAS",
+    "opponent": "PHI",
+    "salary": 5500,
+    "projection": 9.97,
+    "floor_projection": 6.68,
+    "ceiling_projection": 16.08,
+    "value_score": 1.813,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 9.2,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 20.58,
+      "season_avg_allowed": 22.75,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 17.8,
+      "spread_line": 3.0,
+      "total_line": 38.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 52.4,
+      "season_avg_plays": 58.24
+    },
+    "advanced_metrics": {
+      "target_share": 0.032,
+      "air_yards_share": 0.008,
+      "wopr": 0.054,
+      "redzone_touches_per_game": 4.2,
+      "redzone_share": 0.429
+    }
+  },
+  {
+    "player_name": "Dalton Kincaid",
+    "position": "TE",
+    "team": "BUF",
+    "opponent": "NYJ",
+    "salary": 4600,
+    "projection": 8.18,
+    "floor_projection": 2.75,
+    "ceiling_projection": 17.37,
+    "value_score": 1.778,
+    "name_match_quality": "exact",
+    "is_sleeper": true,
+    "projected_ownership_pct": 10.2,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 20.16,
+      "season_avg_allowed": 15.23,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 26.0,
+      "spread_line": 12.5,
+      "total_line": 39.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 64.4,
+      "season_avg_plays": 63.65
+    },
+    "advanced_metrics": {
+      "target_share": 0.116,
+      "air_yards_share": 0.152,
+      "wopr": 0.28,
+      "redzone_touches_per_game": 1.8,
+      "redzone_share": 0.111
+    }
+  },
+  {
+    "player_name": "David Njoku",
+    "position": "TE",
+    "team": "CLE",
+    "opponent": "TEN",
+    "salary": 4700,
+    "projection": 7.61,
+    "floor_projection": 2.65,
+    "ceiling_projection": 16.31,
+    "value_score": 1.619,
+    "name_match_quality": "exact",
+    "is_sleeper": true,
+    "projected_ownership_pct": 5.2,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 20.14,
+      "season_avg_allowed": 14.16,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 19.0,
+      "spread_line": 4.5,
+      "total_line": 33.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 57.2,
+      "season_avg_plays": 60.59
+    },
+    "advanced_metrics": {
+      "target_share": 0.081,
+      "air_yards_share": 0.036,
+      "wopr": 0.148,
+      "redzone_touches_per_game": 1.6,
+      "redzone_share": 0.229
+    }
+  },
+  {
+    "player_name": "Jaylen Waddle",
+    "position": "WR",
+    "team": "MIA",
+    "opponent": "TB",
+    "salary": 5000,
+    "projection": 7.89,
+    "floor_projection": 2.27,
+    "ceiling_projection": 18.56,
+    "value_score": 1.578,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 14.8,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 24.78,
+      "season_avg_allowed": 31.46,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 19.5,
+      "spread_line": -5.5,
+      "total_line": 44.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 55.4,
+      "season_avg_plays": 55.82
+    },
+    "advanced_metrics": {
+      "target_share": 0.229,
+      "air_yards_share": 0.37,
+      "wopr": 0.602,
+      "redzone_touches_per_game": 1.2,
+      "redzone_share": 0.154
+    }
+  },
+  {
+    "player_name": "SF D/ST",
+    "position": "DST",
+    "team": "SF",
+    "opponent": "SEA",
+    "salary": 4400,
+    "projection": 6.3,
+    "floor_projection": 3.3,
+    "ceiling_projection": 12.3,
+    "value_score": 1.432,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 19.7,
+    "game_context": {
+      "implied_team_total": 25.0,
+      "spread_line": -2.5,
+      "total_line": 47.5,
+      "is_home": false
+    }
+  },
+  {
+    "player_name": "Dillon Gabriel",
+    "position": "QB",
+    "team": "CLE",
+    "opponent": "BUF",
+    "salary": 4700,
+    "projection": 6.11,
+    "floor_projection": 0.0,
+    "ceiling_projection": 13.19,
+    "value_score": 1.3,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 0.8,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 14.61,
+      "season_avg_allowed": 13.09,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 15.5,
+      "spread_line": -10.5,
+      "total_line": 41.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 57.2,
+      "season_avg_plays": 60.59
+    },
+    "advanced_metrics": {
+      "target_share": 0.0,
+      "air_yards_share": 0.0,
+      "wopr": 0.0,
+      "redzone_touches_per_game": 0.0,
+      "redzone_share": 0.0
+    }
+  },
+  {
+    "player_name": "DAL D/ST",
+    "position": "DST",
+    "team": "DAL",
+    "opponent": "PHI",
+    "salary": 4800,
+    "projection": 6.2,
+    "floor_projection": 3.2,
+    "ceiling_projection": 12.2,
+    "value_score": 1.292,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 7.5,
+    "game_context": {
+      "implied_team_total": 25.2,
+      "spread_line": -3.0,
+      "total_line": 47.5,
+      "is_home": false
+    }
+  },
+  {
+    "player_name": "Pat Freiermuth",
+    "position": "TE",
+    "team": "PIT",
+    "opponent": "BAL",
+    "salary": 4600,
+    "projection": 5.93,
+    "floor_projection": 4.0,
+    "ceiling_projection": 9.66,
+    "value_score": 1.289,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 2.2,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 9.44,
+      "season_avg_allowed": 10.92,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 18.5,
+      "spread_line": -4.5,
+      "total_line": 41.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 64.2,
+      "season_avg_plays": 58.12
+    },
+    "advanced_metrics": {
+      "target_share": 0.126,
+      "air_yards_share": 0.171,
+      "wopr": 0.309,
+      "redzone_touches_per_game": 1.6,
+      "redzone_share": 0.125
+    }
+  },
+  {
+    "player_name": "Adam Thielen",
+    "position": "WR",
+    "team": "MIN",
+    "opponent": "GB",
+    "salary": 4000,
+    "projection": 4.91,
+    "floor_projection": 1.63,
+    "ceiling_projection": 9.36,
+    "value_score": 1.228,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 11.5,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 35.76,
+      "season_avg_allowed": 31.25,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 25.0,
+      "spread_line": 12.5,
+      "total_line": 37.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 57.2,
+      "season_avg_plays": 56.12
+    },
+    "advanced_metrics": {
+      "target_share": 0.089,
+      "air_yards_share": 0.12,
+      "wopr": 0.217,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.078
+    }
+  },
+  {
+    "player_name": "KC D/ST",
+    "position": "DST",
+    "team": "KC",
+    "opponent": "DEN",
+    "salary": 5000,
+    "projection": 6.1,
+    "floor_projection": 3.1,
+    "ceiling_projection": 12.1,
+    "value_score": 1.22,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 1.7,
+    "game_context": {
+      "implied_team_total": 25.5,
+      "spread_line": -13.5,
+      "total_line": 37.5,
+      "is_home": false
+    }
+  },
+  {
+    "player_name": "Joe Flacco",
+    "position": "QB",
+    "team": "CIN",
+    "opponent": "CLE",
+    "salary": 4100,
+    "projection": 4.27,
+    "floor_projection": 0.0,
+    "ceiling_projection": 11.13,
+    "value_score": 1.041,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 0.5,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 13.12,
+      "season_avg_allowed": 13.31,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 28.5,
+      "spread_line": 9.5,
+      "total_line": 47.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 65.6,
+      "season_avg_plays": 62.18
+    },
+    "advanced_metrics": {
+      "target_share": 0.0,
+      "air_yards_share": 0.0,
+      "wopr": 0.0,
+      "redzone_touches_per_game": 1.33,
+      "redzone_share": 0.139
+    }
+  },
+  {
+    "player_name": "PIT D/ST",
+    "position": "DST",
+    "team": "PIT",
+    "opponent": "DET",
+    "salary": 4600,
+    "projection": 4.3,
+    "floor_projection": 1.3,
+    "ceiling_projection": 10.3,
+    "value_score": 0.935,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 0.5,
+    "game_context": {
+      "implied_team_total": 30.0,
+      "spread_line": 7.5,
+      "total_line": 52.5,
+      "is_home": true
+    }
+  },
+  {
+    "player_name": "Tez Johnson",
+    "position": "WR",
+    "team": "TB",
+    "opponent": "CAR",
+    "salary": 4000,
+    "projection": 1.93,
+    "floor_projection": 0.46,
+    "ceiling_projection": 4.32,
+    "value_score": 0.482,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 8.7,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 30.3,
+      "season_avg_allowed": 26.58,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 23.2,
+      "spread_line": 3.0,
+      "total_line": 43.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 64.0,
+      "season_avg_plays": 62.82
+    },
+    "advanced_metrics": {
+      "target_share": 0.048,
+      "air_yards_share": 0.065,
+      "wopr": 0.117,
+      "redzone_touches_per_game": 2.25,
+      "redzone_share": 0.225
+    }
+  },
+  {
+    "player_name": "Savion Williams",
+    "position": "WR",
+    "team": "GB",
+    "opponent": "CHI",
+    "salary": 4000,
+    "projection": 1.81,
+    "floor_projection": 0.26,
+    "ceiling_projection": 3.89,
+    "value_score": 0.453,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 6.4,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 34.46,
+      "season_avg_allowed": 35.53,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 22.0,
+      "spread_line": 1.5,
+      "total_line": 45.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 55.8,
+      "season_avg_plays": 59.41
+    },
+    "advanced_metrics": {
+      "target_share": 0.032,
+      "air_yards_share": 0.021,
+      "wopr": 0.062,
+      "redzone_touches_per_game": 1.25,
+      "redzone_share": 0.136
+    }
+  },
+  {
+    "player_name": "Ollie Gordon II",
+    "position": "RB",
+    "team": "MIA",
+    "opponent": "NE",
+    "salary": 4000,
+    "projection": 1.79,
+    "floor_projection": 0.0,
+    "ceiling_projection": 5.83,
+    "value_score": 0.448,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 6.0,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 24.52,
+      "season_avg_allowed": 18.76,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 15.2,
+      "spread_line": 14.0,
+      "total_line": 44.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 55.4,
+      "season_avg_plays": 55.82
+    },
+    "advanced_metrics": {
+      "target_share": 0.008,
+      "air_yards_share": -0.011,
+      "wopr": 0.005,
+      "redzone_touches_per_game": 2.6,
+      "redzone_share": 0.333
+    }
+  },
+  {
+    "player_name": "Raheem Mostert",
+    "position": "RB",
+    "team": "LV",
+    "opponent": "HOU",
+    "salary": 4000,
+    "projection": 1.66,
+    "floor_projection": 0.34,
+    "ceiling_projection": 3.56,
+    "value_score": 0.415,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 3.6,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 19.32,
+      "season_avg_allowed": 19.97,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 12.5,
+      "spread_line": 14.5,
+      "total_line": 39.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 51.6,
+      "season_avg_plays": 55.76
+    },
+    "advanced_metrics": {
+      "target_share": 0.039,
+      "air_yards_share": -0.001,
+      "wopr": 0.057,
+      "redzone_touches_per_game": 1.25,
+      "redzone_share": 0.184
+    }
+  },
+  {
+    "player_name": "Dont'e Thornton Jr.",
+    "position": "WR",
+    "team": "LV",
+    "opponent": "KC",
+    "salary": 4000,
+    "projection": 1.57,
+    "floor_projection": 0.64,
+    "ceiling_projection": 3.04,
+    "value_score": 0.393,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 4.5,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 23.48,
+      "season_avg_allowed": 27.34,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 16.5,
+      "spread_line": -3.5,
+      "total_line": 36.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 51.6,
+      "season_avg_plays": 55.76
+    },
+    "advanced_metrics": {
+      "target_share": 0.08,
+      "air_yards_share": 0.161,
+      "wopr": 0.232,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.147
+    }
+  },
+  {
+    "player_name": "Dyami Brown",
+    "position": "WR",
+    "team": "JAX",
+    "opponent": "TEN",
+    "salary": 4000,
+    "projection": 1.4,
+    "floor_projection": 0.0,
+    "ceiling_projection": 5.94,
+    "value_score": 0.35,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 3.0,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 33.72,
+      "season_avg_allowed": 35.58,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 29.5,
+      "spread_line": 12.5,
+      "total_line": 46.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 63.2,
+      "season_avg_plays": 64.29
+    },
+    "advanced_metrics": {
+      "target_share": 0.067,
+      "air_yards_share": 0.152,
+      "wopr": 0.207,
+      "redzone_touches_per_game": 2.0,
+      "redzone_share": 0.149
+    }
+  },
+  {
+    "player_name": "Jerome Ford",
+    "position": "RB",
+    "team": "CLE",
+    "opponent": "TEN",
+    "salary": 4000,
+    "projection": 1.39,
+    "floor_projection": 0.0,
+    "ceiling_projection": 4.01,
+    "value_score": 0.347,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 2.0,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 17.06,
+      "season_avg_allowed": 21.41,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 19.0,
+      "spread_line": 4.5,
+      "total_line": 33.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 57.2,
+      "season_avg_plays": 60.59
+    },
+    "advanced_metrics": {
+      "target_share": 0.048,
+      "air_yards_share": -0.008,
+      "wopr": 0.067,
+      "redzone_touches_per_game": 1.2,
+      "redzone_share": 0.171
+    }
+  },
+  {
+    "player_name": "Ashton Dulin",
+    "position": "WR",
+    "team": "IND",
+    "opponent": "HOU",
+    "salary": 4000,
+    "projection": 1.39,
+    "floor_projection": 0.0,
+    "ceiling_projection": 3.94,
+    "value_score": 0.347,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 2.0,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 25.94,
+      "season_avg_allowed": 25.94,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 14.0,
+      "spread_line": 9.5,
+      "total_line": 37.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 59.6,
+      "season_avg_plays": 59.88
+    },
+    "advanced_metrics": {
+      "target_share": 0.019,
+      "air_yards_share": 0.042,
+      "wopr": 0.057,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.098
+    }
+  },
+  {
+    "player_name": "Jaylin Lane",
+    "position": "WR",
+    "team": "WAS",
+    "opponent": "PHI",
+    "salary": 4000,
+    "projection": 1.38,
+    "floor_projection": 0.0,
+    "ceiling_projection": 3.95,
+    "value_score": 0.345,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 1.2,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 17.64,
+      "season_avg_allowed": 26.49,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 17.8,
+      "spread_line": 3.0,
+      "total_line": 38.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 52.4,
+      "season_avg_plays": 58.24
+    },
+    "advanced_metrics": {
+      "target_share": 0.024,
+      "air_yards_share": 0.037,
+      "wopr": 0.062,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.102
+    }
+  },
+  {
+    "player_name": "LeQuint Allen Jr.",
+    "position": "RB",
+    "team": "JAX",
+    "opponent": "IND",
+    "salary": 4000,
+    "projection": 1.34,
+    "floor_projection": 0.18,
+    "ceiling_projection": 2.72,
+    "value_score": 0.335,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 1.1,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 18.4,
+      "season_avg_allowed": 19.94,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 26.0,
+      "spread_line": -3.5,
+      "total_line": 48.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 63.2,
+      "season_avg_plays": 64.29
+    },
+    "advanced_metrics": {
+      "target_share": 0.02,
+      "air_yards_share": -0.005,
+      "wopr": 0.026,
+      "redzone_touches_per_game": 1.2,
+      "redzone_share": 0.09
+    }
+  },
+  {
+    "player_name": "Will Shipley",
+    "position": "RB",
+    "team": "PHI",
+    "opponent": "WAS",
+    "salary": 4000,
+    "projection": 1.28,
+    "floor_projection": 0.05,
+    "ceiling_projection": 2.79,
+    "value_score": 0.32,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 0.6,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 26.08,
+      "season_avg_allowed": 25.45,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 20.8,
+      "spread_line": 3.0,
+      "total_line": 38.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 62.8,
+      "season_avg_plays": 59.41
+    },
+    "advanced_metrics": {
+      "target_share": 0.03,
+      "air_yards_share": -0.008,
+      "wopr": 0.039,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.072
+    }
+  },
+  {
+    "player_name": "Allen Lazard",
+    "position": "WR",
+    "team": "NYJ",
+    "opponent": "JAX",
+    "salary": 4000,
+    "projection": 1.26,
+    "floor_projection": 0.61,
+    "ceiling_projection": 2.32,
+    "value_score": 0.315,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 0.8,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 29.42,
+      "season_avg_allowed": 31.24,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 13.5,
+      "spread_line": 13.5,
+      "total_line": 40.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 59.4,
+      "season_avg_plays": 59.41
+    },
+    "advanced_metrics": {
+      "target_share": 0.061,
+      "air_yards_share": 0.043,
+      "wopr": 0.121,
+      "redzone_touches_per_game": 1.5,
+      "redzone_share": 0.214
+    }
+  },
+  {
+    "player_name": "British Brooks",
+    "position": "RB",
+    "team": "HOU",
+    "opponent": "IND",
+    "salary": 4000,
+    "projection": 1.22,
+    "floor_projection": 0.0,
+    "ceiling_projection": 4.48,
+    "value_score": 0.305,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 0.5,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 18.4,
+      "season_avg_allowed": 19.94,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 23.5,
+      "spread_line": 9.5,
+      "total_line": 37.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 63.0,
+      "season_avg_plays": 64.0
+    },
+    "advanced_metrics": {
+      "target_share": 0.0,
+      "air_yards_share": 0.0,
+      "wopr": 0.0,
+      "redzone_touches_per_game": 2.0,
+      "redzone_share": 0.222
+    }
+  },
+  {
+    "player_name": "KhaDarel Hodge",
+    "position": "WR",
+    "team": "ATL",
+    "opponent": "TB",
+    "salary": 4000,
+    "projection": 1.14,
+    "floor_projection": 0.0,
+    "ceiling_projection": 3.91,
+    "value_score": 0.285,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 0.5,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 24.78,
+      "season_avg_allowed": 31.46,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 18.8,
+      "spread_line": 6.0,
+      "total_line": 43.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 63.0,
+      "season_avg_plays": 61.65
+    },
+    "advanced_metrics": {
+      "target_share": 0.06,
+      "air_yards_share": 0.089,
+      "wopr": 0.152,
+      "redzone_touches_per_game": 0.0,
+      "redzone_share": 0.0
+    }
+  },
+  {
+    "player_name": "Noah Fant",
+    "position": "TE",
+    "team": "CIN",
+    "opponent": "CLE",
+    "salary": 4000,
+    "projection": 1.08,
+    "floor_projection": 0.0,
+    "ceiling_projection": 2.65,
+    "value_score": 0.27,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 0.8,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 11.38,
+      "season_avg_allowed": 12.11,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 28.5,
+      "spread_line": 9.5,
+      "total_line": 47.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 65.6,
+      "season_avg_plays": 62.18
+    },
+    "advanced_metrics": {
+      "target_share": 0.037,
+      "air_yards_share": 0.011,
+      "wopr": 0.064,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.104
+    }
+  },
+  {
+    "player_name": "David Martin-Robinson",
+    "position": "TE",
+    "team": "TEN",
+    "opponent": "JAX",
+    "salary": 4000,
+    "projection": 1.03,
+    "floor_projection": 0.16,
+    "ceiling_projection": 2.25,
+    "value_score": 0.258,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 0.5,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 8.7,
+      "season_avg_allowed": 14.78,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 17.0,
+      "spread_line": 12.5,
+      "total_line": 46.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 61.6,
+      "season_avg_plays": 59.06
+    },
+    "advanced_metrics": {
+      "target_share": 0.032,
+      "air_yards_share": 0.026,
+      "wopr": 0.066,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.128
+    }
+  },
+  {
+    "player_name": "Gage Larvadain",
+    "position": "WR",
+    "team": "CLE",
+    "opponent": "CIN",
+    "salary": 4000,
+    "projection": 0.99,
+    "floor_projection": 0.0,
+    "ceiling_projection": 2.85,
+    "value_score": 0.247,
+    "name_match_quality": "exact",
+    "is_sleeper": false,
+    "projected_ownership_pct": 0.5,
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 21.98,
+      "season_avg_allowed": 25.27,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 19.0,
+      "spread_line": 9.5,
+      "total_line": 47.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 57.2,
+      "season_avg_plays": 60.59
+    },
+    "advanced_metrics": {
+      "target_share": 0.029,
+      "air_yards_share": 0.035,
+      "wopr": 0.067,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.143
+    }
+  }
+]

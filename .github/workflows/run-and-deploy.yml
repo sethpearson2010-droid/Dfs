@@ -1,0 +1,95 @@
+name: Run pipeline and deploy dashboard
+
+# Triggered manually from the Actions tab (works fine from a phone
+# browser — GitHub's mobile web UI supports workflow_dispatch inputs,
+# though the "Run workflow" dropdown renders more reliably with
+# desktop-site mode toggled on in Chrome). This lets the whole
+# pipeline run without ever opening a terminal on the phone: replace
+# inputs/salary.csv with this week's FanDuel export (via the GitHub
+# web file editor), trigger this workflow, then open the Pages URL.
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: "Season year, e.g. 2026"
+        required: true
+        default: "2026"
+      risk_level:
+        description: "Single risk level 0.0 (cash) to 1.0 (max GPP). Leave blank for the default 5-point exploration spread."
+        required: false
+        default: ""
+      num_lineups:
+        description: "Number of diverse lineups to build (only applies if risk_level is set; capped at 50)"
+        required: false
+        default: "1"
+      skip_redzone:
+        description: "Skip the play-by-play red-zone fetch for a faster run"
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# only one Pages deployment at a time; a new run supersedes an
+# in-flight one rather than queuing behind it
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check salary CSV exists
+        run: |
+          if [ ! -s inputs/salary.csv ]; then
+            echo "::error::inputs/salary.csv is missing or empty. Upload this week's FanDuel export there first."
+            exit 1
+          fi
+
+      - name: Run pipeline
+        run: |
+          ARGS="--season ${{ inputs.season }} --salary-csv inputs/salary.csv --output output/players.json"
+          if [ -n "${{ inputs.risk_level }}" ]; then
+            ARGS="$ARGS --risk-level ${{ inputs.risk_level }} --num-lineups ${{ inputs.num_lineups }}"
+          fi
+          if [ "${{ inputs.skip_redzone }}" = "true" ]; then
+            ARGS="$ARGS --skip-redzone"
+          fi
+          echo "Running: python -m nfl_dfs.main $ARGS"
+          python -m nfl_dfs.main $ARGS
+
+      - name: Assemble static site
+        run: |
+          mkdir -p site/output
+          cp output/*.json site/output/
+          # the dashboard normally lives at frontend/index.html and
+          # fetches ../output/*.json (one level up) for local use via
+          # `python -m http.server`. For a root-level Pages deployment
+          # everything is flattened into one folder, so the relative
+          # path needs to become a same-directory fetch instead.
+          sed 's#\.\./output/#output/#g' frontend/index.html > site/index.html
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment

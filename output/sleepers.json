@@ -1,0 +1,31 @@
+[
+  {
+    "player_name": "Dalton Kincaid",
+    "position": "TE",
+    "team": "BUF",
+    "opponent": "NYJ",
+    "salary": 4600,
+    "base_projection": 6.8,
+    "adjusted_projection": 8.18,
+    "boost_pct": 0.203,
+    "reasons": [
+      "opponent allows 20.16 pts/gm to TE recently",
+      "team implied for 26.0 pts",
+      "team averaging 64.4 plays/gm recently"
+    ]
+  },
+  {
+    "player_name": "David Njoku",
+    "position": "TE",
+    "team": "CLE",
+    "opponent": "TEN",
+    "salary": 4700,
+    "base_projection": 7.0,
+    "adjusted_projection": 7.61,
+    "boost_pct": 0.087,
+    "reasons": [
+      "opponent allows 20.14 pts/gm to TE recently",
+      "team averaging 57.2 plays/gm recently"
+    ]
+  }
+]

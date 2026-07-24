@@ -1,0 +1,6 @@
+Id,Position,First Name,Last Name,Nickname,FPPG,Played,Salary,Game,Team,Opponent,Injury Indicator
+1-1,QB,Josh,Allen,Josh Allen,24.5,1,8500,BUF@MIA,BUF,MIA,
+1-2,RB,Christian,McCaffrey,Christian McCaffrey,22.1,1,9200,SF@SEA,SF,SEA,
+1-3,WR,Tyreek,Hill,Tyreek Hill,19.8,1,8800,BUF@MIA,MIA,BUF,
+1-4,WR,Stefon,Diggs,Stefon Diggs,15.2,1,6900,HOU@NE,HOU,NE,
+1-5,TE,Travis,Kelce,Travis Kelce,14.0,1,6700,KC@DEN,KC,DEN,

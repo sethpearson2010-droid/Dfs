@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FanDuel DFS — Value &amp; Matchup Vulnerability</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --panel: #171a21;
+    --border: #262b36;
+    --text: #e6e8eb;
+    --muted: #8b93a1;
+    --accent: #4ade80;
+    --accent-dim: #22c55e33;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px;
+  }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  p.sub { color: var(--muted); margin: 0 0 20px; font-size: 13px; }
+  .controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .controls button {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .controls button.active { border-color: var(--accent); color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border-radius: 8px; overflow: hidden; }
+  th, td { padding: 10px 12px; text-align: left; font-size: 13px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 600; cursor: pointer; user-select: none; position: sticky; top: 0; background: var(--panel); }
+  th:hover { color: var(--text); }
+  tbody tr:hover { background: #1e222c; }
+  .value-cell { color: var(--accent); font-weight: 600; }
+  .pos-badge {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: var(--accent-dim);
+    color: var(--accent);
+  }
+  .warn-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 1px 5px;
+    border-radius: 4px;
+    margin-left: 6px;
+    background: #f59e0b22;
+    color: #f59e0b;
+  }
+  .warn-badge.unmatched { background: #ef444422; color: #ef4444; }
+  #empty { color: var(--muted); padding: 40px; text-align: center; }
+  .sleepers-panel {
+    background: var(--panel);
+    border: 1px solid #f59e0b44;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .sleepers-panel h2 {
+    font-size: 14px;
+    margin: 0 0 10px;
+    color: #f59e0b;
+  }
+  .sleeper-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .sleeper-card:last-child { border-bottom: none; }
+  .sleeper-name { font-weight: 600; }
+  .sleeper-reasons { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .sleeper-boost { color: #f59e0b; font-weight: 600; white-space: nowrap; margin-left: 12px; }
+  .lineups-panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .lineups-panel h2 { font-size: 14px; margin: 0 0 12px; }
+  .risk-slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .risk-slider-row input[type="range"] { flex: 1; accent-color: var(--accent); }
+  .risk-label { font-size: 12px; color: var(--muted); min-width: 150px; text-align: right; }
+  .lineup-summary { display: flex; gap: 20px; font-size: 13px; margin-bottom: 12px; color: var(--muted); }
+  .lineup-summary b { color: var(--text); }
+  .lineup-slot-row {
+    display: grid;
+    grid-template-columns: 50px 1fr 60px 80px 80px;
+    gap: 8px;
+    font-size: 13px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .lineup-slot-row:last-child { border-bottom: none; }
+  .lineup-slot-label { color: var(--muted); font-weight: 600; }
+</style>
+</head>
+<body>
+  <h1>FanDuel DFS — Value &amp; Matchup Vulnerability</h1>
+  <p class="sub">Sorted by value score (projection ÷ salary × 1000). Click column headers to re-sort.</p>
+
+  <div class="sleepers-panel" id="sleepersPanel" style="display:none;">
+    <h2>💤 Statistical Sleeper Picks</h2>
+    <div id="sleepersList"></div>
+  </div>
+
+  <div class="lineups-panel" id="lineupsPanel" style="display:none;">
+    <h2>Lineup Builder — Cash to GPP</h2>
+    <div class="risk-slider-row">
+      <span style="font-size:12px;color:var(--muted);">Cash</span>
+      <input type="range" id="riskSlider" min="0" max="4" step="1" value="0">
+      <span style="font-size:12px;color:var(--muted);">Max GPP</span>
+      <span class="risk-label" id="riskLabel"></span>
+    </div>
+    <div class="lineup-summary" id="lineupSummary"></div>
+    <div id="lineupSlots"></div>
+  </div>
+
+  <div class="controls" id="positionFilters"></div>
+
+  <table id="playerTable">
+    <thead>
+      <tr>
+        <th data-key="player_name">Player</th>
+        <th data-key="position">Pos</th>
+        <th data-key="team">Team</th>
+        <th data-key="opponent">Opp</th>
+        <th data-key="salary">Salary</th>
+        <th data-key="projection">Proj</th>
+        <th data-key="value_score">Value</th>
+        <th data-key="vuln">Matchup (recent pts allowed)</th>
+        <th data-key="implied_total">Implied Total</th>
+        <th data-key="projected_ownership_pct">Own%</th>
+        <th data-key="wopr">WOPR / RZ Share</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+  <div id="empty" style="display:none;">
+    No data yet — run the pipeline (<code>python -m nfl_dfs.main ...</code>) to generate <code>output/players.json</code>,
+    then drop it next to this file.
+  </div>
+
+<script>
+let allPlayers = [];
+let sleepers = [];
+let lineups = [];
+let activeFilter = null;
+let sortKey = "value_score";
+let sortDir = -1;
+
+async function loadData() {
+  try {
+    const res = await fetch("../output/players.json");
+    if (!res.ok) throw new Error("not found");
+    allPlayers = await res.json();
+  } catch (e) {
+    document.getElementById("empty").style.display = "block";
+    return;
+  }
+
+  try {
+    const sleeperRes = await fetch("../output/sleepers.json");
+    if (sleeperRes.ok) sleepers = await sleeperRes.json();
+  } catch (e) {
+    sleepers = [];
+  }
+
+  try {
+    const lineupRes = await fetch("../output/lineups.json");
+    if (lineupRes.ok) lineups = await lineupRes.json();
+  } catch (e) {
+    lineups = [];
+  }
+
+  buildFilters();
+  renderSleepers();
+  renderLineups();
+  render();
+}
+
+function renderLineups() {
+  const panel = document.getElementById("lineupsPanel");
+  if (!lineups.length) {
+    panel.style.display = "none";
+    return;
+  }
+  panel.style.display = "block";
+
+  const slider = document.getElementById("riskSlider");
+  slider.max = lineups.length - 1;
+  slider.oninput = () => renderSelectedLineup(parseInt(slider.value, 10));
+  renderSelectedLineup(parseInt(slider.value, 10));
+}
+
+function renderSelectedLineup(index) {
+  const lineup = lineups[index];
+  const countSuffix = lineup.total_lineups > 1 ? ` — #${lineup.lineup_number} of ${lineup.total_lineups}` : "";
+  document.getElementById("riskLabel").textContent = lineup.label + countSuffix;
+
+  const summary = document.getElementById("lineupSummary");
+  const slotsEl = document.getElementById("lineupSlots");
+
+  if (lineup.error) {
+    summary.innerHTML = "";
+    slotsEl.innerHTML = `<div style="color:var(--muted);">${lineup.error}</div>`;
+    return;
+  }
+
+  summary.innerHTML = `
+    <div>Salary: <b>$${lineup.total_salary.toLocaleString()}</b> ($${lineup.salary_remaining.toLocaleString()} left)</div>
+    <div>Floor: <b>${lineup.floor_points}</b></div>
+    <div>Ceiling: <b>${lineup.ceiling_points}</b></div>
+  `;
+
+  const slotOrder = ["QB", "RB1", "RB2", "WR1", "WR2", "WR3", "TE", "FLEX", "D"];
+  const bySlot = Object.fromEntries(lineup.slots.map(s => [s.slot, s]));
+
+  slotsEl.innerHTML = "";
+  slotOrder.forEach(slotName => {
+    const s = bySlot[slotName];
+    if (!s) return;
+    const row = document.createElement("div");
+    row.className = "lineup-slot-row";
+    const sleeperTag = s.is_sleeper ? " 💤" : "";
+    const ownTag = s.projected_ownership_pct ? ` · own ${s.projected_ownership_pct}%` : "";
+    row.innerHTML = `
+      <span class="lineup-slot-label">${slotName}</span>
+      <span>${s.player_name}${sleeperTag} <span style="color:var(--muted);">(${s.team} vs ${s.opponent}${ownTag})</span></span>
+      <span>$${s.salary.toLocaleString()}</span>
+      <span style="color:var(--muted);">floor ${s.floor_projection}</span>
+      <span style="color:var(--accent);">ceil ${s.ceiling_projection}</span>
+    `;
+    slotsEl.appendChild(row);
+  });
+}
+
+function renderSleepers() {
+  const panel = document.getElementById("sleepersPanel");
+  const list = document.getElementById("sleepersList");
+  if (!sleepers.length) {
+    panel.style.display = "none";
+    return;
+  }
+  panel.style.display = "block";
+  list.innerHTML = "";
+  sleepers.forEach(s => {
+    const card = document.createElement("div");
+    card.className = "sleeper-card";
+    card.innerHTML = `
+      <div>
+        <div class="sleeper-name">${s.player_name} <span class="pos-badge">${s.position}</span> — ${s.team} vs ${s.opponent} — $${s.salary.toLocaleString()}</div>
+        <div class="sleeper-reasons">${s.reasons.join(" · ")}</div>
+      </div>
+      <div class="sleeper-boost">+${Math.round(s.boost_pct * 100)}%</div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function buildFilters() {
+  const positions = [...new Set(allPlayers.map(p => p.position))].sort();
+  const container = document.getElementById("positionFilters");
+  const allBtn = makeFilterButton("All", null);
+  container.appendChild(allBtn);
+  positions.forEach(pos => container.appendChild(makeFilterButton(pos, pos)));
+}
+
+function makeFilterButton(label, value) {
+  const btn = document.createElement("button");
+  btn.textContent = label;
+  btn.className = value === activeFilter ? "active" : "";
+  btn.onclick = () => {
+    activeFilter = value;
+    document.querySelectorAll("#positionFilters button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    render();
+  };
+  return btn;
+}
+
+function render() {
+  let rows = activeFilter ? allPlayers.filter(p => p.position === activeFilter) : allPlayers.slice();
+  rows.sort((a, b) => {
+    const av = a[sortKey], bv = b[sortKey];
+    if (typeof av === "string") return sortDir * av.localeCompare(bv);
+    return sortDir * (av - bv);
+  });
+
+  const tbody = document.getElementById("tableBody");
+  tbody.innerHTML = "";
+  rows.forEach(p => {
+    const vuln = p.matchup_vulnerability
+      ? `${p.matchup_vulnerability.recent_avg_allowed} pts/gm`
+      : "—";
+    const impliedTotal = p.game_context ? p.game_context.implied_team_total : "—";
+    const ownership = p.projected_ownership_pct ? `${p.projected_ownership_pct}%` : "—";
+    const advanced = p.advanced_metrics
+      ? `${p.advanced_metrics.wopr} / ${Math.round(p.advanced_metrics.redzone_share * 100)}%`
+      : "—";
+    const nameWarning = p.name_match_quality === "unmatched"
+      ? `<span class="warn-badge unmatched" title="No stats found for this name">no match</span>`
+      : p.name_match_quality === "fuzzy"
+        ? `<span class="warn-badge" title="Matched via fuzzy name matching — verify this is the right player">fuzzy match</span>`
+        : "";
+    const sleeperBadge = p.is_sleeper
+      ? `<span class="warn-badge" style="background:#f59e0b22;color:#f59e0b;" title="Flagged as a statistical sleeper">💤 sleeper</span>`
+      : "";
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${p.player_name}${nameWarning}${sleeperBadge}</td>
+      <td><span class="pos-badge">${p.position}</span></td>
+      <td>${p.team}</td>
+      <td>${p.opponent}</td>
+      <td>$${p.salary.toLocaleString()}</td>
+      <td>${p.projection}</td>
+      <td class="value-cell">${p.value_score}</td>
+      <td>${vuln}</td>
+      <td>${impliedTotal}</td>
+      <td>${ownership}</td>
+      <td title="WOPR (target share + air yards share) / red zone touch share — see README for how these are used">${advanced}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+document.querySelectorAll("th").forEach(th => {
+  th.addEventListener("click", () => {
+    const rawKey = th.dataset.key;
+    const displayOnlyKeys = new Set(["vuln", "implied_total", "wopr"]);
+    const key = displayOnlyKeys.has(rawKey) ? "value_score" : rawKey;
+    if (sortKey === key) sortDir *= -1;
+    else { sortKey = key; sortDir = -1; }
+    render();
+  });
+});
+
+loadData();
+</script>
+</body>
+</html>
