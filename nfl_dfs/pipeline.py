@@ -16,6 +16,7 @@ from nfl_dfs.lineup_builder import LineupBuilder, MAX_LINEUPS
 from nfl_dfs.models import Lineup
 from nfl_dfs.ownership import OwnershipEstimator
 from nfl_dfs.pace import PaceCalculator
+from nfl_dfs.regression import RegressionCalculator
 from nfl_dfs.salary import FanDuelSalaryImporter
 from nfl_dfs.sleepers import SleeperCalculator
 from nfl_dfs.value import ValueCalculator
@@ -52,6 +53,7 @@ class DfsPipeline:
         self._data_source = data_source
         self._salary_importer = FanDuelSalaryImporter()
         self._sleeper_calc = SleeperCalculator()
+        self._regression_calc = RegressionCalculator()
         self._lineup_builder = LineupBuilder()
         self._advanced_calc = AdvancedMetricsCalculator()
         self._ownership_estimator = OwnershipEstimator()
@@ -96,8 +98,12 @@ class DfsPipeline:
         sleeper_picks = self._sleeper_calc.identify(player_values)
         sleeper_keys = {(sp.player_name, sp.team) for sp in sleeper_picks}
 
-        self._write_output(player_values, output_path, sleeper_keys)
+        regression_candidates = self._regression_calc.identify(player_values)
+        regression_keys = {(rc.player_name, rc.team) for rc in regression_candidates}
+
+        self._write_output(player_values, output_path, sleeper_keys, regression_keys)
         self._write_sleepers(sleeper_picks, output_path)
+        self._write_regression_candidates(regression_candidates, output_path)
 
         if num_lineups and num_lineups > 1:
             level = single_risk_level if single_risk_level is not None else 1.0
@@ -112,11 +118,16 @@ class DfsPipeline:
     # ------------------------------------------------------------------
 
     def _write_output(
-        self, player_values, output_path: str | Path, sleeper_keys: set[tuple[str, str]] | None = None
+        self,
+        player_values,
+        output_path: str | Path,
+        sleeper_keys: set[tuple[str, str]] | None = None,
+        regression_keys: set[tuple[str, str]] | None = None,
     ) -> None:
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         sleeper_keys = sleeper_keys or set()
+        regression_keys = regression_keys or set()
 
         serializable = []
         for pv in player_values:
@@ -132,6 +143,7 @@ class DfsPipeline:
                 "value_score": pv.value_score,
                 "name_match_quality": pv.name_match_quality,
                 "is_sleeper": (pv.player_name, pv.team) in sleeper_keys,
+                "is_regression_candidate": (pv.player_name, pv.team) in regression_keys,
                 "projected_ownership_pct": pv.projected_ownership_pct,
             }
             if pv.matchup_vulnerability:
@@ -183,6 +195,25 @@ class DfsPipeline:
             for sp in sleeper_picks
         ]
         sleepers_path.write_text(json.dumps(serializable, indent=2))
+
+    def _write_regression_candidates(self, regression_candidates, output_path: str | Path) -> None:
+        output_path = Path(output_path)
+        regression_path = output_path.parent / "regression_candidates.json"
+
+        serializable = [
+            {
+                "player_name": rc.player_name,
+                "position": rc.position.value,
+                "team": rc.team,
+                "opponent": rc.opponent,
+                "recent_avg_touchdowns": rc.recent_avg_touchdowns,
+                "recent_redzone_touches": rc.recent_redzone_touches,
+                "expected_touchdowns_per_game": rc.expected_touchdowns_per_game,
+                "regression_gap": rc.regression_gap,
+            }
+            for rc in regression_candidates
+        ]
+        regression_path.write_text(json.dumps(serializable, indent=2))
 
     def _write_lineups(
         self,

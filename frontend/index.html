@@ -123,6 +123,11 @@
     <div id="sleepersList"></div>
   </div>
 
+  <div class="sleepers-panel" id="regressionPanel" style="display:none; border-color:#38bdf844;">
+    <h2 style="color:#38bdf8;">📈 Positive TD Regression (Buy Low)</h2>
+    <div id="regressionList"></div>
+  </div>
+
   <div class="lineups-panel" id="lineupsPanel" style="display:none;">
     <h2>Lineup Builder — Cash to GPP</h2>
     <div class="risk-slider-row">
@@ -163,6 +168,7 @@
 <script>
 let allPlayers = [];
 let sleepers = [];
+let regressionCandidates = [];
 let lineups = [];
 let activeFilter = null;
 let sortKey = "value_score";
@@ -186,6 +192,13 @@ async function loadData() {
   }
 
   try {
+    const regressionRes = await fetch("../output/regression_candidates.json");
+    if (regressionRes.ok) regressionCandidates = await regressionRes.json();
+  } catch (e) {
+    regressionCandidates = [];
+  }
+
+  try {
     const lineupRes = await fetch("../output/lineups.json");
     if (lineupRes.ok) lineups = await lineupRes.json();
   } catch (e) {
@@ -194,6 +207,7 @@ async function loadData() {
 
   buildFilters();
   renderSleepers();
+  renderRegressionCandidates();
   renderLineups();
   render();
 }
@@ -277,6 +291,29 @@ function renderSleepers() {
   });
 }
 
+function renderRegressionCandidates() {
+  const panel = document.getElementById("regressionPanel");
+  const list = document.getElementById("regressionList");
+  if (!regressionCandidates.length) {
+    panel.style.display = "none";
+    return;
+  }
+  panel.style.display = "block";
+  list.innerHTML = "";
+  regressionCandidates.forEach(rc => {
+    const card = document.createElement("div");
+    card.className = "sleeper-card";
+    card.innerHTML = `
+      <div>
+        <div class="sleeper-name">${rc.player_name} <span class="pos-badge">${rc.position}</span> — ${rc.team} vs ${rc.opponent}</div>
+        <div class="sleeper-reasons">${rc.recent_redzone_touches} RZ touches/gm, expected ${rc.expected_touchdowns_per_game} TDs/gm vs actual ${rc.recent_avg_touchdowns}</div>
+      </div>
+      <div class="sleeper-boost" style="color:#38bdf8;">+${rc.regression_gap} TD/gm</div>
+    `;
+    list.appendChild(card);
+  });
+}
+
 function buildFilters() {
   const positions = [...new Set(allPlayers.map(p => p.position))].sort();
   const container = document.getElementById("positionFilters");
@@ -325,9 +362,12 @@ function render() {
     const sleeperBadge = p.is_sleeper
       ? `<span class="warn-badge" style="background:#f59e0b22;color:#f59e0b;" title="Flagged as a statistical sleeper">💤 sleeper</span>`
       : "";
+    const regressionBadge = p.is_regression_candidate
+      ? `<span class="warn-badge" style="background:#38bdf822;color:#38bdf8;" title="Red-zone volume implies more TDs than recently scored — positive regression candidate">📈 buy low</span>`
+      : "";
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${p.player_name}${nameWarning}${sleeperBadge}</td>
+      <td>${p.player_name}${nameWarning}${sleeperBadge}${regressionBadge}</td>
       <td><span class="pos-badge">${p.position}</span></td>
       <td>${p.team}</td>
       <td>${p.opponent}</td>

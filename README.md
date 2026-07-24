@@ -28,6 +28,7 @@ Nothing else needs to change when either of those does.
 | `value.py` | Joins salary + vulnerability + game script + pace + advanced metrics + recent form → projection, floor, ceiling | See "Projection model" below |
 | `ownership.py` | Heuristic projected ownership per player | Rank-based approximation — see its docstring for why this isn't real data |
 | `sleepers.py` | Flags below-median-salary players with a meaningful statistical boost | Conservative, threshold-based; not just "high value_score" |
+| `regression.py` | Flags players whose red-zone volume implies more TDs than they've recently scored | Positive-regression / buy-low signal, independent of salary or matchup |
 | `roster_rules.py` | FanDuel classic-contest roster slots + salary cap | Constants, isolated so DraftKings/Underdog rules are a separate file later |
 | `lineup_builder.py` | Builds one or many legal lineups at a chosen cash-to-GPP risk level | Greedy fill + local-search swap improvement; `build_many()` adds noise + overlap rejection for diversity |
 | `pipeline.py` | Wires the above together | Facade |
@@ -198,6 +199,43 @@ with genuinely different rosters (cash: Stafford/Kittle/McCaffrey;
 max upside: Lawrence/Pitts/Bijan Robinson), and multi-lineup mode
 produced correctly diverse, salary-legal lineups up to the pool's
 real diversity limit.
+
+## Positive TD regression (buy-low candidates)
+
+`nfl_dfs.main` also writes `output/regression_candidates.json` — up to
+3 players per RB/WR/TE, flagged when their recent red-zone touch
+volume implies more touchdowns, at the league-wide rate for their
+position, than they've actually scored recently:
+
+```
+expected_tds_per_game = league_td_rate_per_redzone_touch(position) × player's_recent_redzone_touches
+regression_gap = expected_tds_per_game − player's_recent_avg_touchdowns
+```
+
+TDs are the highest-variance part of fantasy scoring — the same real
+opportunity can produce 0 TDs one stretch and 2 the next purely from
+randomness (a tipped pass, a goal-line fumble, a play call). A player
+with real volume but a below-average TD rate has more expected
+production than their box scores show, independent of this week's
+salary, matchup, or ownership — a genuine "buy low" signal rather than
+a favorable-matchup one.
+
+Conservative by design: only counted for RB/WR/TE (QB rushing TDs and
+K/DST don't fit this touch-driven model), requires at least 1.5
+red-zone touches/game before trusting a player's own rate at all (a
+rate from 2-3 touches over 5 games is mostly noise), and requires at
+least a 0.15 expected-TD/game gap to flag — small, non-actionable gaps
+are filtered out rather than padding the list. The league rate itself
+is touch-weighted (total recent TDs ÷ total recent red-zone touches
+across the position pool), not an average of individual player rates,
+so a few high-volume players don't get drowned out by noisy low-volume
+ones. Verified against real 2025 data: Christian McCaffrey (7.2 RZ
+touches/game, elite volume) showed a small, sensible 0.2 TD/game gap;
+lower-volume bench-tier players near the touch threshold showed larger
+relative gaps, as expected from a smaller, noisier sample.
+
+Player rows in `players.json` carry an `is_regression_candidate`
+boolean, and the dashboard shows a dedicated panel plus a 📈 badge.
 
 ## What's automated vs. manual
 

@@ -20,6 +20,7 @@ class AdvancedMetricsCalculator:
         target_share_by_player = self._recent_avg_by_player(weekly_stats, lambda line: line.target_share)
         air_yards_share_by_player = self._recent_avg_by_player(weekly_stats, lambda line: line.air_yards_share)
         wopr_by_player = self._recent_avg_by_player(weekly_stats, lambda line: line.wopr)
+        touchdowns_by_player = self._recent_avg_by_player(weekly_stats, lambda line: float(line.touchdowns))
 
         team_by_player_id = self._team_by_player_id(weekly_stats)
         recent_team_plays = self._recent_avg_by_team(redzone_data.team_redzone_plays)
@@ -39,6 +40,7 @@ class AdvancedMetricsCalculator:
                 recent_wopr=wopr_by_player.get(player_id, 0.0),
                 recent_redzone_touches=touches,
                 recent_redzone_share=redzone_share,
+                recent_touchdowns_per_game=touchdowns_by_player.get(player_id, 0.0),
             )
         return metrics
 

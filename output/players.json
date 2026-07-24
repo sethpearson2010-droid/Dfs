@@ -11,6 +11,7 @@
     "value_score": 3.674,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 40.0,
     "matchup_vulnerability": {
       "recent_avg_allowed": 22.37,
@@ -47,6 +48,7 @@
     "value_score": 3.592,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 40.0,
     "matchup_vulnerability": {
       "recent_avg_allowed": 31.96,
@@ -83,6 +85,7 @@
     "value_score": 3.505,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 27.4,
     "matchup_vulnerability": {
       "recent_avg_allowed": 22.35,
@@ -119,6 +122,7 @@
     "value_score": 3.252,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 40.0,
     "matchup_vulnerability": {
       "recent_avg_allowed": 28.1,
@@ -155,6 +159,7 @@
     "value_score": 2.962,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 33.7,
     "matchup_vulnerability": {
       "recent_avg_allowed": 34.46,
@@ -191,6 +196,7 @@
     "value_score": 2.763,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 28.1,
     "matchup_vulnerability": {
       "recent_avg_allowed": 37.72,
@@ -227,6 +233,7 @@
     "value_score": 2.754,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 31.6,
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.04,
@@ -263,6 +270,7 @@
     "value_score": 2.571,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 17.5,
     "matchup_vulnerability": {
       "recent_avg_allowed": 10.84,
@@ -299,6 +307,7 @@
     "value_score": 2.562,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": true,
     "projected_ownership_pct": 24.4,
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.04,
@@ -335,6 +344,7 @@
     "value_score": 2.528,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 10.2,
     "matchup_vulnerability": {
       "recent_avg_allowed": 19.63,
@@ -371,6 +381,7 @@
     "value_score": 2.503,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 40.0,
     "matchup_vulnerability": {
       "recent_avg_allowed": 10.36,
@@ -407,6 +418,7 @@
     "value_score": 2.364,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 27.4,
     "matchup_vulnerability": {
       "recent_avg_allowed": 12.24,
@@ -443,6 +455,7 @@
     "value_score": 2.346,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 5.2,
     "matchup_vulnerability": {
       "recent_avg_allowed": 15.73,
@@ -479,6 +492,7 @@
     "value_score": 2.306,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 17.5,
     "matchup_vulnerability": {
       "recent_avg_allowed": 10.56,
@@ -515,6 +529,7 @@
     "value_score": 2.192,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 2.2,
     "matchup_vulnerability": {
       "recent_avg_allowed": 11.39,
@@ -551,6 +566,7 @@
     "value_score": 2.189,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 18.3,
     "matchup_vulnerability": {
       "recent_avg_allowed": 29.54,
@@ -587,6 +603,7 @@
     "value_score": 1.881,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 40.0,
     "game_context": {
       "implied_team_total": 21.0,
@@ -607,6 +624,7 @@
     "value_score": 1.86,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 23.1,
     "matchup_vulnerability": {
       "recent_avg_allowed": 37.1,
@@ -643,6 +661,7 @@
     "value_score": 1.832,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 18.7,
     "matchup_vulnerability": {
       "recent_avg_allowed": 34.46,
@@ -679,6 +698,7 @@
     "value_score": 1.814,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 13.3,
     "matchup_vulnerability": {
       "recent_avg_allowed": 24.52,
@@ -715,6 +735,7 @@
     "value_score": 1.813,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 9.2,
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.58,
@@ -751,6 +772,7 @@
     "value_score": 1.778,
     "name_match_quality": "exact",
     "is_sleeper": true,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 10.2,
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.16,
@@ -787,6 +809,7 @@
     "value_score": 1.619,
     "name_match_quality": "exact",
     "is_sleeper": true,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 5.2,
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.14,
@@ -823,6 +846,7 @@
     "value_score": 1.578,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 14.8,
     "matchup_vulnerability": {
       "recent_avg_allowed": 24.78,
@@ -859,6 +883,7 @@
     "value_score": 1.432,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 19.7,
     "game_context": {
       "implied_team_total": 25.0,
@@ -879,6 +904,7 @@
     "value_score": 1.3,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 0.8,
     "matchup_vulnerability": {
       "recent_avg_allowed": 14.61,
@@ -915,6 +941,7 @@
     "value_score": 1.292,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 7.5,
     "game_context": {
       "implied_team_total": 25.2,
@@ -935,6 +962,7 @@
     "value_score": 1.289,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": true,
     "projected_ownership_pct": 2.2,
     "matchup_vulnerability": {
       "recent_avg_allowed": 9.44,
@@ -971,6 +999,7 @@
     "value_score": 1.228,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 11.5,
     "matchup_vulnerability": {
       "recent_avg_allowed": 35.76,
@@ -1007,6 +1036,7 @@
     "value_score": 1.22,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 1.7,
     "game_context": {
       "implied_team_total": 25.5,
@@ -1027,6 +1057,7 @@
     "value_score": 1.041,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 0.5,
     "matchup_vulnerability": {
       "recent_avg_allowed": 13.12,
@@ -1063,6 +1094,7 @@
     "value_score": 0.935,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 0.5,
     "game_context": {
       "implied_team_total": 30.0,
@@ -1083,6 +1115,7 @@
     "value_score": 0.482,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": true,
     "projected_ownership_pct": 8.7,
     "matchup_vulnerability": {
       "recent_avg_allowed": 30.3,
@@ -1119,6 +1152,7 @@
     "value_score": 0.453,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 6.4,
     "matchup_vulnerability": {
       "recent_avg_allowed": 34.46,
@@ -1155,6 +1189,7 @@
     "value_score": 0.448,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": true,
     "projected_ownership_pct": 6.0,
     "matchup_vulnerability": {
       "recent_avg_allowed": 24.52,
@@ -1191,6 +1226,7 @@
     "value_score": 0.415,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 3.6,
     "matchup_vulnerability": {
       "recent_avg_allowed": 19.32,
@@ -1227,6 +1263,7 @@
     "value_score": 0.393,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 4.5,
     "matchup_vulnerability": {
       "recent_avg_allowed": 23.48,
@@ -1263,6 +1300,7 @@
     "value_score": 0.35,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": true,
     "projected_ownership_pct": 3.0,
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.72,
@@ -1299,6 +1337,7 @@
     "value_score": 0.347,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 2.0,
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.06,
@@ -1335,6 +1374,7 @@
     "value_score": 0.347,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 2.0,
     "matchup_vulnerability": {
       "recent_avg_allowed": 25.94,
@@ -1371,6 +1411,7 @@
     "value_score": 0.345,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 1.2,
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
@@ -1407,6 +1448,7 @@
     "value_score": 0.335,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 1.1,
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.4,
@@ -1443,6 +1485,7 @@
     "value_score": 0.32,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 0.6,
     "matchup_vulnerability": {
       "recent_avg_allowed": 26.08,
@@ -1479,6 +1522,7 @@
     "value_score": 0.315,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": true,
     "projected_ownership_pct": 0.8,
     "matchup_vulnerability": {
       "recent_avg_allowed": 29.42,
@@ -1515,6 +1559,7 @@
     "value_score": 0.305,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": true,
     "projected_ownership_pct": 0.5,
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.4,
@@ -1551,6 +1596,7 @@
     "value_score": 0.285,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 0.5,
     "matchup_vulnerability": {
       "recent_avg_allowed": 24.78,
@@ -1587,6 +1633,7 @@
     "value_score": 0.27,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 0.8,
     "matchup_vulnerability": {
       "recent_avg_allowed": 11.38,
@@ -1623,6 +1670,7 @@
     "value_score": 0.258,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 0.5,
     "matchup_vulnerability": {
       "recent_avg_allowed": 8.7,
@@ -1659,6 +1707,7 @@
     "value_score": 0.247,
     "name_match_quality": "exact",
     "is_sleeper": false,
+    "is_regression_candidate": false,
     "projected_ownership_pct": 0.5,
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,

@@ -46,6 +46,7 @@ class WeeklyStatLine:
     target_share: float = 0.0  # this player's share of the team's targets that game
     air_yards_share: float = 0.0  # this player's share of the team's air yards that game
     wopr: float = 0.0  # weighted opportunity rating (nflverse-computed: 1.5*target_share + 0.7*air_yards_share)
+    touchdowns: int = 0  # passing + rushing + receiving TDs combined, for the positive-regression signal
 
 
 @dataclass(frozen=True)
@@ -74,6 +75,7 @@ class AdvancedMetrics:
     recent_wopr: float
     recent_redzone_touches: float  # per game
     recent_redzone_share: float  # this player's share of their team's red-zone plays
+    recent_touchdowns_per_game: float = 0.0  # for the positive-regression signal
 
 
 @dataclass(frozen=True)
@@ -96,6 +98,24 @@ class Lineup:
     projected_points: float  # blended floor/ceiling objective the lineup was built on
     floor_points: float
     ceiling_points: float
+
+
+@dataclass(frozen=True)
+class RegressionCandidate:
+    """A player whose recent red-zone volume implies more touchdowns,
+    league-wide, than they've actually scored recently — a 'positive
+    regression' / buy-low signal. TDs are the highest-variance part of
+    fantasy scoring, so real opportunity without matching results often
+    normalizes upward, independent of salary or matchup this week."""
+
+    player_name: str
+    position: Position
+    team: str
+    opponent: str
+    recent_avg_touchdowns: float
+    recent_redzone_touches: float
+    expected_touchdowns_per_game: float  # league-average TD rate per red-zone touch, applied to this player's volume
+    regression_gap: float  # expected minus actual — positive means underperforming their opportunity
 
 
 @dataclass(frozen=True)

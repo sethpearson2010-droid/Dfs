@@ -92,6 +92,9 @@ class NflverseDataSource(StatDataSource):
                     target_share=float(row.get("target_share") or 0.0),
                     air_yards_share=float(row.get("air_yards_share") or 0.0),
                     wopr=float(row.get("wopr") or 0.0),
+                    touchdowns=int(float(row.get("passing_tds") or 0))
+                    + int(float(row.get("rushing_tds") or 0))
+                    + int(float(row.get("receiving_tds") or 0)),
                 )
             )
         return stat_lines
