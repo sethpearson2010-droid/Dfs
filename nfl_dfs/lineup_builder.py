@@ -58,6 +58,13 @@ MAX_LINEUPS = 50
 # and fully active at max GPP (risk=1)
 LEVERAGE_WEIGHT = 0.15
 
+# a gentle, always-on nudge (not risk-scaled, unlike leverage/stack)
+# toward spending more of the salary cap — small enough that real
+# projection differences still dominate player selection, but enough
+# to break ties toward the pricier option and lean batches toward
+# efficient spend without a separate deterministic pass.
+SALARY_UTILIZATION_WEIGHT = 0.03
+
 # stacking: a flat fantasy-point-equivalent bonus per pass-catcher
 # rostered alongside the QB (same team), and a smaller "bring-back"
 # bonus for also rostering a player from the QB's opponent in the same
@@ -169,7 +176,6 @@ class LineupBuilder:
         max_exposure_pct: float = DEFAULT_MAX_EXPOSURE_PCT,
         max_position_overlap: int = DEFAULT_MAX_POSITION_OVERLAP,
         max_player_salary: int | None = None,
-        max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
@@ -194,7 +200,16 @@ class LineupBuilder:
         `max_exposure_pct` caps how much of the batch any single player
         can appear in (default 50%) — see the module-level comment on
         DEFAULT_MAX_EXPOSURE_PCT for why this exists separately from
-        the overlap checks."""
+        the overlap checks.
+
+        No `max_salary_leftover` parameter here on purpose: pushing
+        every candidate to hit a specific spend target with a
+        deterministic pass (as the standalone `build()` does) flattens
+        batch diversity — verified: it collapsed a 20-lineup request to
+        1 unique lineup under a tight `max_player_salary`. Instead,
+        `_objective()`'s always-on salary-utilization term nudges the
+        whole batch toward efficient spend organically, without that
+        collapse."""
         count = max(1, min(count, MAX_LINEUPS))
         accepted: list[Lineup] = []
         usage_count: dict[str, int] = {}
@@ -245,7 +260,15 @@ class LineupBuilder:
                 player_noise=noise,
                 local_search_iterations=BUILD_MANY_LOCAL_SEARCH_ITERATIONS,
                 max_player_salary=max_player_salary,
-                max_salary_leftover=max_salary_leftover,
+                # NOT max_salary_leftover here on purpose: the
+                # deterministic post-process greedily picks the single
+                # "best" upgrade regardless of noise, which flattens
+                # batch diversity (verified: caused a 20-lineup request
+                # to collapse to 1 unique lineup under a tight
+                # --max-player-salary). The always-on salary_utilization
+                # term in _objective() nudges spend without that
+                # homogenizing effect.
+                max_salary_leftover=None,
             )
             if candidate is None:
                 continue
@@ -277,6 +300,14 @@ class LineupBuilder:
             # how far up the GPP end of the slider we are
             ownership_fraction = player.projected_ownership_pct / 100.0
             base *= 1 + LEVERAGE_WEIGHT * risk_level * (1 - ownership_fraction)
+
+        # a small, uniform (not risk-scaled) nudge toward higher-salary
+        # players, so lineups lean toward spending closer to the cap
+        # organically during greedy fill + local search, rather than
+        # needing a separate deterministic pass that would flatten
+        # batch diversity — see _enforce_salary_floor's docstring for
+        # why that pass is reserved for single-lineup builds only.
+        base *= 1 + SALARY_UTILIZATION_WEIGHT * (player.salary / self._salary_cap)
 
         return base * noise.get(player.player_name, 1.0)
 

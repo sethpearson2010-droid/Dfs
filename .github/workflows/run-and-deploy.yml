@@ -30,7 +30,7 @@ on:
       max_player_salary:
         description: "Exclude any player priced above this from lineup consideration entirely (punt/no-studs build). Leave blank for no cap."
         required: false
-        default: ""
+        default: "6000"
       max_salary_leftover:
         description: "Push lineups to spend within this much of the $60,000 cap (default 2000). Best-effort — see README if combined with max_player_salary."
         required: false

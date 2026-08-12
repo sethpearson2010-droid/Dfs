@@ -136,17 +136,15 @@
     "label": "safe GPP",
     "lineup_number": 1,
     "total_lineups": 1,
-    "total_salary": 59800,
-    "salary_remaining": 200,
-    "projected_points": 162.38,
-    "floor_points": 106.45,
-    "ceiling_points": 330.17,
+    "total_salary": 59900,
+    "salary_remaining": 100,
+    "projected_points": 162.98,
+    "floor_points": 115.24,
+    "ceiling_points": 306.2,
     "stack_players": [
-      "Ja'Marr Chase"
+      "Chris Olave"
     ],
-    "bring_back_players": [
-      "Kenny Gainwell"
-    ],
+    "bring_back_players": [],
     "slots": [
       {
         "slot": "D",
@@ -163,29 +161,29 @@
       },
       {
         "slot": "QB",
-        "player_name": "Joe Burrow",
+        "player_name": "Tyler Shough",
         "position": "QB",
-        "team": "CIN",
-        "opponent": "TB",
-        "salary": 8200,
-        "floor_projection": 14.55,
-        "ceiling_projection": 33.79,
-        "projected_ownership_pct": 38.5,
+        "team": "NO",
+        "opponent": "DET",
+        "salary": 6900,
+        "floor_projection": 19.35,
+        "ceiling_projection": 24.42,
+        "projected_ownership_pct": 38.1,
         "is_sleeper": false,
-        "fanduel_id": "133104-63336"
+        "fanduel_id": "133104-88431"
       },
       {
         "slot": "TE",
-        "player_name": "Kyle Pitts Sr.",
+        "player_name": "Brock Bowers",
         "position": "TE",
-        "team": "ATL",
-        "opponent": "PIT",
-        "salary": 5500,
-        "floor_projection": 0.87,
-        "ceiling_projection": 49.14,
-        "projected_ownership_pct": 40.0,
+        "team": "LV",
+        "opponent": "MIA",
+        "salary": 6800,
+        "floor_projection": 10.18,
+        "ceiling_projection": 26.33,
+        "projected_ownership_pct": 39.0,
         "is_sleeper": false,
-        "fanduel_id": "133104-86080"
+        "fanduel_id": "133104-151794"
       },
       {
         "slot": "RB1",
@@ -228,16 +226,16 @@
       },
       {
         "slot": "WR2",
-        "player_name": "Zay Flowers",
+        "player_name": "Chris Olave",
         "position": "WR",
-        "team": "BAL",
-        "opponent": "IND",
-        "salary": 7300,
-        "floor_projection": 15.98,
-        "ceiling_projection": 34.88,
-        "projected_ownership_pct": 39.5,
+        "team": "NO",
+        "opponent": "DET",
+        "salary": 7400,
+        "floor_projection": 10.66,
+        "ceiling_projection": 43.09,
+        "projected_ownership_pct": 39.2,
         "is_sleeper": false,
-        "fanduel_id": "133104-112295"
+        "fanduel_id": "133104-87770"
       },
       {
         "slot": "WR3",
@@ -272,17 +270,15 @@
     "label": "balanced",
     "lineup_number": 1,
     "total_lineups": 1,
-    "total_salary": 59900,
-    "salary_remaining": 100,
-    "projected_points": 219.75,
-    "floor_points": 101.13,
-    "ceiling_points": 338.38,
+    "total_salary": 59600,
+    "salary_remaining": 400,
+    "projected_points": 218.53,
+    "floor_points": 106.06,
+    "ceiling_points": 331.01,
     "stack_players": [
-      "Ja'Marr Chase"
+      "Chris Olave"
     ],
-    "bring_back_players": [
-      "Kenny Gainwell"
-    ],
+    "bring_back_players": [],
     "slots": [
       {
         "slot": "D",
@@ -299,16 +295,16 @@
       },
       {
         "slot": "QB",
-        "player_name": "Joe Burrow",
+        "player_name": "Tyler Shough",
         "position": "QB",
-        "team": "CIN",
-        "opponent": "TB",
-        "salary": 8200,
-        "floor_projection": 14.55,
-        "ceiling_projection": 33.79,
-        "projected_ownership_pct": 38.5,
+        "team": "NO",
+        "opponent": "DET",
+        "salary": 6900,
+        "floor_projection": 19.35,
+        "ceiling_projection": 24.42,
+        "projected_ownership_pct": 38.1,
         "is_sleeper": false,
-        "fanduel_id": "133104-63336"
+        "fanduel_id": "133104-88431"
       },
       {
         "slot": "TE",
@@ -351,29 +347,29 @@
       },
       {
         "slot": "WR1",
-        "player_name": "Wan'Dale Robinson",
+        "player_name": "Drake London",
         "position": "WR",
-        "team": "TEN",
-        "opponent": "NYJ",
-        "salary": 5300,
-        "floor_projection": 7.82,
-        "ceiling_projection": 35.56,
-        "projected_ownership_pct": 38.8,
+        "team": "ATL",
+        "opponent": "PIT",
+        "salary": 7900,
+        "floor_projection": 9.35,
+        "ceiling_projection": 37.66,
+        "projected_ownership_pct": 37.8,
         "is_sleeper": false,
-        "fanduel_id": "133104-103539"
+        "fanduel_id": "133104-112745"
       },
       {
         "slot": "WR2",
-        "player_name": "Ja'Marr Chase",
+        "player_name": "Michael Wilson",
         "position": "WR",
-        "team": "CIN",
-        "opponent": "TB",
-        "salary": 8900,
-        "floor_projection": 17.38,
-        "ceiling_projection": 34.98,
-        "projected_ownership_pct": 39.1,
+        "team": "ARI",
+        "opponent": "LAC",
+        "salary": 6300,
+        "floor_projection": 11.73,
+        "ceiling_projection": 39.24,
+        "projected_ownership_pct": 39.3,
         "is_sleeper": false,
-        "fanduel_id": "133104-85701"
+        "fanduel_id": "133104-89612"
       },
       {
         "slot": "WR3",
@@ -390,16 +386,16 @@
       },
       {
         "slot": "FLEX",
-        "player_name": "Michael Wilson",
+        "player_name": "Zay Flowers",
         "position": "WR",
-        "team": "ARI",
-        "opponent": "LAC",
-        "salary": 6300,
-        "floor_projection": 11.73,
-        "ceiling_projection": 39.24,
-        "projected_ownership_pct": 39.3,
+        "team": "BAL",
+        "opponent": "IND",
+        "salary": 7300,
+        "floor_projection": 15.98,
+        "ceiling_projection": 34.88,
+        "projected_ownership_pct": 39.5,
         "is_sleeper": false,
-        "fanduel_id": "133104-89612"
+        "fanduel_id": "133104-112295"
       }
     ]
   },
@@ -408,17 +404,15 @@
     "label": "risky GPP",
     "lineup_number": 1,
     "total_lineups": 1,
-    "total_salary": 59900,
-    "salary_remaining": 100,
-    "projected_points": 279.07,
-    "floor_points": 101.13,
-    "ceiling_points": 338.38,
+    "total_salary": 59600,
+    "salary_remaining": 400,
+    "projected_points": 277.67,
+    "floor_points": 92.15,
+    "ceiling_points": 339.51,
     "stack_players": [
-      "Ja'Marr Chase"
+      "Chase Brown"
     ],
-    "bring_back_players": [
-      "Kenny Gainwell"
-    ],
+    "bring_back_players": [],
     "slots": [
       {
         "slot": "D",
@@ -461,16 +455,16 @@
       },
       {
         "slot": "RB1",
-        "player_name": "Kenny Gainwell",
+        "player_name": "Chase Brown",
         "position": "RB",
-        "team": "TB",
-        "opponent": "CIN",
-        "salary": 5500,
-        "floor_projection": 13.83,
-        "ceiling_projection": 32.58,
-        "projected_ownership_pct": 39.6,
+        "team": "CIN",
+        "opponent": "TB",
+        "salary": 7500,
+        "floor_projection": 11.87,
+        "ceiling_projection": 33.39,
+        "projected_ownership_pct": 38.0,
         "is_sleeper": false,
-        "fanduel_id": "133104-90912"
+        "fanduel_id": "133104-89493"
       },
       {
         "slot": "RB2",
@@ -487,16 +481,16 @@
       },
       {
         "slot": "WR1",
-        "player_name": "Ja'Marr Chase",
+        "player_name": "Wan'Dale Robinson",
         "position": "WR",
-        "team": "CIN",
-        "opponent": "TB",
-        "salary": 8900,
-        "floor_projection": 17.38,
-        "ceiling_projection": 34.98,
-        "projected_ownership_pct": 39.1,
+        "team": "TEN",
+        "opponent": "NYJ",
+        "salary": 5300,
+        "floor_projection": 7.82,
+        "ceiling_projection": 35.56,
+        "projected_ownership_pct": 38.8,
         "is_sleeper": false,
-        "fanduel_id": "133104-85701"
+        "fanduel_id": "133104-103539"
       },
       {
         "slot": "WR2",
@@ -526,16 +520,16 @@
       },
       {
         "slot": "FLEX",
-        "player_name": "Wan'Dale Robinson",
+        "player_name": "Parker Washington",
         "position": "WR",
-        "team": "TEN",
-        "opponent": "NYJ",
-        "salary": 5300,
-        "floor_projection": 7.82,
-        "ceiling_projection": 35.56,
-        "projected_ownership_pct": 38.8,
+        "team": "JAC",
+        "opponent": "CLE",
+        "salary": 6600,
+        "floor_projection": 10.36,
+        "ceiling_projection": 35.3,
+        "projected_ownership_pct": 38.7,
         "is_sleeper": false,
-        "fanduel_id": "133104-103539"
+        "fanduel_id": "133104-137516"
       }
     ]
   },
@@ -546,14 +540,14 @@
     "total_lineups": 1,
     "total_salary": 59900,
     "salary_remaining": 100,
-    "projected_points": 338.38,
-    "floor_points": 101.13,
-    "ceiling_points": 338.38,
+    "projected_points": 331.21,
+    "floor_points": 73.41,
+    "ceiling_points": 331.21,
     "stack_players": [
-      "Ja'Marr Chase"
+      "Amon-Ra St. Brown"
     ],
     "bring_back_players": [
-      "Kenny Gainwell"
+      "Chris Olave"
     ],
     "slots": [
       {
@@ -571,16 +565,16 @@
       },
       {
         "slot": "QB",
-        "player_name": "Joe Burrow",
+        "player_name": "Jared Goff",
         "position": "QB",
-        "team": "CIN",
-        "opponent": "TB",
-        "salary": 8200,
-        "floor_projection": 14.55,
-        "ceiling_projection": 33.79,
-        "projected_ownership_pct": 38.5,
+        "team": "DET",
+        "opponent": "NO",
+        "salary": 7800,
+        "floor_projection": 6.78,
+        "ceiling_projection": 24.52,
+        "projected_ownership_pct": 28.9,
         "is_sleeper": false,
-        "fanduel_id": "133104-63336"
+        "fanduel_id": "133104-38435"
       },
       {
         "slot": "TE",
@@ -623,16 +617,16 @@
       },
       {
         "slot": "WR1",
-        "player_name": "Wan'Dale Robinson",
+        "player_name": "Amon-Ra St. Brown",
         "position": "WR",
-        "team": "TEN",
-        "opponent": "NYJ",
-        "salary": 5300,
-        "floor_projection": 7.82,
-        "ceiling_projection": 35.56,
-        "projected_ownership_pct": 38.8,
+        "team": "DET",
+        "opponent": "NO",
+        "salary": 8600,
+        "floor_projection": 3.72,
+        "ceiling_projection": 36.85,
+        "projected_ownership_pct": 34.5,
         "is_sleeper": false,
-        "fanduel_id": "133104-103539"
+        "fanduel_id": "133104-86997"
       },
       {
         "slot": "WR2",
@@ -649,16 +643,16 @@
       },
       {
         "slot": "WR3",
-        "player_name": "Ja'Marr Chase",
+        "player_name": "Alec Pierce",
         "position": "WR",
-        "team": "CIN",
-        "opponent": "TB",
-        "salary": 8900,
-        "floor_projection": 17.38,
-        "ceiling_projection": 34.98,
-        "projected_ownership_pct": 39.1,
+        "team": "IND",
+        "opponent": "BAL",
+        "salary": 6000,
+        "floor_projection": 1.53,
+        "ceiling_projection": 35.79,
+        "projected_ownership_pct": 36.5,
         "is_sleeper": false,
-        "fanduel_id": "133104-85701"
+        "fanduel_id": "133104-86312"
       },
       {
         "slot": "FLEX",

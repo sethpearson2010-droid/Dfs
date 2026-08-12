@@ -122,7 +122,6 @@ class DfsPipeline:
                     effective_count,
                     randomness=randomness,
                     max_player_salary=max_player_salary,
-                    max_salary_leftover=max_salary_leftover,
                 )
                 self._write_lineup_set(lineups, single_risk_level, output_path, sleeper_keys)
             else:
