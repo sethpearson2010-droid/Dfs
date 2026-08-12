@@ -87,6 +87,19 @@ MAX_TOTAL_ATTEMPTS = 2500
 # randomness multiplier (default 1.0 — see build_many's docstring)
 BASE_NOISE_MAGNITUDE = 0.10
 
+# exposure cap: without this, the same clearly-best player at a thin
+# position (this showed up worst for TE, where real slates often have
+# far fewer viable options than RB/WR) gets rostered in nearly every
+# lineup of a batch — technically "diverse" by the overlap check above
+# (8 other players can still differ), but not diverse in any way that
+# matters for real GPP portfolio construction. Once a player hits their
+# share of the batch, they're heavily (not absolutely) discouraged from
+# further lineups — heavily rather than hard-banned, so a thin pool can
+# still complete a full batch by reusing them past the cap if there's
+# truly no alternative.
+DEFAULT_MAX_EXPOSURE_PCT = 0.5
+EXPOSURE_PENALTY_FACTOR = 0.1
+
 
 class LineupBuilder:
     def __init__(self, salary_cap: int = SALARY_CAP, seed: int | None = None) -> None:
@@ -108,7 +121,7 @@ class LineupBuilder:
         (e.g. missing a required position entirely, or the cheapest
         possible combination still exceeds the cap)."""
         risk_level = max(0.0, min(1.0, risk_level))
-        usable = [p for p in players if p.name_match_quality != "unmatched"]
+        usable = [p for p in players if p.name_match_quality != "unmatched" and not p.is_stale]
         noise = player_noise or {}
 
         lineup = self._greedy_fill(usable, risk_level, noise)
@@ -125,6 +138,7 @@ class LineupBuilder:
         count: int,
         max_overlap: int = DEFAULT_MAX_OVERLAP,
         randomness: float = 1.0,
+        max_exposure_pct: float = DEFAULT_MAX_EXPOSURE_PCT,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
@@ -140,9 +154,16 @@ class LineupBuilder:
         batches, <1 for tighter ones closer to "the" optimal lineup at
         that risk level, 0 to disable noise-driven diversity entirely
         (in which case only genuinely different local-search optima,
-        if any, will pass the overlap check)."""
+        if any, will pass the overlap check).
+
+        `max_exposure_pct` caps how much of the batch any single player
+        can appear in (default 50%) — see the module-level comment on
+        DEFAULT_MAX_EXPOSURE_PCT for why this exists separately from
+        the overlap check."""
         count = max(1, min(count, MAX_LINEUPS))
         accepted: list[Lineup] = []
+        usage_count: dict[str, int] = {}
+        max_uses_per_player = max(1, round(max_exposure_pct * count))
         attempts = 0
         max_attempts = min(count * MAX_ATTEMPTS_PER_LINEUP, MAX_TOTAL_ATTEMPTS)
         seed_counter = 0
@@ -161,6 +182,10 @@ class LineupBuilder:
             rng = random.Random(seed_counter)
             noise = {p.player_name: 1 + rng.uniform(-noise_magnitude, noise_magnitude) for p in players}
 
+            for p in players:
+                if usage_count.get(p.player_name, 0) >= max_uses_per_player:
+                    noise[p.player_name] = noise.get(p.player_name, 1.0) * EXPOSURE_PENALTY_FACTOR
+
             self._random = random.Random(seed_counter)
             candidate = self.build(
                 players,
@@ -173,6 +198,8 @@ class LineupBuilder:
 
             if self._is_diverse_enough(candidate, accepted, max_overlap):
                 accepted.append(candidate)
+                for slot in candidate.slots:
+                    usage_count[slot.player.player_name] = usage_count.get(slot.player.player_name, 0) + 1
 
         return accepted
 

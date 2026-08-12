@@ -151,6 +151,8 @@ class DfsPipeline:
                 "ceiling_projection": pv.ceiling_projection,
                 "value_score": pv.value_score,
                 "name_match_quality": pv.name_match_quality,
+                "is_stale": pv.is_stale,
+                "fanduel_id": pv.fanduel_id,
                 "is_sleeper": (pv.player_name, pv.team) in sleeper_keys,
                 "is_regression_candidate": (pv.player_name, pv.team) in regression_keys,
                 "projected_ownership_pct": pv.projected_ownership_pct,
@@ -316,6 +318,7 @@ class DfsPipeline:
                     "ceiling_projection": s.player.ceiling_projection,
                     "projected_ownership_pct": s.player.projected_ownership_pct,
                     "is_sleeper": (s.player.player_name, s.player.team) in sleeper_keys,
+                    "fanduel_id": s.player.fanduel_id,
                 }
                 for s in lineup.slots
             ],

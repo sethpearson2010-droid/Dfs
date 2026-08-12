@@ -48,6 +48,16 @@ FLOOR_STDEV_MULTIPLIER = 1.0
 CEILING_STDEV_MULTIPLIER = 1.5
 RECENT_FORM_WINDOW = 5
 
+# a player whose most recent recorded stat line is more than this many
+# weeks behind the latest week in the dataset is treated as likely
+# inactive/not currently starting (injury, benching, role change) and
+# gets zeroed out entirely, regardless of how good their older numbers
+# look. Without this, a player who got hurt in Week 5 and hasn't played
+# since would still show up with a perfectly reasonable-looking "recent
+# average" computed from Weeks 1-5, since there's simply no newer data
+# to reflect that they're no longer playing.
+STALE_WEEK_THRESHOLD = 2
+
 # WOPR (target share + air yards share, nflverse-computed) and red
 # zone touch share are earned-opportunity signals, distinct from raw
 # scoring average. Applied to CEILING ONLY, not the point projection —
@@ -89,6 +99,8 @@ class ValueCalculator:
         self._advanced_metrics = advanced_metrics or {}
         self._recent_player_avg = self._build_player_averages(weekly_stats)
         self._recent_player_stdev = self._build_player_stdevs(weekly_stats)
+        self._last_played_week = self._build_last_played_week(weekly_stats)
+        self._max_week_overall = max((line.week for line in weekly_stats), default=0)
         self._league_avg_by_position = self._build_league_averages()
         self._league_avg_plays = self._build_league_avg_plays()
         self._name_to_id = self._build_name_to_id(weekly_stats)
@@ -113,6 +125,31 @@ class ValueCalculator:
 
         name_match = self._name_matcher.match(entry.player_name)
         canonical_name = name_match.canonical_name
+        is_stale = self._is_stale(canonical_name) if canonical_name else False
+
+        if is_stale:
+            # hasn't recorded a stat line recently enough to trust —
+            # likely injured/inactive/benched. Zero everything out
+            # rather than let old, no-longer-relevant numbers make
+            # them look like a viable play.
+            return PlayerValue(
+                player_name=entry.player_name,
+                position=entry.position,
+                team=entry.team,
+                opponent=entry.opponent,
+                salary=entry.salary,
+                projection=0.0,
+                matchup_vulnerability=vuln,
+                game_context=game_context,
+                pace_profile=pace_profile,
+                name_match_quality=name_match.quality,
+                base_projection=0.0,
+                floor_projection=0.0,
+                ceiling_projection=0.0,
+                is_stale=True,
+                fanduel_id=entry.fanduel_id,
+            )
+
         base_projection = self._recent_player_avg.get(canonical_name, 0.0) if canonical_name else 0.0
         stdev = self._recent_player_stdev.get(canonical_name, 0.0) if canonical_name else 0.0
 
@@ -153,6 +190,7 @@ class ValueCalculator:
             game_script_multiplier=round(script_multiplier, 3),
             pace_multiplier=round(pace_multiplier, 3),
             opportunity_multiplier=round(opportunity_multiplier, 3),
+            fanduel_id=entry.fanduel_id,
         )
 
     def _apply_opportunity_ceiling(
@@ -204,6 +242,7 @@ class ValueCalculator:
             base_projection=projection,
             floor_projection=round(max(0.0, projection - DST_FLOOR_SPREAD), 2),
             ceiling_projection=round(projection + DST_CEILING_SPREAD, 2),
+            fanduel_id=entry.fanduel_id,
         )
 
     def _project(
@@ -246,13 +285,33 @@ class ValueCalculator:
 
         return projection, vuln_multiplier, script_multiplier, pace_multiplier
 
+    def _build_last_played_week(self, weekly_stats: list[WeeklyStatLine]) -> dict[str, int]:
+        last_played: dict[str, int] = {}
+        for line in weekly_stats:
+            if line.week > last_played.get(line.player_name, -1):
+                last_played[line.player_name] = line.week
+        return last_played
+
+    def _is_stale(self, canonical_name: str) -> bool:
+        last_played = self._last_played_week.get(canonical_name)
+        if last_played is None:
+            return False  # no history at all — that's "unmatched", a separate/existing case
+        return (self._max_week_overall - last_played) > STALE_WEEK_THRESHOLD
+
     def _build_player_averages(self, weekly_stats: list[WeeklyStatLine]) -> dict[str, float]:
         by_player: dict[str, list[float]] = defaultdict(list)
         for line in weekly_stats:
             by_player[line.player_name].append(line.fantasy_points_ppr)
 
+        # median, not mean: over a small recent-form window, a single
+        # outlier game — a backup QB's one huge garbage-time stat line
+        # in an otherwise meaningless Week 18, a bench player's one
+        # spot start — can drag a mean up to look like a real weekly
+        # role when the other games tell a very different story. The
+        # median resists that; it only moves if MULTIPLE recent games
+        # support the higher number.
         return {
-            name: round(sum(pts[-RECENT_FORM_WINDOW:]) / len(pts[-RECENT_FORM_WINDOW:]), 2)
+            name: round(statistics.median(pts[-RECENT_FORM_WINDOW:]), 2)
             for name, pts in by_player.items()
             if pts
         }

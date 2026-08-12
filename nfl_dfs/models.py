@@ -229,6 +229,8 @@ class PlayerValue:
     game_script_multiplier: float = 1.0
     pace_multiplier: float = 1.0
     opportunity_multiplier: float = 1.0
+    is_stale: bool = False  # hasn't recorded a stat line recently enough to trust — likely injured/inactive
+    fanduel_id: str = ""  # for CSV export back to FanDuel's bulk-upload format
     value_score: float = field(init=False)
     smash_score: float = field(init=False)  # ceiling per $1000 salary — "value" using upside, not the mean
     smash_alignment: int = field(init=False)  # how many of the 4 matchup signals are pointing up (0-4)

@@ -101,6 +101,23 @@
   .risk-label { font-size: 12px; color: var(--muted); min-width: 150px; text-align: right; }
   .lineup-summary { display: flex; gap: 20px; font-size: 13px; margin-bottom: 12px; color: var(--muted); }
   .lineup-summary b { color: var(--text); }
+  .salary-total {
+    font-size: 20px !important;
+    font-weight: 700;
+    color: var(--accent) !important;
+  }
+  .export-buttons { display: flex; gap: 8px; margin-top: 10px; }
+  .export-buttons button {
+    background: var(--accent-dim);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .export-buttons button:hover { background: #22c55e33; }
   .lineup-slot-row {
     display: grid;
     grid-template-columns: 50px 1fr 60px 80px 80px;
@@ -138,6 +155,10 @@
     </div>
     <div class="lineup-summary" id="lineupSummary"></div>
     <div id="lineupSlots"></div>
+    <div class="export-buttons">
+      <button id="exportCurrentBtn">Export current lineup (CSV)</button>
+      <button id="exportAllBtn">Export all lineups (CSV)</button>
+    </div>
   </div>
 
   <div class="controls" id="positionFilters"></div>
@@ -225,6 +246,51 @@ function renderLineups() {
   slider.max = lineups.length - 1;
   slider.oninput = () => renderSelectedLineup(parseInt(slider.value, 10));
   renderSelectedLineup(parseInt(slider.value, 10));
+
+  document.getElementById("exportCurrentBtn").onclick = () => {
+    const lineup = lineups[parseInt(slider.value, 10)];
+    downloadCsv(lineupsToFanDuelCsv([lineup]), `lineup_${lineup.lineup_number || 1}.csv`);
+  };
+  document.getElementById("exportAllBtn").onclick = () => {
+    downloadCsv(lineupsToFanDuelCsv(lineups.filter(l => !l.error)), "all_lineups.csv");
+  };
+}
+
+const FANDUEL_SLOT_ORDER = ["QB", "RB1", "RB2", "WR1", "WR2", "WR3", "TE", "FLEX", "D"];
+const FANDUEL_HEADER = ["QB", "RB", "RB", "WR", "WR", "WR", "TE", "FLEX", "D"];
+
+function lineupsToFanDuelCsv(lineupList) {
+  // FanDuel's bulk-upload template uses one column per roster slot
+  // (headers repeat for RB/WR since there are multiple of each) and
+  // accepts either the bare FanDuel player ID or "ID:Name" per cell —
+  // bare ID is used here since FanDuel's own docs confirm ID alone is
+  // valid, and it's the least likely to break on quoting/formatting.
+  // NOTE: FanDuel's exact expected format has drifted before — if a
+  // real upload is rejected, download a fresh template from FanDuel's
+  // own "Upload Lineups from CSV" screen and compare headers.
+  const rows = [FANDUEL_HEADER.join(",")];
+  lineupList.forEach(lineup => {
+    const bySlot = Object.fromEntries(lineup.slots.map(s => [s.slot, s]));
+    const row = FANDUEL_SLOT_ORDER.map(slot => {
+      const s = bySlot[slot];
+      if (!s) return "";
+      return s.fanduel_id || s.player_name;
+    });
+    rows.push(row.join(","));
+  });
+  return rows.join("\n");
+}
+
+function downloadCsv(content, filename) {
+  const blob = new Blob([content], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 function renderSelectedLineup(index) {
@@ -242,7 +308,7 @@ function renderSelectedLineup(index) {
   }
 
   summary.innerHTML = `
-    <div>Salary: <b>$${lineup.total_salary.toLocaleString()}</b> ($${lineup.salary_remaining.toLocaleString()} left)</div>
+    <div class="salary-total">Salary: $${lineup.total_salary.toLocaleString()} <span style="font-size:14px;color:var(--muted);font-weight:400;">($${lineup.salary_remaining.toLocaleString()} left)</span></div>
     <div>Floor: <b>${lineup.floor_points}</b></div>
     <div>Ceiling: <b>${lineup.ceiling_points}</b></div>
   `;
@@ -375,9 +441,12 @@ function render() {
     const regressionBadge = p.is_regression_candidate
       ? `<span class="warn-badge" style="background:#38bdf822;color:#38bdf8;" title="Red-zone volume implies more TDs than recently scored — positive regression candidate">📈 buy low</span>`
       : "";
+    const staleBadge = p.is_stale
+      ? `<span class="warn-badge unmatched" title="Hasn't recorded a stat line recently enough to trust — likely injured/inactive/benched">⚠️ inactive?</span>`
+      : "";
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${p.player_name}${nameWarning}${sleeperBadge}${regressionBadge}</td>
+      <td>${p.player_name}${nameWarning}${staleBadge}${sleeperBadge}${regressionBadge}</td>
       <td><span class="pos-badge">${p.position}</span></td>
       <td>${p.team}</td>
       <td>${p.opponent}</td>

@@ -1,31 +1,31 @@
 [
   {
-    "player_name": "Dalton Kincaid",
-    "position": "TE",
-    "team": "BUF",
+    "player_name": "Michael Carter",
+    "position": "RB",
+    "team": "TEN",
     "opponent": "NYJ",
-    "salary": 4600,
-    "base_projection": 6.8,
-    "adjusted_projection": 8.18,
-    "boost_pct": 0.203,
+    "salary": 4200,
+    "base_projection": 6.5,
+    "adjusted_projection": 7.66,
+    "boost_pct": 0.178,
     "reasons": [
-      "opponent allows 20.16 pts/gm to TE recently",
-      "team implied for 26.0 pts",
-      "team averaging 64.4 plays/gm recently"
+      "opponent allows 35.64 pts/gm to RB recently",
+      "team averaging 61.6 plays/gm recently"
     ]
   },
   {
-    "player_name": "David Njoku",
+    "player_name": "Shane Zylstra",
     "position": "TE",
-    "team": "CLE",
-    "opponent": "TEN",
-    "salary": 4700,
-    "base_projection": 7.0,
-    "adjusted_projection": 7.61,
-    "boost_pct": 0.087,
+    "team": "BUF",
+    "opponent": "HOU",
+    "salary": 4000,
+    "base_projection": 5.0,
+    "adjusted_projection": 5.59,
+    "boost_pct": 0.118,
     "reasons": [
-      "opponent allows 20.14 pts/gm to TE recently",
-      "team averaging 57.2 plays/gm recently"
+      "opponent allows 18.04 pts/gm to TE recently",
+      "team implied for 24.5 pts",
+      "team averaging 64.4 plays/gm recently"
     ]
   }
 ]

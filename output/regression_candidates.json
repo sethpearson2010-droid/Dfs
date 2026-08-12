@@ -1,72 +1,92 @@
 [
   {
-    "player_name": "Tez Johnson",
-    "position": "WR",
-    "team": "TB",
-    "opponent": "CAR",
+    "player_name": "Ty Chandler",
+    "position": "RB",
+    "team": "NO",
+    "opponent": "DET",
     "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 2.25,
-    "expected_touchdowns_per_game": 0.35,
-    "regression_gap": 0.35
+    "recent_redzone_touches": 3.0,
+    "expected_touchdowns_per_game": 0.38,
+    "regression_gap": 0.38
   },
   {
-    "player_name": "Dyami Brown",
-    "position": "WR",
-    "team": "JAX",
+    "player_name": "Kene Nwangwu",
+    "position": "RB",
+    "team": "NYJ",
     "opponent": "TEN",
     "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 2.0,
-    "expected_touchdowns_per_game": 0.31,
-    "regression_gap": 0.31
+    "recent_redzone_touches": 3.0,
+    "expected_touchdowns_per_game": 0.38,
+    "regression_gap": 0.38
   },
   {
-    "player_name": "Allen Lazard",
-    "position": "WR",
-    "team": "NYJ",
-    "opponent": "JAX",
-    "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 1.5,
-    "expected_touchdowns_per_game": 0.23,
-    "regression_gap": 0.23
-  },
-  {
-    "player_name": "British Brooks",
+    "player_name": "Isiah Pacheco",
     "position": "RB",
-    "team": "HOU",
-    "opponent": "IND",
+    "team": "DET",
+    "opponent": "NO",
     "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 2.0,
+    "recent_redzone_touches": 2.6,
     "expected_touchdowns_per_game": 0.33,
     "regression_gap": 0.33
   },
   {
-    "player_name": "Ollie Gordon II",
-    "position": "RB",
-    "team": "MIA",
-    "opponent": "NE",
-    "recent_avg_touchdowns": 0.2,
-    "recent_redzone_touches": 2.6,
-    "expected_touchdowns_per_game": 0.43,
-    "regression_gap": 0.23
+    "player_name": "Tez Johnson",
+    "position": "WR",
+    "team": "TB",
+    "opponent": "CIN",
+    "recent_avg_touchdowns": 0.0,
+    "recent_redzone_touches": 2.25,
+    "expected_touchdowns_per_game": 0.36,
+    "regression_gap": 0.36
   },
   {
-    "player_name": "Christian McCaffrey",
-    "position": "RB",
-    "team": "SF",
-    "opponent": "SEA",
-    "recent_avg_touchdowns": 1.0,
-    "recent_redzone_touches": 7.2,
-    "expected_touchdowns_per_game": 1.2,
-    "regression_gap": 0.2
-  },
-  {
-    "player_name": "Pat Freiermuth",
-    "position": "TE",
+    "player_name": "Michael Pittman Jr.",
+    "position": "WR",
     "team": "PIT",
+    "opponent": "ATL",
+    "recent_avg_touchdowns": 0.0,
+    "recent_redzone_touches": 2.0,
+    "expected_touchdowns_per_game": 0.32,
+    "regression_gap": 0.32
+  },
+  {
+    "player_name": "Justin Jefferson",
+    "position": "WR",
+    "team": "MIN",
+    "opponent": "GB",
+    "recent_avg_touchdowns": 0.0,
+    "recent_redzone_touches": 2.0,
+    "expected_touchdowns_per_game": 0.32,
+    "regression_gap": 0.32
+  },
+  {
+    "player_name": "Cade Stover",
+    "position": "TE",
+    "team": "HOU",
+    "opponent": "BUF",
+    "recent_avg_touchdowns": 0.0,
+    "recent_redzone_touches": 3.0,
+    "expected_touchdowns_per_game": 0.41,
+    "regression_gap": 0.41
+  },
+  {
+    "player_name": "Tyler Warren",
+    "position": "TE",
+    "team": "IND",
     "opponent": "BAL",
     "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 1.6,
+    "recent_redzone_touches": 2.2,
     "expected_touchdowns_per_game": 0.3,
     "regression_gap": 0.3
+  },
+  {
+    "player_name": "Darnell Washington",
+    "position": "TE",
+    "team": "PIT",
+    "opponent": "ATL",
+    "recent_avg_touchdowns": 0.0,
+    "recent_redzone_touches": 1.8,
+    "expected_touchdowns_per_game": 0.24,
+    "regression_gap": 0.24
   }
 ]
