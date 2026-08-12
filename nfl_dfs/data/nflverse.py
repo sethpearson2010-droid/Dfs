@@ -11,6 +11,7 @@ from __future__ import annotations
 import csv
 import gzip
 import io
+import urllib.error
 import urllib.request
 from collections import defaultdict
 from pathlib import Path
@@ -43,6 +44,17 @@ RED_ZONE_YARDLINE_THRESHOLD = 20.0
 _HEADERS = {"User-Agent": "Mozilla/5.0 (nfl-dfs-tool)"}
 
 
+def _raise_clear_fetch_error(error: urllib.error.HTTPError, season: int, url: str) -> None:
+    if error.code == 404:
+        raise RuntimeError(
+            f"No nflverse data found for season {season} (404 at {url}). "
+            f"This almost always means season {season} hasn't started yet — nflverse only "
+            "publishes stats once games have actually been played. Try an earlier season "
+            "(e.g. the most recently completed one) instead."
+        ) from error
+    raise RuntimeError(f"Failed to fetch {url}: HTTP {error.code} {error.reason}") from error
+
+
 class NflverseDataSource(StatDataSource):
     """Fetches weekly stats + schedules from nflverse.
 
@@ -62,7 +74,7 @@ class NflverseDataSource(StatDataSource):
     # ------------------------------------------------------------------
 
     def fetch_weekly_stats(self, season: int) -> list[WeeklyStatLine]:
-        rows = self._get_csv_rows(_weekly_stats_url(season), f"stats_player_week_{season}.csv")
+        rows = self._get_csv_rows(_weekly_stats_url(season), f"stats_player_week_{season}.csv", season)
         stat_lines: list[WeeklyStatLine] = []
 
         for row in rows:
@@ -152,7 +164,7 @@ class NflverseDataSource(StatDataSource):
         return contexts
 
     def fetch_team_plays(self, season: int) -> dict[str, list[tuple[int, int]]]:
-        rows = self._get_csv_rows(_team_stats_url(season), f"stats_team_week_{season}.csv")
+        rows = self._get_csv_rows(_team_stats_url(season), f"stats_team_week_{season}.csv", season)
         plays_by_team: dict[str, list[tuple[int, int]]] = defaultdict(list)
 
         for row in rows:
@@ -225,7 +237,10 @@ class NflverseDataSource(StatDataSource):
             fileobj = cache_path.open("rb")
         else:
             request = urllib.request.Request(_pbp_url(season), headers=_HEADERS)
-            response = urllib.request.urlopen(request, timeout=180)
+            try:
+                response = urllib.request.urlopen(request, timeout=180)
+            except urllib.error.HTTPError as error:
+                _raise_clear_fetch_error(error, season, _pbp_url(season))
             if cache_path:
                 compressed = response.read()
                 cache_path.write_bytes(compressed)
@@ -238,18 +253,23 @@ class NflverseDataSource(StatDataSource):
             reader = csv.DictReader(text_stream)
             yield from reader
 
-    def _get_csv_rows(self, url: str, cache_name: str) -> list[dict]:
-        text = self._get_text(url, cache_name)
+    def _get_csv_rows(self, url: str, cache_name: str, season: int | None = None) -> list[dict]:
+        text = self._get_text(url, cache_name, season)
         return list(csv.DictReader(io.StringIO(text)))
 
-    def _get_text(self, url: str, cache_name: str) -> str:
+    def _get_text(self, url: str, cache_name: str, season: int | None = None) -> str:
         cache_path = self.cache_dir / cache_name if self.cache_dir else None
         if cache_path and cache_path.exists():
             return cache_path.read_text()
 
         request = urllib.request.Request(url, headers=_HEADERS)
-        with urllib.request.urlopen(request, timeout=60) as response:
-            text = response.read().decode("utf-8")
+        try:
+            with urllib.request.urlopen(request, timeout=60) as response:
+                text = response.read().decode("utf-8")
+        except urllib.error.HTTPError as error:
+            if season is not None:
+                _raise_clear_fetch_error(error, season, url)
+            raise RuntimeError(f"Failed to fetch {url}: HTTP {error.code} {error.reason}") from error
 
         if cache_path:
             cache_path.write_text(text)
