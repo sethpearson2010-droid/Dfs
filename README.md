@@ -387,6 +387,32 @@ all 50, with WR variety still strong (14 unique WRs used, average
 overlap of 1.24 between consecutive lineups — the strict cap of 2
 held for the large majority of the batch).
 
+## Salary constraints
+
+Two more lineup-builder knobs, both in `lineup_builder.py`:
+
+- **`--max-salary-leftover`** (default **$2000**, applied automatically
+  now): pushes lineups to actually spend close to the $60,000 cap
+  instead of leaving money unused, via `_enforce_salary_floor` — a
+  greedy pass that upgrades players to more expensive same-slot
+  alternatives (preferring whichever upgrade costs the least
+  objective, or gains the most) until the target is hit or no upgrade
+  is left that fits under the cap. This is **best-effort, not a hard
+  guarantee** — see the next point for why it can't always be one.
+- **`--max-player-salary`**: excludes any player priced above this
+  entirely (a punt/no-studs build constraint). Unset by default.
+
+**These two can conflict, and the tool is honest about it rather than
+pretending otherwise**: with 9 required roster spots, a
+`--max-player-salary` of $6,000 caps the theoretical maximum lineup
+total at $54,000 — nowhere near close enough to a $60,000 cap to also
+hit the default $2,000-leftover target (minimum possible leftover in
+that case is $6,000). Verified: with both set together on real data,
+`_enforce_salary_floor` correctly spent as much as the pool allowed
+($52,800) and stopped rather than exceeding the salary cap or hanging
+— the real leftover ($7,200) is reported plainly in the output, not
+silently rounded down to make it look like the target was hit.
+
 ## Exporting lineups
 
 The lineup panel has two export buttons, both producing a CSV in

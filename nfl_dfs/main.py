@@ -23,7 +23,7 @@ from __future__ import annotations
 import argparse
 
 from nfl_dfs.data.nflverse import NflverseDataSource
-from nfl_dfs.lineup_builder import MAX_LINEUPS
+from nfl_dfs.lineup_builder import DEFAULT_MAX_SALARY_LEFTOVER, MAX_LINEUPS
 from nfl_dfs.pipeline import DfsPipeline, label_for_risk
 
 
@@ -72,6 +72,22 @@ def main() -> None:
         help="Skip downloading play-by-play for red-zone metrics (faster; loses the WOPR/red-zone "
         "ceiling adjustment, the advanced_metrics in the output, and regression candidates).",
     )
+    parser.add_argument(
+        "--max-player-salary",
+        type=int,
+        default=None,
+        help="Exclude any player priced above this from lineup consideration entirely "
+        "(a punt/no-studs build constraint). Unset by default (no cap).",
+    )
+    parser.add_argument(
+        "--max-salary-leftover",
+        type=int,
+        default=DEFAULT_MAX_SALARY_LEFTOVER,
+        help=f"Push lineups to spend within this much of the $60,000 cap (default ${DEFAULT_MAX_SALARY_LEFTOVER}). "
+        "Best-effort: if the pool can't support spending that close to the cap (e.g. combined with a "
+        "low --max-player-salary), the actual leftover may exceed this rather than break the cap or fail "
+        "outright. Pass a large number (e.g. 60000) to effectively disable this.",
+    )
     args = parser.parse_args()
 
     if args.num_lineups is not None and args.num_lineups > MAX_LINEUPS:
@@ -94,6 +110,8 @@ def main() -> None:
         num_lineups=args.num_lineups,
         randomness=args.randomness,
         skip_redzone=args.skip_redzone,
+        max_player_salary=args.max_player_salary,
+        max_salary_leftover=args.max_salary_leftover,
     )
 
     print(f"Done. Wrote player values to {args.output}")

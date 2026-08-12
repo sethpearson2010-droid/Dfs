@@ -85,6 +85,11 @@ DEFAULT_MAX_OVERLAP = 6
 # caps how many players at the SAME position two lineups can share,
 # independent of the total-overlap check — both must pass.
 DEFAULT_MAX_POSITION_OVERLAP = 2
+
+# default target: don't leave more than this much of the $60,000 cap
+# unused. A lineup that leaves a lot of cap on the table is usually
+# leaving real points on the table too — see _enforce_salary_floor.
+DEFAULT_MAX_SALARY_LEFTOVER = 2000
 BUILD_MANY_LOCAL_SEARCH_ITERATIONS = 250
 MAX_ATTEMPTS_PER_LINEUP = 100
 MAX_TOTAL_ATTEMPTS = 8000
@@ -124,12 +129,23 @@ class LineupBuilder:
         risk_level: float,
         player_noise: dict[str, float] | None = None,
         local_search_iterations: int = LOCAL_SEARCH_ITERATIONS,
+        max_player_salary: int | None = None,
+        max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
     ) -> Lineup | None:
         """Returns None if no legal lineup can be built from the pool
         (e.g. missing a required position entirely, or the cheapest
-        possible combination still exceeds the cap)."""
+        possible combination still exceeds the cap).
+
+        `max_player_salary`, if set, excludes any player priced above
+        it from consideration entirely — a "no studs" / punt-style
+        constraint. `max_salary_leftover` (default $2000) pushes the
+        lineup to actually spend close to the cap rather than leaving
+        money unused — see `_enforce_salary_floor`'s docstring for why
+        this is a best-effort greedy pass, not a hard guarantee."""
         risk_level = max(0.0, min(1.0, risk_level))
         usable = [p for p in players if p.name_match_quality != "unmatched" and not p.is_stale]
+        if max_player_salary is not None:
+            usable = [p for p in usable if p.salary <= max_player_salary]
         noise = player_noise or {}
 
         lineup = self._greedy_fill(usable, risk_level, noise)
@@ -137,6 +153,10 @@ class LineupBuilder:
             return None
 
         lineup = self._local_search(lineup, usable, risk_level, noise, local_search_iterations)
+
+        if max_salary_leftover is not None:
+            lineup = self._enforce_salary_floor(lineup, usable, risk_level, noise, max_salary_leftover)
+
         return self._to_lineup_model(lineup, risk_level)
 
     def build_many(
@@ -148,6 +168,8 @@ class LineupBuilder:
         randomness: float = 1.0,
         max_exposure_pct: float = DEFAULT_MAX_EXPOSURE_PCT,
         max_position_overlap: int = DEFAULT_MAX_POSITION_OVERLAP,
+        max_player_salary: int | None = None,
+        max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
@@ -222,6 +244,8 @@ class LineupBuilder:
                 risk_level,
                 player_noise=noise,
                 local_search_iterations=BUILD_MANY_LOCAL_SEARCH_ITERATIONS,
+                max_player_salary=max_player_salary,
+                max_salary_leftover=max_salary_leftover,
             )
             if candidate is None:
                 continue
@@ -369,6 +393,58 @@ class LineupBuilder:
             if trial_score > current_score:
                 current = trial
                 current_score = trial_score
+
+        return current
+
+    def _enforce_salary_floor(
+        self,
+        assigned: dict[str, PlayerValue],
+        players: list[PlayerValue],
+        risk_level: float,
+        noise: dict[str, float],
+        max_leftover: int,
+    ) -> dict[str, PlayerValue]:
+        """Greedily upgrades players to more expensive same-slot
+        alternatives until total salary reaches (cap - max_leftover),
+        preferring whichever upgrade costs the least objective (or
+        gains the most). This is a best-effort pass, not a guarantee:
+        if the pool genuinely can't support spending that close to the
+        cap (e.g. combined with a low --max-player-salary that caps
+        every slot's ceiling), it stops once no further upgrade is
+        possible rather than looping forever or breaking the cap."""
+        target_min_salary = self._salary_cap - max_leftover
+        current = dict(assigned)
+
+        while self._total_salary(current) < target_min_salary:
+            used_players = {p.player_name for p in current.values()}
+            best_swap: tuple[str, PlayerValue] | None = None
+            best_score: float | None = None
+
+            for slot_name, incumbent in current.items():
+                eligible_positions = ROSTER_SLOTS[slot_name]
+                candidates = [
+                    p
+                    for p in players
+                    if p.position in eligible_positions
+                    and p.player_name not in used_players
+                    and p.salary > incumbent.salary
+                ]
+                for challenger in candidates:
+                    new_salary = self._total_salary(current) - incumbent.salary + challenger.salary
+                    if new_salary > self._salary_cap:
+                        continue
+                    score = self._objective(challenger, risk_level, noise) - self._objective(
+                        incumbent, risk_level, noise
+                    )
+                    if best_score is None or score > best_score:
+                        best_score = score
+                        best_swap = (slot_name, challenger)
+
+            if best_swap is None:
+                break  # no upgrade left that fits under the cap — stop rather than loop forever
+
+            slot_name, challenger = best_swap
+            current[slot_name] = challenger
 
         return current
 

@@ -27,6 +27,14 @@ on:
         description: "Multiplier on how differentiated a multi-lineup batch is (1.0 = default; >1 wilder, <1 tighter)"
         required: false
         default: "1.0"
+      max_player_salary:
+        description: "Exclude any player priced above this from lineup consideration entirely (punt/no-studs build). Leave blank for no cap."
+        required: false
+        default: ""
+      max_salary_leftover:
+        description: "Push lineups to spend within this much of the $60,000 cap (default 2000). Best-effort — see README if combined with max_player_salary."
+        required: false
+        default: "2000"
       skip_redzone:
         description: "Skip the play-by-play red-zone fetch for a faster run"
         type: boolean
@@ -69,6 +77,12 @@ jobs:
             if [ -n "${{ inputs.num_lineups }}" ]; then
               ARGS="$ARGS --num-lineups ${{ inputs.num_lineups }}"
             fi
+          fi
+          if [ -n "${{ inputs.max_player_salary }}" ]; then
+            ARGS="$ARGS --max-player-salary ${{ inputs.max_player_salary }}"
+          fi
+          if [ -n "${{ inputs.max_salary_leftover }}" ]; then
+            ARGS="$ARGS --max-salary-leftover ${{ inputs.max_salary_leftover }}"
           fi
           if [ "${{ inputs.skip_redzone }}" = "true" ]; then
             ARGS="$ARGS --skip-redzone"

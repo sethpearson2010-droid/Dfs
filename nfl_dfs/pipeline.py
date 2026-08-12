@@ -12,7 +12,7 @@ from pathlib import Path
 
 from nfl_dfs.advanced_stats import AdvancedMetricsCalculator
 from nfl_dfs.data.base import StatDataSource
-from nfl_dfs.lineup_builder import LineupBuilder, MAX_LINEUPS
+from nfl_dfs.lineup_builder import DEFAULT_MAX_SALARY_LEFTOVER, LineupBuilder, MAX_LINEUPS
 from nfl_dfs.models import Lineup
 from nfl_dfs.ownership import OwnershipEstimator
 from nfl_dfs.pace import PaceCalculator
@@ -68,6 +68,8 @@ class DfsPipeline:
         num_lineups: int | None = None,
         randomness: float = 1.0,
         skip_redzone: bool = False,
+        max_player_salary: int | None = None,
+        max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
     ) -> None:
         weekly_stats = self._data_source.fetch_weekly_stats(season)
 
@@ -115,14 +117,31 @@ class DfsPipeline:
             effective_count = num_lineups if num_lineups is not None else max(1, round(single_risk_level * MAX_LINEUPS))
             if effective_count > 1:
                 lineups = self._lineup_builder.build_many(
-                    player_values, single_risk_level, effective_count, randomness=randomness
+                    player_values,
+                    single_risk_level,
+                    effective_count,
+                    randomness=randomness,
+                    max_player_salary=max_player_salary,
+                    max_salary_leftover=max_salary_leftover,
                 )
                 self._write_lineup_set(lineups, single_risk_level, output_path, sleeper_keys)
             else:
-                lineup = self._lineup_builder.build(player_values, single_risk_level)
+                lineup = self._lineup_builder.build(
+                    player_values,
+                    single_risk_level,
+                    max_player_salary=max_player_salary,
+                    max_salary_leftover=max_salary_leftover,
+                )
                 self._write_lineup_set([lineup] if lineup else [], single_risk_level, output_path, sleeper_keys)
         else:
-            self._write_lineups(player_values, output_path, risk_levels or DEFAULT_RISK_LEVELS, sleeper_keys)
+            self._write_lineups(
+                player_values,
+                output_path,
+                risk_levels or DEFAULT_RISK_LEVELS,
+                sleeper_keys,
+                max_player_salary,
+                max_salary_leftover,
+            )
 
     # ------------------------------------------------------------------
 
@@ -240,6 +259,8 @@ class DfsPipeline:
         output_path: str | Path,
         risk_levels: dict[float, str],
         sleeper_keys: set[tuple[str, str]] | None = None,
+        max_player_salary: int | None = None,
+        max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
     ) -> None:
         output_path = Path(output_path)
         lineups_path = output_path.parent / "lineups.json"
@@ -247,7 +268,12 @@ class DfsPipeline:
 
         serializable = []
         for risk_level, label in sorted(risk_levels.items()):
-            lineup = self._lineup_builder.build(player_values, risk_level)
+            lineup = self._lineup_builder.build(
+                player_values,
+                risk_level,
+                max_player_salary=max_player_salary,
+                max_salary_leftover=max_salary_leftover,
+            )
             if lineup is None:
                 serializable.append(self._error_entry(risk_level, label, lineup_number=1))
                 continue
