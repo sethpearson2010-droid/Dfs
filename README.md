@@ -365,6 +365,28 @@ dropped to 1-2, and a 20-lineup batch went from ~4-5 unique WRs used
 total to 11, with real depth options (not just the top 2-3 "obvious"
 picks) getting genuine playing time.
 
+**Follow-up bug this introduced**: the per-position cap is checked
+against *every* already-accepted lineup, so it gets combinatorially
+harder to satisfy as a batch grows — a 50-lineup request on a healthy
+735-player real slate (not a thin pool) only returned 44-37 lineups,
+under-delivering the requested count even though there was no real
+shortage of players. Fixed with **adaptive relaxation**: after a
+stretch of consecutive rejected attempts (`RELAX_AFTER_REJECTIONS`)
+with no new lineup accepted, the position cap loosens by 1 (up to a
+ceiling), then resets to the strict default the moment a lineup is
+successfully accepted again. This keeps position variety as the
+default behavior for the easy majority of a batch while guaranteeing
+the requested count is still honored once genuine diversity is
+exhausted, rather than the constraint itself becoming the bottleneck.
+Also caught and fixed a real bug while implementing this: the
+exposure-cap usage counter was accidentally wired to update on
+*rejected* attempts instead of *accepted* ones, which would have
+silently broken the exposure cap entirely — fixed before it shipped.
+Verified: a 50-lineup request on the real slate now reliably returns
+all 50, with WR variety still strong (14 unique WRs used, average
+overlap of 1.24 between consecutive lineups — the strict cap of 2
+held for the large majority of the batch).
+
 ## Exporting lineups
 
 The lineup panel has two export buttons, both producing a CSV in

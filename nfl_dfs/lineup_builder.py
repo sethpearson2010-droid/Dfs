@@ -86,8 +86,8 @@ DEFAULT_MAX_OVERLAP = 6
 # independent of the total-overlap check — both must pass.
 DEFAULT_MAX_POSITION_OVERLAP = 2
 BUILD_MANY_LOCAL_SEARCH_ITERATIONS = 250
-MAX_ATTEMPTS_PER_LINEUP = 40
-MAX_TOTAL_ATTEMPTS = 2500
+MAX_ATTEMPTS_PER_LINEUP = 100
+MAX_TOTAL_ATTEMPTS = 8000
 
 # base noise magnitude for build_many()'s diversity; actual noise used
 # is scaled by risk_level (cash batches stay close to "the" best
@@ -189,6 +189,23 @@ class LineupBuilder:
         # count requested)
         noise_magnitude = BASE_NOISE_MAGNITUDE * (0.3 + 0.7 * risk_level) * max(0.0, randomness)
 
+        # adaptive relaxation: the per-position cap is a hard rejection
+        # checked against EVERY already-accepted lineup, so it gets
+        # combinatorially harder to satisfy as the batch grows — even
+        # on a healthy, non-thin player pool, a strict cap can quietly
+        # starve out the back half of a large batch and under-deliver
+        # the requested count. Rather than let that happen silently,
+        # loosen the position cap by 1 after a stretch of consecutive
+        # rejected attempts with no new lineup accepted, up to a
+        # ceiling — this keeps the WR/position-variety benefit as the
+        # DEFAULT behavior while guaranteeing the count is still honored
+        # once the pool's genuine diversity is exhausted rather than
+        # the constraint itself being the bottleneck.
+        current_position_overlap = max_position_overlap
+        stall_ceiling = max_position_overlap + 7
+        consecutive_rejections = 0
+        RELAX_AFTER_REJECTIONS = 75
+
         while len(accepted) < count and attempts < max_attempts:
             attempts += 1
             seed_counter += 1
@@ -209,10 +226,20 @@ class LineupBuilder:
             if candidate is None:
                 continue
 
-            if self._is_diverse_enough(candidate, accepted, max_overlap, max_position_overlap):
+            if self._is_diverse_enough(candidate, accepted, max_overlap, current_position_overlap):
                 accepted.append(candidate)
+                consecutive_rejections = 0
+                current_position_overlap = max_position_overlap  # reset to the strict default for the next lineup
                 for slot in candidate.slots:
                     usage_count[slot.player.player_name] = usage_count.get(slot.player.player_name, 0) + 1
+            else:
+                consecutive_rejections += 1
+                if (
+                    consecutive_rejections >= RELAX_AFTER_REJECTIONS
+                    and current_position_overlap < stall_ceiling
+                ):
+                    current_position_overlap += 1
+                    consecutive_rejections = 0
 
         return accepted
 
