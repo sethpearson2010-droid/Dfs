@@ -313,6 +313,65 @@ boolean, and the dashboard shows a dedicated panel plus a 📈 badge.
   step can't be scheduled without scraping their site, which is more
   fragile and gray-area than a 10-second manual download.
 
+## Guarding against non-starters and lineup repetition
+
+Two real issues surfaced from actual use, fixed as follows:
+
+**A backup QB (or any player) with one huge outlier game looking
+falsely playable**: recent-form scoring used a plain mean over the
+last 5 games. A backup who got mop-up duty in a Week 18 game teams
+don't try hard in (this happened with real 2025 data: three sub-1-point
+games plus one 28.86-point outlier) had that outlier drag his mean up
+to a misleadingly playable ~7.8. Fixed by switching to the **median**
+instead (`value.py`'s `_build_player_averages`) — a median only moves
+if *multiple* recent games support the higher number, so a single
+fluke game can't dominate a small sample the way a mean can.
+
+**A season-ending injury not being reflected**: a player who got hurt
+in Week 10 and hasn't played since would still show a perfectly
+reasonable-looking average computed from Weeks 1-10, since there's no
+newer data to show they're out. Fixed with a **staleness gate**: any
+player whose most recent recorded stat line is more than 2 weeks
+behind the latest week in the dataset (`STALE_WEEK_THRESHOLD` in
+`value.py`) gets zeroed out entirely and excluded from lineup
+building, tagged `is_stale` in the output. Verified against real 2025
+data: correctly caught Garrett Wilson (last played Week 10 of 18),
+Jayden Daniels (Week 14), Tua Tagovailoa (Week 15) — 82 players
+flagged across a full 735-player slate, all genuine.
+
+**The same top player appearing in nearly every lineup of a GPP
+batch** (worst at TE, where real slates often have fewer viable
+options than RB/WR): the overlap-based diversity check in
+`build_many()` only looks at *total* shared players across a lineup's
+9 slots, so a batch could pass that check while still repeating the
+single best option at a thin position almost every time. Fixed with
+an **exposure cap** (`DEFAULT_MAX_EXPOSURE_PCT`, default 50%) — once
+a player hits their share of the batch, they're heavily (not
+absolutely) discouraged from further lineups, forcing genuine
+variation into cheaper alternatives. Verified: a 20-lineup batch that
+previously repeated one TE went to a spread across 5 different TEs,
+with the top one capped at exactly 10/20 as designed.
+
+## Exporting lineups
+
+The lineup panel has two export buttons, both producing a CSV in
+FanDuel's bulk-upload format (one column per roster slot — `QB,RB,RB,
+WR,WR,WR,TE,FLEX,D` — each cell holding that player's FanDuel ID):
+
+- **Export current lineup** — just the one shown at the current
+  slider position
+- **Export all lineups** — every lineup in the current batch, one per
+  row, ready for FanDuel's "Upload Lineups from CSV" on a multi-entry
+  contest's draft screen
+
+This uses each player's real FanDuel ID (parsed from the salary CSV's
+`Id` column, threaded through as `fanduel_id`), not just their name.
+**FanDuel's exact expected format has drifted before** (community
+tooling has hit this — see the linked GitHub issue in the dev notes)
+— if a real upload is rejected, download a fresh template from
+FanDuel's own CSV upload screen and compare headers before assuming
+this tool's export is broken.
+
 ## Current limitations (Phase 1, by design)
 
 - **Projection model combines four signals**: recent 5-game player
