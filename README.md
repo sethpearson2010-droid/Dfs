@@ -352,6 +352,19 @@ variation into cheaper alternatives. Verified: a 20-lineup batch that
 previously repeated one TE went to a spread across 5 different TEs,
 with the top one capped at exactly 10/20 as designed.
 
+**Same problem, different cause, showed up worst at WR**: even with
+the exposure cap above, WR fills up to 4 of 9 roster slots (WR1/WR2/
+WR3/FLEX) — the *total*-overlap check (max 6 of 9 shared) doesn't
+stop two lineups from sharing all 4 WRs, since that's only 4 of the 6
+allowed shared slots. Confirmed on real data: consecutive lineups
+were sharing 3-4 of 4 WRs. Fixed with a **per-position overlap cap**
+(`DEFAULT_MAX_POSITION_OVERLAP`, default 2) — independent of the
+total-overlap check, no two lineups can share more than 2 players at
+the *same* position. Verified: WR overlap between consecutive lineups
+dropped to 1-2, and a 20-lineup batch went from ~4-5 unique WRs used
+total to 11, with real depth options (not just the top 2-3 "obvious"
+picks) getting genuine playing time.
+
 ## Exporting lineups
 
 The lineup panel has two export buttons, both producing a CSV in

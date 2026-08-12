@@ -77,6 +77,14 @@ STACK_ELIGIBLE_POSITIONS = {Position.RB, Position.WR, Position.TE}
 # pool that can't hit the diversity target fails fast instead of
 # grinding through tens of thousands of iterations.
 DEFAULT_MAX_OVERLAP = 6
+
+# the total-overlap check above under-constrains any position that
+# fills multiple roster slots — WR fills up to 4 (WR1/WR2/WR3/FLEX),
+# so two lineups could share every single WR and still pass a 6-of-9
+# total check (4 shared WRs + 2 more shared anywhere else = 6). This
+# caps how many players at the SAME position two lineups can share,
+# independent of the total-overlap check — both must pass.
+DEFAULT_MAX_POSITION_OVERLAP = 2
 BUILD_MANY_LOCAL_SEARCH_ITERATIONS = 250
 MAX_ATTEMPTS_PER_LINEUP = 40
 MAX_TOTAL_ATTEMPTS = 2500
@@ -139,13 +147,18 @@ class LineupBuilder:
         max_overlap: int = DEFAULT_MAX_OVERLAP,
         randomness: float = 1.0,
         max_exposure_pct: float = DEFAULT_MAX_EXPOSURE_PCT,
+        max_position_overlap: int = DEFAULT_MAX_POSITION_OVERLAP,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
         fresh random noise on the objective; a candidate is only kept
-        if it shares at most `max_overlap` players with every lineup
-        already accepted. Returns fewer than `count` if the pool is
-        too small/thin to keep finding sufficiently different legal
+        if it shares at most `max_overlap` players TOTAL with every
+        lineup already accepted, AND at most `max_position_overlap`
+        players at any single position (the total check alone
+        under-constrains WR specifically, since it fills up to 4 of 9
+        roster slots — two lineups could share every WR and still pass
+        a 6-of-9 total check). Returns fewer than `count` if the pool
+        is too small/thin to keep finding sufficiently different legal
         lineups within the attempt budget — this is reported, not
         silently padded with near-duplicates.
 
@@ -154,12 +167,12 @@ class LineupBuilder:
         batches, <1 for tighter ones closer to "the" optimal lineup at
         that risk level, 0 to disable noise-driven diversity entirely
         (in which case only genuinely different local-search optima,
-        if any, will pass the overlap check).
+        if any, will pass the overlap checks).
 
         `max_exposure_pct` caps how much of the batch any single player
         can appear in (default 50%) — see the module-level comment on
         DEFAULT_MAX_EXPOSURE_PCT for why this exists separately from
-        the overlap check."""
+        the overlap checks."""
         count = max(1, min(count, MAX_LINEUPS))
         accepted: list[Lineup] = []
         usage_count: dict[str, int] = {}
@@ -196,7 +209,7 @@ class LineupBuilder:
             if candidate is None:
                 continue
 
-            if self._is_diverse_enough(candidate, accepted, max_overlap):
+            if self._is_diverse_enough(candidate, accepted, max_overlap, max_position_overlap):
                 accepted.append(candidate)
                 for slot in candidate.slots:
                     usage_count[slot.player.player_name] = usage_count.get(slot.player.player_name, 0) + 1
@@ -216,12 +229,31 @@ class LineupBuilder:
 
         return base * noise.get(player.player_name, 1.0)
 
-    def _is_diverse_enough(self, candidate: Lineup, existing: list[Lineup], max_overlap: int) -> bool:
+    def _is_diverse_enough(
+        self,
+        candidate: Lineup,
+        existing: list[Lineup],
+        max_overlap: int,
+        max_position_overlap: int = DEFAULT_MAX_POSITION_OVERLAP,
+    ) -> bool:
         candidate_names = {s.player.player_name for s in candidate.slots}
+        candidate_by_pos: dict[Position, set[str]] = {}
+        for s in candidate.slots:
+            candidate_by_pos.setdefault(s.player.position, set()).add(s.player.player_name)
+
         for lineup in existing:
             existing_names = {s.player.player_name for s in lineup.slots}
             if len(candidate_names & existing_names) > max_overlap:
                 return False
+
+            existing_by_pos: dict[Position, set[str]] = {}
+            for s in lineup.slots:
+                existing_by_pos.setdefault(s.player.position, set()).add(s.player.player_name)
+
+            for position, names in candidate_by_pos.items():
+                if len(names & existing_by_pos.get(position, set())) > max_position_overlap:
+                    return False
+
         return True
 
     def _greedy_fill(
