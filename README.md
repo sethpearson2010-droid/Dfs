@@ -576,6 +576,53 @@ when a tight `--max-player-salary` is also in play. With no
 verified: a 50-lineup batch at a fixed risk level reliably returns all
 50, with salaries reaching the full $54,800-$60,000 range.
 
+## Excluding a player and rebuilding, directly from the dashboard
+
+The dashboard is a static GitHub Pages site with no backend of its
+own — "rebuild without this player" has to mean triggering a real new
+GitHub Actions run from the browser, which is what this does, using
+GitHub's REST API directly against your own repo.
+
+**One-time setup**: generate a **classic** Personal Access Token
+(github.com/settings/tokens → Generate new token (classic)) with the
+**`repo`** and **`workflow`** scopes checked. Unlike the one-time
+tokens used earlier in this project's setup, this one needs a longer
+expiration since the dashboard reuses it for every rebuild — paste it
+into the red "🚫 Exclude players & rebuild" panel at the top of the
+page and tap Save. It's stored in `localStorage`, scoped to your
+browser only — never sent anywhere except `api.github.com` requests
+you trigger yourself. Tap "Clear" in that panel to remove it.
+
+**Using it**: every player row in the main table has a small 🚫 button
+— tapping it queues that player for exclusion (shown as a chip in the
+panel, persisted across page reloads via `localStorage` too, so an
+in-progress selection survives a refresh). Once you've queued
+whichever players you want out — Kenny Gainwell showing up in most of
+your GPP batch, say — tap "Rebuild without these players". This POSTs
+to GitHub's `workflow_dispatch` API
+(`/repos/{owner}/{repo}/actions/workflows/run-and-deploy.yml/dispatches`),
+replaying the **exact same settings as the run currently on screen**
+(risk scale, lineup count, salary constraints, randomness — all read
+from `output/run_config.json`, a new file `pipeline.py` writes every
+run specifically so this replay is possible) plus your new
+exclusions **added to** any exclusions that run already had, not
+replacing them.
+
+The dashboard then polls the Actions API every 10 seconds for up to
+~7 minutes and auto-reloads the page once the new run completes — you
+don't have to manually check the Actions tab and refresh. Verified:
+the request format matches GitHub's real API exactly (tested against
+the live endpoint — confirmed a bad token correctly returns 401 with
+a clear error, and a well-formed request produces the exact
+`{ref, inputs}` body GitHub's `workflow_dispatch` API expects, with
+every input name cross-checked against the workflow YAML's actual
+declared inputs).
+
+**Owner/repo are hardcoded** in `frontend/index.html`
+(`GITHUB_OWNER`/`GITHUB_REPO`/`GITHUB_WORKFLOW_FILE` constants near
+the top of the script) — if you ever fork or rename this repo, update
+those three constants to match.
+
 ## Exporting lineups
 
 The lineup panel has two export buttons, both producing a CSV in

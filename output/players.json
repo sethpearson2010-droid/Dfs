@@ -50,10 +50,10 @@
     "team": "TEN",
     "opponent": "NYJ",
     "salary": 5300,
-    "projection": 17.1,
-    "floor_projection": 7.82,
-    "ceiling_projection": 35.56,
-    "value_score": 3.226,
+    "projection": 17.08,
+    "floor_projection": 7.81,
+    "ceiling_projection": 35.54,
+    "value_score": 3.223,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -64,13 +64,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 38.8,
-    "smash_score": 6.709,
+    "smash_score": 6.706,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.043,
+      "vulnerability": 1.042,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 1.146
+      "opportunity": 1.147
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 34.58,
@@ -87,51 +87,6 @@
       "wopr": 0.893,
       "redzone_touches_per_game": 1.8,
       "redzone_share": 0.164
-    }
-  },
-  {
-    "player_name": "Michael Wilson",
-    "position": "WR",
-    "team": "ARI",
-    "opponent": "LAC",
-    "salary": 6300,
-    "projection": 20.11,
-    "floor_projection": 14.87,
-    "ceiling_projection": 33.58,
-    "value_score": 3.192,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-89612",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 39.3,
-    "smash_score": 5.33,
-    "smash_alignment": 1,
-    "signal_multipliers": {
-      "vulnerability": 1.016,
-      "game_script": 1.0,
-      "pace": 0.995,
-      "opportunity": 1.2
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 32.5,
-      "season_avg_allowed": 27.42,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 57.4,
-      "season_avg_plays": 63.18
-    },
-    "advanced_metrics": {
-      "target_share": 0.266,
-      "air_yards_share": 0.461,
-      "wopr": 0.721,
-      "redzone_touches_per_game": 2.2,
-      "redzone_share": 0.297
     }
   },
   {
@@ -177,6 +132,51 @@
       "wopr": 0.363,
       "redzone_touches_per_game": 2.8,
       "redzone_share": 0.269
+    }
+  },
+  {
+    "player_name": "Michael Wilson",
+    "position": "WR",
+    "team": "ARI",
+    "opponent": "LAC",
+    "salary": 6300,
+    "projection": 20.09,
+    "floor_projection": 14.85,
+    "ceiling_projection": 33.54,
+    "value_score": 3.189,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-89612",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 39.3,
+    "smash_score": 5.324,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 1.014,
+      "game_script": 1.0,
+      "pace": 0.995,
+      "opportunity": 1.2
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 32.5,
+      "season_avg_allowed": 27.42,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 57.4,
+      "season_avg_plays": 63.18
+    },
+    "advanced_metrics": {
+      "target_share": 0.266,
+      "air_yards_share": 0.461,
+      "wopr": 0.721,
+      "redzone_touches_per_game": 2.2,
+      "redzone_share": 0.297
     }
   },
   {
@@ -230,10 +230,10 @@
     "team": "ATL",
     "opponent": "PIT",
     "salary": 5500,
-    "projection": 16.9,
+    "projection": 16.89,
     "floor_projection": 10.71,
-    "ceiling_projection": 31.41,
-    "value_score": 3.073,
+    "ceiling_projection": 31.4,
+    "value_score": 3.071,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -244,7 +244,7 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 40.0,
-    "smash_score": 5.711,
+    "smash_score": 5.709,
     "smash_alignment": 2,
     "signal_multipliers": {
       "vulnerability": 1.122,
@@ -275,10 +275,10 @@
     "team": "BAL",
     "opponent": "IND",
     "salary": 7300,
-    "projection": 22.14,
-    "floor_projection": 14.49,
-    "ceiling_projection": 37.37,
-    "value_score": 3.033,
+    "projection": 22.11,
+    "floor_projection": 14.47,
+    "ceiling_projection": 37.34,
+    "value_score": 3.029,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "Q",
@@ -289,10 +289,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 39.5,
-    "smash_score": 5.119,
+    "smash_score": 5.115,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.082,
+      "vulnerability": 1.081,
       "game_script": 1.0,
       "pace": 0.993,
       "opportunity": 1.112
@@ -320,10 +320,10 @@
     "team": "NO",
     "opponent": "DET",
     "salary": 7400,
-    "projection": 21.6,
-    "floor_projection": 12.54,
-    "ceiling_projection": 39.9,
-    "value_score": 2.919,
+    "projection": 21.58,
+    "floor_projection": 12.53,
+    "ceiling_projection": 39.89,
+    "value_score": 2.916,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -334,17 +334,17 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 39.2,
-    "smash_score": 5.392,
+    "smash_score": 5.391,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.049,
+      "vulnerability": 1.048,
       "game_script": 1.0,
       "pace": 1.004,
       "opportunity": 1.134
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.06,
-      "season_avg_allowed": 35.61,
+      "season_avg_allowed": 35.7,
       "games_sampled": 17
     },
     "pace": {
@@ -486,10 +486,10 @@
     "team": "JAC",
     "opponent": "CLE",
     "salary": 6600,
-    "projection": 18.39,
-    "floor_projection": 7.63,
-    "ceiling_projection": 40.05,
-    "value_score": 2.786,
+    "projection": 18.37,
+    "floor_projection": 7.62,
+    "ceiling_projection": 40.03,
+    "value_score": 2.783,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -500,10 +500,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 38.7,
-    "smash_score": 6.068,
+    "smash_score": 6.065,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.968,
+      "vulnerability": 0.967,
       "game_script": 1.0,
       "pace": 1.0,
       "opportunity": 1.16
@@ -527,10 +527,10 @@
     "team": "CAR",
     "opponent": "CHI",
     "salary": 5400,
-    "projection": 14.66,
-    "floor_projection": 9.39,
-    "ceiling_projection": 26.95,
-    "value_score": 2.715,
+    "projection": 14.94,
+    "floor_projection": 9.56,
+    "ceiling_projection": 27.46,
+    "value_score": 2.767,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -541,17 +541,17 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 37.6,
-    "smash_score": 4.991,
+    "smash_score": 5.085,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.06,
+      "vulnerability": 1.081,
       "game_script": 1.0,
       "pace": 0.988,
       "opportunity": 1.193
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
       "games_sampled": 17
     },
     "pace": {
@@ -703,10 +703,10 @@
     "team": "MIN",
     "opponent": "GB",
     "salary": 5900,
-    "projection": 15.02,
-    "floor_projection": 8.29,
-    "ceiling_projection": 27.28,
-    "value_score": 2.546,
+    "projection": 15.01,
+    "floor_projection": 8.28,
+    "ceiling_projection": 27.27,
+    "value_score": 2.544,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -717,10 +717,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 37.7,
-    "smash_score": 4.624,
+    "smash_score": 4.622,
     "smash_alignment": 3,
     "signal_multipliers": {
-      "vulnerability": 1.056,
+      "vulnerability": 1.055,
       "game_script": 1.034,
       "pace": 0.99,
       "opportunity": 1.086
@@ -746,51 +746,6 @@
       "wopr": 0.443,
       "redzone_touches_per_game": 2.0,
       "redzone_share": 0.128
-    }
-  },
-  {
-    "player_name": "Ja'Marr Chase",
-    "position": "WR",
-    "team": "CIN",
-    "opponent": "TB",
-    "salary": 8900,
-    "projection": 22.61,
-    "floor_projection": 20.01,
-    "ceiling_projection": 30.46,
-    "value_score": 2.54,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-85701",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 39.1,
-    "smash_score": 3.422,
-    "smash_alignment": 1,
-    "signal_multipliers": {
-      "vulnerability": 0.966,
-      "game_script": 1.0,
-      "pace": 1.009,
-      "opportunity": 1.149
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 24.78,
-      "season_avg_allowed": 31.46,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 65.6,
-      "season_avg_plays": 62.18
-    },
-    "advanced_metrics": {
-      "target_share": 0.311,
-      "air_yards_share": 0.338,
-      "wopr": 0.704,
-      "redzone_touches_per_game": 1.6,
-      "redzone_share": 0.167
     }
   },
   {
@@ -836,6 +791,51 @@
       "wopr": 0.126,
       "redzone_touches_per_game": 3.6,
       "redzone_share": 0.269
+    }
+  },
+  {
+    "player_name": "Ja'Marr Chase",
+    "position": "WR",
+    "team": "CIN",
+    "opponent": "TB",
+    "salary": 8900,
+    "projection": 22.59,
+    "floor_projection": 19.99,
+    "ceiling_projection": 30.45,
+    "value_score": 2.538,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-85701",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 39.1,
+    "smash_score": 3.421,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.965,
+      "game_script": 1.0,
+      "pace": 1.009,
+      "opportunity": 1.15
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 24.78,
+      "season_avg_allowed": 31.46,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 65.6,
+      "season_avg_plays": 62.18
+    },
+    "advanced_metrics": {
+      "target_share": 0.311,
+      "air_yards_share": 0.338,
+      "wopr": 0.704,
+      "redzone_touches_per_game": 1.6,
+      "redzone_share": 0.167
     }
   },
   {
@@ -891,7 +891,7 @@
     "salary": 5300,
     "projection": 13.28,
     "floor_projection": 7.47,
-    "ceiling_projection": 25.03,
+    "ceiling_projection": 25.04,
     "value_score": 2.506,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -903,13 +903,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 39.1,
-    "smash_score": 4.723,
+    "smash_score": 4.725,
     "smash_alignment": 2,
     "signal_multipliers": {
       "vulnerability": 1.102,
       "game_script": 0.986,
       "pace": 1.002,
-      "opportunity": 1.138
+      "opportunity": 1.139
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.74,
@@ -1000,7 +1000,7 @@
     "salary": 4700,
     "projection": 11.63,
     "floor_projection": 0.19,
-    "ceiling_projection": 31.24,
+    "ceiling_projection": 31.29,
     "value_score": 2.474,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -1012,13 +1012,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 37.5,
-    "smash_score": 6.647,
+    "smash_score": 6.657,
     "smash_alignment": 3,
     "signal_multipliers": {
       "vulnerability": 1.079,
       "game_script": 1.028,
       "pace": 1.008,
-      "opportunity": 1.085
+      "opportunity": 1.087
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.04,
@@ -1163,6 +1163,51 @@
     }
   },
   {
+    "player_name": "Alec Pierce",
+    "position": "WR",
+    "team": "IND",
+    "opponent": "BAL",
+    "salary": 6000,
+    "projection": 14.12,
+    "floor_projection": 0.0,
+    "ceiling_projection": 46.04,
+    "value_score": 2.353,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "NA",
+    "injury_details": "Ankle",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-86312",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 36.5,
+    "smash_score": 7.673,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.09,
+      "game_script": 1.0,
+      "pace": 0.997,
+      "opportunity": 1.093
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 59.6,
+      "season_avg_plays": 59.88
+    },
+    "advanced_metrics": {
+      "target_share": 0.151,
+      "air_yards_share": 0.301,
+      "wopr": 0.438,
+      "redzone_touches_per_game": 1.4,
+      "redzone_share": 0.137
+    }
+  },
+  {
     "player_name": "Tennessee Titans",
     "position": "DST",
     "team": "TEN",
@@ -1266,60 +1311,15 @@
     }
   },
   {
-    "player_name": "Alec Pierce",
-    "position": "WR",
-    "team": "IND",
-    "opponent": "BAL",
-    "salary": 6000,
-    "projection": 14.03,
-    "floor_projection": 0.0,
-    "ceiling_projection": 45.72,
-    "value_score": 2.338,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "NA",
-    "injury_details": "Ankle",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-86312",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 36.5,
-    "smash_score": 7.62,
-    "smash_alignment": 2,
-    "signal_multipliers": {
-      "vulnerability": 1.083,
-      "game_script": 1.0,
-      "pace": 0.997,
-      "opportunity": 1.092
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 59.6,
-      "season_avg_plays": 59.88
-    },
-    "advanced_metrics": {
-      "target_share": 0.151,
-      "air_yards_share": 0.301,
-      "wopr": 0.438,
-      "redzone_touches_per_game": 1.4,
-      "redzone_share": 0.137
-    }
-  },
-  {
     "player_name": "Drake London",
     "position": "WR",
     "team": "ATL",
     "opponent": "PIT",
     "salary": 7900,
-    "projection": 18.16,
-    "floor_projection": 8.17,
-    "ceiling_projection": 39.78,
-    "value_score": 2.299,
+    "projection": 18.14,
+    "floor_projection": 8.16,
+    "ceiling_projection": 39.73,
+    "value_score": 2.296,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -1330,10 +1330,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 37.8,
-    "smash_score": 5.035,
+    "smash_score": 5.029,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.016,
+      "vulnerability": 1.015,
       "game_script": 1.0,
       "pace": 1.004,
       "opportunity": 1.2
@@ -1361,10 +1361,10 @@
     "team": "GB",
     "opponent": "MIN",
     "salary": 6400,
-    "projection": 14.61,
+    "projection": 14.6,
     "floor_projection": 6.79,
-    "ceiling_projection": 30.8,
-    "value_score": 2.283,
+    "ceiling_projection": 30.79,
+    "value_score": 2.281,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -1375,10 +1375,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 36.8,
-    "smash_score": 4.812,
+    "smash_score": 4.811,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.904,
+      "vulnerability": 0.903,
       "game_script": 0.892,
       "pace": 0.99,
       "opportunity": 1.17
@@ -1441,10 +1441,10 @@
     "team": "TEN",
     "opponent": "NYJ",
     "salary": 4700,
-    "projection": 10.63,
+    "projection": 10.62,
     "floor_projection": 5.69,
-    "ceiling_projection": 21.17,
-    "value_score": 2.262,
+    "ceiling_projection": 21.15,
+    "value_score": 2.26,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -1455,10 +1455,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 34.8,
-    "smash_score": 4.504,
+    "smash_score": 4.5,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.043,
+      "vulnerability": 1.042,
       "game_script": 1.0,
       "pace": 1.0,
       "opportunity": 1.173
@@ -1582,10 +1582,10 @@
     "team": "PIT",
     "opponent": "ATL",
     "salary": 7000,
-    "projection": 15.65,
-    "floor_projection": 5.66,
-    "ceiling_projection": 34.89,
-    "value_score": 2.236,
+    "projection": 15.63,
+    "floor_projection": 5.65,
+    "ceiling_projection": 34.86,
+    "value_score": 2.233,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "Q",
@@ -1596,13 +1596,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 37.1,
-    "smash_score": 4.984,
+    "smash_score": 4.98,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.083,
+      "vulnerability": 1.082,
       "game_script": 1.0,
       "pace": 1.003,
-      "opportunity": 1.139
+      "opportunity": 1.14
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 38.0,
@@ -1723,10 +1723,10 @@
     "team": "ARI",
     "opponent": "LAC",
     "salary": 5900,
-    "projection": 13.04,
+    "projection": 13.03,
     "floor_projection": 0.0,
-    "ceiling_projection": 41.52,
-    "value_score": 2.21,
+    "ceiling_projection": 41.48,
+    "value_score": 2.208,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -1737,10 +1737,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 35.5,
-    "smash_score": 7.037,
+    "smash_score": 7.031,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.016,
+      "vulnerability": 1.014,
       "game_script": 1.0,
       "pace": 0.995,
       "opportunity": 1.192
@@ -1797,10 +1797,10 @@
     "team": "LV",
     "opponent": "MIA",
     "salary": 6800,
-    "projection": 14.88,
-    "floor_projection": 10.56,
-    "ceiling_projection": 25.63,
-    "value_score": 2.188,
+    "projection": 14.94,
+    "floor_projection": 10.6,
+    "ceiling_projection": 25.73,
+    "value_score": 2.197,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -1811,17 +1811,17 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 39.0,
-    "smash_score": 3.769,
+    "smash_score": 3.784,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.062,
+      "vulnerability": 1.066,
       "game_script": 1.0,
       "pace": 0.98,
       "opportunity": 1.2
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 15.42,
-      "season_avg_allowed": 16.22,
+      "recent_avg_allowed": 15.62,
+      "season_avg_allowed": 16.28,
       "games_sampled": 17
     },
     "pace": {
@@ -1842,10 +1842,10 @@
     "team": "MIA",
     "opponent": "LV",
     "salary": 4000,
-    "projection": 8.62,
+    "projection": 8.61,
     "floor_projection": 1.87,
-    "ceiling_projection": 19.03,
-    "value_score": 2.155,
+    "ceiling_projection": 19.02,
+    "value_score": 2.152,
     "name_match_quality": "fuzzy",
     "is_stale": false,
     "injury_status": "Q",
@@ -1856,10 +1856,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 32.8,
-    "smash_score": 4.758,
+    "smash_score": 4.755,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.982,
+      "vulnerability": 0.981,
       "game_script": 1.0,
       "pace": 0.986,
       "opportunity": 1.015
@@ -2224,7 +2224,7 @@
     "salary": 8300,
     "projection": 17.31,
     "floor_projection": 6.91,
-    "ceiling_projection": 30.95,
+    "ceiling_projection": 30.96,
     "value_score": 2.086,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -2236,7 +2236,7 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 31.3,
-    "smash_score": 3.729,
+    "smash_score": 3.73,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 1.075,
@@ -2246,7 +2246,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 19.28,
-      "season_avg_allowed": 19.53,
+      "season_avg_allowed": 19.56,
       "games_sampled": 17
     },
     "game_context": {
@@ -2275,7 +2275,7 @@
     "salary": 6000,
     "projection": 12.5,
     "floor_projection": 2.59,
-    "ceiling_projection": 32.04,
+    "ceiling_projection": 32.07,
     "value_score": 2.083,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -2287,13 +2287,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 37.8,
-    "smash_score": 5.34,
+    "smash_score": 5.345,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 0.965,
       "game_script": 1.0,
       "pace": 1.004,
-      "opportunity": 1.171
+      "opportunity": 1.172
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 11.24,
@@ -2349,7 +2349,7 @@
     "salary": 5100,
     "projection": 10.53,
     "floor_projection": 2.11,
-    "ceiling_projection": 26.59,
+    "ceiling_projection": 26.61,
     "value_score": 2.065,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -2361,13 +2361,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 36.3,
-    "smash_score": 5.214,
+    "smash_score": 5.218,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 0.959,
       "game_script": 0.966,
       "pace": 1.006,
-      "opportunity": 1.148
+      "opportunity": 1.149
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 13.34,
@@ -2548,10 +2548,10 @@
     "team": "DET",
     "opponent": "NO",
     "salary": 4800,
-    "projection": 9.55,
+    "projection": 9.54,
     "floor_projection": 2.19,
-    "ceiling_projection": 20.51,
-    "value_score": 1.99,
+    "ceiling_projection": 20.5,
+    "value_score": 1.987,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -2562,10 +2562,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 33.8,
-    "smash_score": 4.273,
+    "smash_score": 4.271,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.948,
+      "vulnerability": 0.947,
       "game_script": 1.0,
       "pace": 1.008,
       "opportunity": 0.996
@@ -2622,10 +2622,10 @@
     "team": "LAC",
     "opponent": "ARI",
     "salary": 6000,
-    "projection": 11.63,
+    "projection": 11.62,
     "floor_projection": 0.0,
-    "ceiling_projection": 35.15,
-    "value_score": 1.938,
+    "ceiling_projection": 35.14,
+    "value_score": 1.937,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -2636,13 +2636,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 34.5,
-    "smash_score": 5.858,
-    "smash_alignment": 2,
+    "smash_score": 5.857,
+    "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.021,
+      "vulnerability": 1.02,
       "game_script": 1.0,
       "pace": 1.009,
-      "opportunity": 1.13
+      "opportunity": 1.131
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 31.96,
@@ -2667,10 +2667,10 @@
     "team": "CIN",
     "opponent": "TB",
     "salary": 7200,
-    "projection": 13.94,
-    "floor_projection": 7.58,
-    "ceiling_projection": 26.52,
-    "value_score": 1.936,
+    "projection": 13.92,
+    "floor_projection": 7.57,
+    "ceiling_projection": 26.51,
+    "value_score": 1.933,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -2681,13 +2681,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 35.2,
-    "smash_score": 3.683,
+    "smash_score": 3.682,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.966,
+      "vulnerability": 0.965,
       "game_script": 1.0,
       "pace": 1.009,
-      "opportunity": 1.13
+      "opportunity": 1.131
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 24.78,
@@ -2927,10 +2927,10 @@
     "team": "NYJ",
     "opponent": "TEN",
     "salary": 4200,
-    "projection": 7.88,
+    "projection": 7.87,
     "floor_projection": 6.32,
     "ceiling_projection": 10.92,
-    "value_score": 1.876,
+    "value_score": 1.874,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -2944,10 +2944,10 @@
     "smash_score": 2.6,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.054,
+      "vulnerability": 1.053,
       "game_script": 1.0,
       "pace": 0.996,
-      "opportunity": 1.07
+      "opportunity": 1.071
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.72,
@@ -2972,10 +2972,10 @@
     "team": "HOU",
     "opponent": "BUF",
     "salary": 7700,
-    "projection": 14.41,
-    "floor_projection": 6.19,
-    "ceiling_projection": 32.1,
-    "value_score": 1.871,
+    "projection": 14.4,
+    "floor_projection": 6.18,
+    "ceiling_projection": 32.07,
+    "value_score": 1.87,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -2986,10 +2986,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 35.3,
-    "smash_score": 4.169,
+    "smash_score": 4.165,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.922,
+      "vulnerability": 0.921,
       "game_script": 0.966,
       "pace": 1.006,
       "opportunity": 1.2
@@ -3068,10 +3068,10 @@
     "team": "IND",
     "opponent": "BAL",
     "salary": 5600,
-    "projection": 10.36,
-    "floor_projection": 6.84,
-    "ceiling_projection": 17.06,
-    "value_score": 1.85,
+    "projection": 10.43,
+    "floor_projection": 6.89,
+    "ceiling_projection": 17.18,
+    "value_score": 1.863,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "Q",
@@ -3082,17 +3082,17 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 33.5,
-    "smash_score": 3.046,
+    "smash_score": 3.068,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.083,
+      "vulnerability": 1.09,
       "game_script": 1.0,
       "pace": 0.997,
-      "opportunity": 1.091
+      "opportunity": 1.092
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {
@@ -3203,10 +3203,10 @@
     "team": "DET",
     "opponent": "NO",
     "salary": 7100,
-    "projection": 12.8,
-    "floor_projection": 7.28,
-    "ceiling_projection": 23.04,
-    "value_score": 1.803,
+    "projection": 12.79,
+    "floor_projection": 7.27,
+    "ceiling_projection": 23.02,
+    "value_score": 1.801,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -3217,10 +3217,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 34.3,
-    "smash_score": 3.245,
+    "smash_score": 3.242,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.948,
+      "vulnerability": 0.947,
       "game_script": 1.0,
       "pace": 1.008,
       "opportunity": 1.093
@@ -3248,10 +3248,10 @@
     "team": "BUF",
     "opponent": "HOU",
     "salary": 4900,
-    "projection": 8.82,
+    "projection": 8.81,
     "floor_projection": 1.91,
-    "ceiling_projection": 19.46,
-    "value_score": 1.8,
+    "ceiling_projection": 19.45,
+    "value_score": 1.798,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -3262,10 +3262,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 32.2,
-    "smash_score": 3.971,
+    "smash_score": 3.969,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.956,
+      "vulnerability": 0.955,
       "game_script": 1.028,
       "pace": 1.008,
       "opportunity": 1.015
@@ -3301,7 +3301,7 @@
     "salary": 5000,
     "projection": 8.89,
     "floor_projection": 5.03,
-    "ceiling_projection": 15.82,
+    "ceiling_projection": 15.85,
     "value_score": 1.778,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -3313,13 +3313,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 35.7,
-    "smash_score": 3.164,
+    "smash_score": 3.17,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 0.945,
+      "vulnerability": 0.944,
       "game_script": 1.034,
       "pace": 0.99,
-      "opportunity": 1.077
+      "opportunity": 1.079
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 10.8,
@@ -3345,15 +3345,60 @@
     }
   },
   {
+    "player_name": "Tetairoa McMillan",
+    "position": "WR",
+    "team": "CAR",
+    "opponent": "CHI",
+    "salary": 6800,
+    "projection": 12.06,
+    "floor_projection": 1.3,
+    "ceiling_projection": 33.84,
+    "value_score": 1.774,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-167620",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 33.9,
+    "smash_score": 4.976,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.081,
+      "game_script": 1.0,
+      "pace": 0.988,
+      "opportunity": 1.2
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 54.6,
+      "season_avg_plays": 59.47
+    },
+    "advanced_metrics": {
+      "target_share": 0.203,
+      "air_yards_share": 0.494,
+      "wopr": 0.65,
+      "redzone_touches_per_game": 2.0,
+      "redzone_share": 0.435
+    }
+  },
+  {
     "player_name": "Luther Burden III",
     "position": "WR",
     "team": "CHI",
     "opponent": "CAR",
     "salary": 6200,
-    "projection": 10.98,
-    "floor_projection": 5.95,
-    "ceiling_projection": 19.54,
-    "value_score": 1.771,
+    "projection": 10.97,
+    "floor_projection": 5.94,
+    "ceiling_projection": 19.53,
+    "value_score": 1.769,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "Q",
@@ -3363,11 +3408,11 @@
     "fanduel_id": "133104-166092",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 33.5,
-    "smash_score": 3.152,
+    "projected_ownership_pct": 33.4,
+    "smash_score": 3.15,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.994,
+      "vulnerability": 0.993,
       "game_script": 1.0,
       "pace": 1.004,
       "opportunity": 1.055
@@ -3440,10 +3485,10 @@
     "team": "TEN",
     "opponent": "NYJ",
     "salary": 5000,
-    "projection": 8.76,
-    "floor_projection": 8.14,
+    "projection": 8.75,
+    "floor_projection": 8.13,
     "ceiling_projection": 11.17,
-    "value_score": 1.752,
+    "value_score": 1.75,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -3453,14 +3498,14 @@
     "fanduel_id": "133104-172861",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 31.8,
+    "projected_ownership_pct": 31.7,
     "smash_score": 2.234,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.043,
+      "vulnerability": 1.042,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 1.154
+      "opportunity": 1.155
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 34.58,
@@ -3509,60 +3554,15 @@
     }
   },
   {
-    "player_name": "Tetairoa McMillan",
-    "position": "WR",
-    "team": "CAR",
-    "opponent": "CHI",
-    "salary": 6800,
-    "projection": 11.84,
-    "floor_projection": 1.28,
-    "ceiling_projection": 33.21,
-    "value_score": 1.741,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-167620",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 33.6,
-    "smash_score": 4.884,
-    "smash_alignment": 2,
-    "signal_multipliers": {
-      "vulnerability": 1.06,
-      "game_script": 1.0,
-      "pace": 0.988,
-      "opportunity": 1.2
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 54.6,
-      "season_avg_plays": 59.47
-    },
-    "advanced_metrics": {
-      "target_share": 0.203,
-      "air_yards_share": 0.494,
-      "wopr": 0.65,
-      "redzone_touches_per_game": 2.0,
-      "redzone_share": 0.435
-    }
-  },
-  {
     "player_name": "Theo Wease Jr.",
     "position": "WR",
     "team": "MIA",
     "opponent": "LV",
     "salary": 4200,
-    "projection": 7.17,
+    "projection": 7.16,
     "floor_projection": 4.01,
-    "ceiling_projection": 12.54,
-    "value_score": 1.707,
+    "ceiling_projection": 12.53,
+    "value_score": 1.705,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -3573,13 +3573,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 30.1,
-    "smash_score": 2.986,
+    "smash_score": 2.983,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.982,
+      "vulnerability": 0.981,
       "game_script": 1.0,
       "pace": 0.986,
-      "opportunity": 1.053
+      "opportunity": 1.054
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 25.86,
@@ -3655,10 +3655,10 @@
     "team": "DET",
     "opponent": "NO",
     "salary": 8600,
-    "projection": 14.52,
+    "projection": 14.5,
     "floor_projection": 6.3,
-    "ceiling_projection": 32.21,
-    "value_score": 1.688,
+    "ceiling_projection": 32.18,
+    "value_score": 1.686,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -3669,10 +3669,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 34.5,
-    "smash_score": 3.745,
+    "smash_score": 3.742,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.948,
+      "vulnerability": 0.947,
       "game_script": 1.0,
       "pace": 1.008,
       "opportunity": 1.2
@@ -3776,7 +3776,7 @@
     "salary": 4900,
     "projection": 7.95,
     "floor_projection": 0.0,
-    "ceiling_projection": 21.27,
+    "ceiling_projection": 21.29,
     "value_score": 1.622,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -3788,13 +3788,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 34.5,
-    "smash_score": 4.341,
+    "smash_score": 4.345,
     "smash_alignment": 2,
     "signal_multipliers": {
       "vulnerability": 1.176,
       "game_script": 1.0,
       "pace": 1.009,
-      "opportunity": 1.059
+      "opportunity": 1.061
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.78,
@@ -3864,10 +3864,10 @@
     "team": "NO",
     "opponent": "DET",
     "salary": 4100,
-    "projection": 6.64,
+    "projection": 6.63,
     "floor_projection": 2.73,
     "ceiling_projection": 12.85,
-    "value_score": 1.62,
+    "value_score": 1.617,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -3881,14 +3881,14 @@
     "smash_score": 3.134,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.049,
+      "vulnerability": 1.048,
       "game_script": 1.0,
       "pace": 1.004,
-      "opportunity": 1.028
+      "opportunity": 1.029
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.06,
-      "season_avg_allowed": 35.61,
+      "season_avg_allowed": 35.7,
       "games_sampled": 17
     },
     "pace": {
@@ -3962,7 +3962,7 @@
     "salary": 7600,
     "projection": 12.17,
     "floor_projection": 3.08,
-    "ceiling_projection": 30.97,
+    "ceiling_projection": 30.96,
     "value_score": 1.601,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -3974,7 +3974,7 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 36.6,
-    "smash_score": 4.075,
+    "smash_score": 4.074,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 0.906,
@@ -3997,6 +3997,51 @@
       "wopr": 0.595,
       "redzone_touches_per_game": 2.4,
       "redzone_share": 0.324
+    }
+  },
+  {
+    "player_name": "John Metchie III",
+    "position": "WR",
+    "team": "CAR",
+    "opponent": "CHI",
+    "salary": 4600,
+    "projection": 7.36,
+    "floor_projection": 6.57,
+    "ceiling_projection": 9.43,
+    "value_score": 1.6,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-102696",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 29.9,
+    "smash_score": 2.05,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.081,
+      "game_script": 1.0,
+      "pace": 0.988,
+      "opportunity": 1.103
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 54.6,
+      "season_avg_plays": 59.47
+    },
+    "advanced_metrics": {
+      "target_share": 0.166,
+      "air_yards_share": 0.17,
+      "wopr": 0.367,
+      "redzone_touches_per_game": 1.25,
+      "redzone_share": 0.179
     }
   },
   {
@@ -4029,15 +4074,60 @@
     }
   },
   {
+    "player_name": "Juwan Johnson",
+    "position": "TE",
+    "team": "NO",
+    "opponent": "DET",
+    "salary": 5400,
+    "projection": 8.61,
+    "floor_projection": 7.29,
+    "ceiling_projection": 11.84,
+    "value_score": 1.594,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-64808",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 34.7,
+    "smash_score": 2.193,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.099,
+      "game_script": 1.0,
+      "pace": 1.004,
+      "opportunity": 1.12
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 18.52,
+      "season_avg_allowed": 13.67,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 62.6,
+      "season_avg_plays": 63.24
+    },
+    "advanced_metrics": {
+      "target_share": 0.163,
+      "air_yards_share": 0.161,
+      "wopr": 0.358,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.125
+    }
+  },
+  {
     "player_name": "Khalil Shakir",
     "position": "WR",
     "team": "BUF",
     "opponent": "HOU",
     "salary": 5900,
-    "projection": 9.41,
-    "floor_projection": 6.47,
-    "ceiling_projection": 13.84,
-    "value_score": 1.595,
+    "projection": 9.4,
+    "floor_projection": 6.46,
+    "ceiling_projection": 13.83,
+    "value_score": 1.593,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -4047,11 +4137,11 @@
     "fanduel_id": "133104-86518",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 31.9,
-    "smash_score": 2.346,
+    "projected_ownership_pct": 31.8,
+    "smash_score": 2.344,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.956,
+      "vulnerability": 0.955,
       "game_script": 1.028,
       "pace": 1.008,
       "opportunity": 1.001
@@ -4077,51 +4167,6 @@
       "wopr": 0.348,
       "redzone_touches_per_game": 1.2,
       "redzone_share": 0.074
-    }
-  },
-  {
-    "player_name": "Juwan Johnson",
-    "position": "TE",
-    "team": "NO",
-    "opponent": "DET",
-    "salary": 5400,
-    "projection": 8.61,
-    "floor_projection": 7.3,
-    "ceiling_projection": 11.84,
-    "value_score": 1.594,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-64808",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 34.7,
-    "smash_score": 2.193,
-    "smash_alignment": 2,
-    "signal_multipliers": {
-      "vulnerability": 1.099,
-      "game_script": 1.0,
-      "pace": 1.004,
-      "opportunity": 1.119
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 18.52,
-      "season_avg_allowed": 13.67,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 62.6,
-      "season_avg_plays": 63.24
-    },
-    "advanced_metrics": {
-      "target_share": 0.163,
-      "air_yards_share": 0.161,
-      "wopr": 0.358,
-      "redzone_touches_per_game": 1.0,
-      "redzone_share": 0.125
     }
   },
   {
@@ -4177,7 +4222,7 @@
     "salary": 5100,
     "projection": 8.02,
     "floor_projection": 1.22,
-    "ceiling_projection": 20.2,
+    "ceiling_projection": 20.23,
     "value_score": 1.573,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -4189,13 +4234,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 34.0,
-    "smash_score": 3.961,
+    "smash_score": 3.967,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 0.955,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 1.108
+      "opportunity": 1.11
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 11.38,
@@ -4217,8 +4262,8 @@
     "opponent": "ATL",
     "salary": 4800,
     "projection": 7.55,
-    "floor_projection": 5.32,
-    "ceiling_projection": 11.94,
+    "floor_projection": 5.31,
+    "ceiling_projection": 11.95,
     "value_score": 1.573,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -4230,13 +4275,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 33.6,
-    "smash_score": 2.487,
+    "smash_score": 2.49,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 1.003,
       "game_script": 1.0,
       "pace": 1.003,
-      "opportunity": 1.095
+      "opportunity": 1.097
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 14.82,
@@ -4253,92 +4298,6 @@
       "wopr": 0.309,
       "redzone_touches_per_game": 1.6,
       "redzone_share": 0.125
-    }
-  },
-  {
-    "player_name": "John Metchie III",
-    "position": "WR",
-    "team": "CAR",
-    "opponent": "CHI",
-    "salary": 4600,
-    "projection": 7.23,
-    "floor_projection": 6.45,
-    "ceiling_projection": 9.24,
-    "value_score": 1.572,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-102696",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 29.8,
-    "smash_score": 2.009,
-    "smash_alignment": 2,
-    "signal_multipliers": {
-      "vulnerability": 1.06,
-      "game_script": 1.0,
-      "pace": 0.988,
-      "opportunity": 1.102
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 54.6,
-      "season_avg_plays": 59.47
-    },
-    "advanced_metrics": {
-      "target_share": 0.166,
-      "air_yards_share": 0.17,
-      "wopr": 0.367,
-      "redzone_touches_per_game": 1.25,
-      "redzone_share": 0.179
-    }
-  },
-  {
-    "player_name": "Jakobi Meyers",
-    "position": "WR",
-    "team": "JAC",
-    "opponent": "CLE",
-    "salary": 5800,
-    "projection": 9.1,
-    "floor_projection": 6.95,
-    "ceiling_projection": 13.96,
-    "value_score": 1.569,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-63634",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 31.4,
-    "smash_score": 2.407,
-    "smash_alignment": 1,
-    "signal_multipliers": {
-      "vulnerability": 0.968,
-      "game_script": 1.0,
-      "pace": 1.0,
-      "opportunity": 1.133
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 26.94,
-      "season_avg_allowed": 26.91,
-      "games_sampled": 17
-    },
-    "advanced_metrics": {
-      "target_share": 0.248,
-      "air_yards_share": 0.227,
-      "wopr": 0.53,
-      "redzone_touches_per_game": 2.0,
-      "redzone_share": 0.149
     }
   },
   {
@@ -4379,6 +4338,47 @@
       "wopr": 0.158,
       "redzone_touches_per_game": 2.6,
       "redzone_share": 0.371
+    }
+  },
+  {
+    "player_name": "Jakobi Meyers",
+    "position": "WR",
+    "team": "JAC",
+    "opponent": "CLE",
+    "salary": 5800,
+    "projection": 9.09,
+    "floor_projection": 6.94,
+    "ceiling_projection": 13.95,
+    "value_score": 1.567,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-63634",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 31.4,
+    "smash_score": 2.405,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.967,
+      "game_script": 1.0,
+      "pace": 1.0,
+      "opportunity": 1.134
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 26.94,
+      "season_avg_allowed": 26.91,
+      "games_sampled": 17
+    },
+    "advanced_metrics": {
+      "target_share": 0.248,
+      "air_yards_share": 0.227,
+      "wopr": 0.53,
+      "redzone_touches_per_game": 2.0,
+      "redzone_share": 0.149
     }
   },
   {
@@ -4461,10 +4461,10 @@
     "team": "TB",
     "opponent": "CIN",
     "salary": 6300,
-    "projection": 9.73,
+    "projection": 9.72,
     "floor_projection": 4.92,
-    "ceiling_projection": 17.97,
-    "value_score": 1.544,
+    "ceiling_projection": 17.96,
+    "value_score": 1.543,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -4475,17 +4475,17 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 31.9,
-    "smash_score": 2.852,
+    "smash_score": 2.851,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.921,
+      "vulnerability": 0.92,
       "game_script": 1.0,
       "pace": 1.006,
-      "opportunity": 1.06
+      "opportunity": 1.061
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,
-      "season_avg_allowed": 25.27,
+      "season_avg_allowed": 25.29,
       "games_sampled": 17
     },
     "pace": {
@@ -4580,10 +4580,10 @@
     "team": "MIN",
     "opponent": "GB",
     "salary": 6100,
-    "projection": 9.3,
-    "floor_projection": 3.05,
-    "ceiling_projection": 19.83,
-    "value_score": 1.525,
+    "projection": 9.28,
+    "floor_projection": 3.04,
+    "ceiling_projection": 19.82,
+    "value_score": 1.521,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "Q",
@@ -4594,13 +4594,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 31.3,
-    "smash_score": 3.251,
+    "smash_score": 3.249,
     "smash_alignment": 3,
     "signal_multipliers": {
-      "vulnerability": 1.056,
+      "vulnerability": 1.055,
       "game_script": 1.034,
       "pace": 0.99,
-      "opportunity": 1.062
+      "opportunity": 1.063
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 35.76,
@@ -4828,7 +4828,7 @@
     "salary": 4200,
     "projection": 6.08,
     "floor_projection": 0.0,
-    "ceiling_projection": 15.05,
+    "ceiling_projection": 15.07,
     "value_score": 1.448,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -4840,13 +4840,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 32.2,
-    "smash_score": 3.583,
+    "smash_score": 3.588,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 1.122,
       "game_script": 1.0,
       "pace": 1.004,
-      "opportunity": 0.98
+      "opportunity": 0.981
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.52,
@@ -5144,7 +5144,7 @@
     "salary": 4000,
     "projection": 5.59,
     "floor_projection": 5.59,
-    "ceiling_projection": 5.59,
+    "ceiling_projection": 5.6,
     "value_score": 1.397,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -5156,13 +5156,13 @@
     "is_sleeper": true,
     "is_regression_candidate": false,
     "projected_ownership_pct": 31.4,
-    "smash_score": 1.397,
+    "smash_score": 1.4,
     "smash_alignment": 2,
     "signal_multipliers": {
       "vulnerability": 1.079,
       "game_script": 1.028,
       "pace": 1.008,
-      "opportunity": 1.0
+      "opportunity": 1.001
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.04,
@@ -5246,7 +5246,7 @@
     "salary": 5200,
     "projection": 7.16,
     "floor_projection": 4.83,
-    "ceiling_projection": 11.34,
+    "ceiling_projection": 11.35,
     "value_score": 1.377,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -5258,13 +5258,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 32.4,
-    "smash_score": 2.181,
+    "smash_score": 2.183,
     "smash_alignment": 3,
     "signal_multipliers": {
       "vulnerability": 1.079,
       "game_script": 1.028,
       "pace": 1.008,
-      "opportunity": 1.065
+      "opportunity": 1.067
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.04,
@@ -5391,10 +5391,10 @@
     "team": "NO",
     "opponent": "DET",
     "salary": 4000,
-    "projection": 5.43,
+    "projection": 5.42,
     "floor_projection": 0.0,
-    "ceiling_projection": 18.76,
-    "value_score": 1.357,
+    "ceiling_projection": 18.74,
+    "value_score": 1.355,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -5405,17 +5405,17 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 27.7,
-    "smash_score": 4.69,
+    "smash_score": 4.685,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.049,
+      "vulnerability": 1.048,
       "game_script": 1.0,
       "pace": 1.004,
       "opportunity": 1.072
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.06,
-      "season_avg_allowed": 35.61,
+      "season_avg_allowed": 35.7,
       "games_sampled": 17
     },
     "pace": {
@@ -5522,10 +5522,10 @@
     "team": "WAS",
     "opponent": "PHI",
     "salary": 6200,
-    "projection": 8.07,
+    "projection": 8.08,
     "floor_projection": 6.1,
-    "ceiling_projection": 13.04,
-    "value_score": 1.302,
+    "ceiling_projection": 13.05,
+    "value_score": 1.303,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -5535,18 +5535,18 @@
     "fanduel_id": "133104-56250",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 30.1,
-    "smash_score": 2.103,
+    "projected_ownership_pct": 30.2,
+    "smash_score": 2.105,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.889,
+      "vulnerability": 0.89,
       "game_script": 0.952,
       "pace": 0.983,
-      "opportunity": 1.182
+      "opportunity": 1.183
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -5586,11 +5586,11 @@
     "fanduel_id": "133104-89455",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 29.4,
+    "projected_ownership_pct": 29.3,
     "smash_score": 1.781,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.904,
+      "vulnerability": 0.903,
       "game_script": 0.892,
       "pace": 0.99,
       "opportunity": 1.063
@@ -5626,7 +5626,7 @@
     "salary": 4200,
     "projection": 5.46,
     "floor_projection": 1.06,
-    "ceiling_projection": 12.26,
+    "ceiling_projection": 12.27,
     "value_score": 1.3,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -5638,13 +5638,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 30.4,
-    "smash_score": 2.919,
+    "smash_score": 2.921,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 1.176,
       "game_script": 1.0,
       "pace": 1.009,
-      "opportunity": 1.016
+      "opportunity": 1.018
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.78,
@@ -5788,14 +5788,14 @@
     "smash_score": 3.09,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.049,
+      "vulnerability": 1.048,
       "game_script": 1.0,
       "pace": 1.004,
       "opportunity": 0.977
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.06,
-      "season_avg_allowed": 35.61,
+      "season_avg_allowed": 35.7,
       "games_sampled": 17
     },
     "pace": {
@@ -5836,7 +5836,7 @@
       "vulnerability": 0.963,
       "game_script": 1.0,
       "pace": 0.986,
-      "opportunity": 1.167
+      "opportunity": 1.168
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 12.68,
@@ -5951,10 +5951,10 @@
     "team": "JAC",
     "opponent": "CLE",
     "salary": 6100,
-    "projection": 7.65,
-    "floor_projection": 2.2,
+    "projection": 7.64,
+    "floor_projection": 2.19,
     "ceiling_projection": 17.65,
-    "value_score": 1.254,
+    "value_score": 1.252,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -5968,10 +5968,10 @@
     "smash_score": 2.893,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.968,
+      "vulnerability": 0.967,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 1.116
+      "opportunity": 1.117
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 26.94,
@@ -6173,10 +6173,10 @@
     "team": "CHI",
     "opponent": "CAR",
     "salary": 4800,
-    "projection": 5.69,
+    "projection": 5.68,
     "floor_projection": 1.7,
-    "ceiling_projection": 10.75,
-    "value_score": 1.185,
+    "ceiling_projection": 10.74,
+    "value_score": 1.183,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -6187,13 +6187,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 27.7,
-    "smash_score": 2.24,
+    "smash_score": 2.237,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.994,
+      "vulnerability": 0.993,
       "game_script": 1.0,
       "pace": 1.004,
-      "opportunity": 0.92
+      "opportunity": 0.921
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 30.3,
@@ -6218,10 +6218,10 @@
     "team": "LV",
     "opponent": "MIA",
     "salary": 5200,
-    "projection": 6.08,
+    "projection": 6.07,
     "floor_projection": 0.0,
     "ceiling_projection": 21.36,
-    "value_score": 1.169,
+    "value_score": 1.167,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -6235,10 +6235,10 @@
     "smash_score": 4.108,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.034,
+      "vulnerability": 1.033,
       "game_script": 1.0,
       "pace": 0.98,
-      "opportunity": 1.09
+      "opportunity": 1.091
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.7,
@@ -6356,7 +6356,7 @@
     "salary": 5000,
     "projection": 5.71,
     "floor_projection": 0.0,
-    "ceiling_projection": 17.31,
+    "ceiling_projection": 17.33,
     "value_score": 1.142,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -6368,13 +6368,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 30.9,
-    "smash_score": 3.462,
+    "smash_score": 3.466,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 0.836,
       "game_script": 0.952,
       "pace": 0.983,
-      "opportunity": 1.187
+      "opportunity": 1.188
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 6.54,
@@ -6548,7 +6548,7 @@
     "salary": 4500,
     "projection": 4.99,
     "floor_projection": 0.0,
-    "ceiling_projection": 15.27,
+    "ceiling_projection": 15.26,
     "value_score": 1.109,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -6560,13 +6560,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 26.7,
-    "smash_score": 3.393,
+    "smash_score": 3.391,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.994,
+      "vulnerability": 0.993,
       "game_script": 1.0,
       "pace": 1.004,
-      "opportunity": 0.949
+      "opportunity": 0.95
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 30.3,
@@ -6591,10 +6591,10 @@
     "team": "TB",
     "opponent": "CIN",
     "salary": 5000,
-    "projection": 5.48,
+    "projection": 5.47,
     "floor_projection": 2.16,
-    "ceiling_projection": 11.46,
-    "value_score": 1.096,
+    "ceiling_projection": 11.47,
+    "value_score": 1.094,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -6605,13 +6605,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 30.1,
-    "smash_score": 2.292,
+    "smash_score": 2.294,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.111,
+      "vulnerability": 1.11,
       "game_script": 1.0,
       "pace": 1.006,
-      "opportunity": 1.096
+      "opportunity": 1.098
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 16.06,
@@ -6696,12 +6696,12 @@
     "is_regression_candidate": false,
     "projected_ownership_pct": 26.4,
     "smash_score": 2.209,
-    "smash_alignment": 1,
+    "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 1.021,
+      "vulnerability": 1.02,
       "game_script": 1.0,
       "pace": 1.009,
-      "opportunity": 1.017
+      "opportunity": 1.018
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 31.96,
@@ -6721,15 +6721,60 @@
     }
   },
   {
+    "player_name": "Michael Pittman Jr.",
+    "position": "WR",
+    "team": "PIT",
+    "opponent": "ATL",
+    "salary": 5800,
+    "projection": 6.08,
+    "floor_projection": 2.85,
+    "ceiling_projection": 12.38,
+    "value_score": 1.048,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "Q",
+    "injury_details": "Leg",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-69213",
+    "is_sleeper": false,
+    "is_regression_candidate": true,
+    "projected_ownership_pct": 27.7,
+    "smash_score": 2.134,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.082,
+      "game_script": 1.0,
+      "pace": 1.003,
+      "opportunity": 1.134
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 38.0,
+      "season_avg_allowed": 33.63,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 64.2,
+      "season_avg_plays": 58.12
+    },
+    "advanced_metrics": {
+      "target_share": 0.178,
+      "air_yards_share": 0.203,
+      "wopr": 0.409,
+      "redzone_touches_per_game": 2.0,
+      "redzone_share": 0.196
+    }
+  },
+  {
     "player_name": "DeVonta Smith",
     "position": "WR",
     "team": "PHI",
     "opponent": "WAS",
     "salary": 7500,
-    "projection": 7.86,
+    "projection": 7.85,
     "floor_projection": 6.79,
-    "ceiling_projection": 9.98,
-    "value_score": 1.048,
+    "ceiling_projection": 9.97,
+    "value_score": 1.047,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "Q",
@@ -6740,13 +6785,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 28.9,
-    "smash_score": 1.331,
+    "smash_score": 1.329,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.033,
+      "vulnerability": 1.032,
       "game_script": 0.986,
       "pace": 1.002,
-      "opportunity": 1.056
+      "opportunity": 1.057
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 31.4,
@@ -6772,60 +6817,15 @@
     }
   },
   {
-    "player_name": "Michael Pittman Jr.",
-    "position": "WR",
-    "team": "PIT",
-    "opponent": "ATL",
-    "salary": 5800,
-    "projection": 6.08,
-    "floor_projection": 2.86,
-    "ceiling_projection": 12.38,
-    "value_score": 1.048,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "Q",
-    "injury_details": "Leg",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-69213",
-    "is_sleeper": false,
-    "is_regression_candidate": true,
-    "projected_ownership_pct": 27.7,
-    "smash_score": 2.134,
-    "smash_alignment": 2,
-    "signal_multipliers": {
-      "vulnerability": 1.083,
-      "game_script": 1.0,
-      "pace": 1.003,
-      "opportunity": 1.133
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 38.0,
-      "season_avg_allowed": 33.63,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 64.2,
-      "season_avg_plays": 58.12
-    },
-    "advanced_metrics": {
-      "target_share": 0.178,
-      "air_yards_share": 0.203,
-      "wopr": 0.409,
-      "redzone_touches_per_game": 2.0,
-      "redzone_share": 0.196
-    }
-  },
-  {
     "player_name": "Jayden Higgins",
     "position": "WR",
     "team": "HOU",
     "opponent": "BUF",
     "salary": 5500,
-    "projection": 5.73,
+    "projection": 5.72,
     "floor_projection": 0.55,
     "ceiling_projection": 14.88,
-    "value_score": 1.042,
+    "value_score": 1.04,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -6839,10 +6839,10 @@
     "smash_score": 2.705,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.922,
+      "vulnerability": 0.921,
       "game_script": 0.966,
       "pace": 1.006,
-      "opportunity": 1.103
+      "opportunity": 1.104
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.54,
@@ -6875,7 +6875,7 @@
     "salary": 4500,
     "projection": 4.65,
     "floor_projection": 2.93,
-    "ceiling_projection": 7.52,
+    "ceiling_projection": 7.53,
     "value_score": 1.033,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -6887,13 +6887,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 28.8,
-    "smash_score": 1.671,
+    "smash_score": 1.673,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 0.965,
       "game_script": 1.0,
       "pace": 1.004,
-      "opportunity": 1.039
+      "opportunity": 1.041
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 11.24,
@@ -6920,7 +6920,7 @@
     "salary": 6000,
     "projection": 6.08,
     "floor_projection": 3.98,
-    "ceiling_projection": 9.81,
+    "ceiling_projection": 9.82,
     "value_score": 1.013,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -6932,17 +6932,17 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 27.6,
-    "smash_score": 1.635,
+    "smash_score": 1.637,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.889,
+      "vulnerability": 0.89,
       "game_script": 0.952,
       "pace": 0.983,
-      "opportunity": 1.064
+      "opportunity": 1.065
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -6970,8 +6970,8 @@
     "opponent": "TEN",
     "salary": 5400,
     "projection": 5.46,
-    "floor_projection": 2.2,
-    "ceiling_projection": 12.21,
+    "floor_projection": 2.19,
+    "ceiling_projection": 12.2,
     "value_score": 1.011,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -6983,13 +6983,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 26.5,
-    "smash_score": 2.261,
+    "smash_score": 2.259,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.054,
+      "vulnerability": 1.053,
       "game_script": 1.0,
       "pace": 0.996,
-      "opportunity": 1.178
+      "opportunity": 1.179
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.72,
@@ -7118,7 +7118,7 @@
     "salary": 5300,
     "projection": 5.26,
     "floor_projection": 0.55,
-    "ceiling_projection": 14.43,
+    "ceiling_projection": 14.44,
     "value_score": 0.992,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -7130,13 +7130,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 28.8,
-    "smash_score": 2.723,
+    "smash_score": 2.725,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.213,
+      "vulnerability": 1.212,
       "game_script": 1.0,
       "pace": 1.009,
-      "opportunity": 1.171
+      "opportunity": 1.172
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 23.28,
@@ -7163,7 +7163,7 @@
     "salary": 4200,
     "projection": 4.16,
     "floor_projection": 3.42,
-    "ceiling_projection": 5.55,
+    "ceiling_projection": 5.56,
     "value_score": 0.99,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -7175,17 +7175,17 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 24.8,
-    "smash_score": 1.321,
+    "smash_score": 1.324,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.889,
+      "vulnerability": 0.89,
       "game_script": 0.952,
       "pace": 0.983,
-      "opportunity": 1.053
+      "opportunity": 1.054
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -7229,10 +7229,10 @@
     "smash_score": 0.96,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.956,
+      "vulnerability": 0.955,
       "game_script": 1.028,
       "pace": 1.008,
-      "opportunity": 0.969
+      "opportunity": 0.97
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 25.94,
@@ -7280,7 +7280,7 @@
     "smash_score": 1.629,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.034,
+      "vulnerability": 1.033,
       "game_script": 1.0,
       "pace": 0.98,
       "opportunity": 0.873
@@ -7325,10 +7325,10 @@
     "smash_score": 2.954,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.034,
+      "vulnerability": 1.033,
       "game_script": 1.0,
       "pace": 0.98,
-      "opportunity": 1.142
+      "opportunity": 1.143
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.7,
@@ -7460,7 +7460,7 @@
     "smash_score": 0.95,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.083,
+      "vulnerability": 1.082,
       "game_script": 1.0,
       "pace": 1.003,
       "opportunity": 1.0
@@ -7490,7 +7490,7 @@
     "salary": 4900,
     "projection": 4.63,
     "floor_projection": 2.99,
-    "ceiling_projection": 7.52,
+    "ceiling_projection": 7.53,
     "value_score": 0.945,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -7502,13 +7502,13 @@
     "is_sleeper": false,
     "is_regression_candidate": true,
     "projected_ownership_pct": 27.9,
-    "smash_score": 1.535,
+    "smash_score": 1.537,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 1.003,
       "game_script": 1.0,
       "pace": 1.003,
-      "opportunity": 1.06
+      "opportunity": 1.062
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 14.82,
@@ -7533,10 +7533,10 @@
     "team": "MIN",
     "opponent": "GB",
     "salary": 8100,
-    "projection": 7.57,
+    "projection": 7.56,
     "floor_projection": 1.32,
-    "ceiling_projection": 19.69,
-    "value_score": 0.935,
+    "ceiling_projection": 19.68,
+    "value_score": 0.933,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -7547,13 +7547,13 @@
     "is_sleeper": false,
     "is_regression_candidate": true,
     "projected_ownership_pct": 27.6,
-    "smash_score": 2.431,
+    "smash_score": 2.43,
     "smash_alignment": 3,
     "signal_multipliers": {
-      "vulnerability": 1.056,
+      "vulnerability": 1.055,
       "game_script": 1.034,
       "pace": 0.99,
-      "opportunity": 1.162
+      "opportunity": 1.163
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 35.76,
@@ -7601,10 +7601,10 @@
     "smash_score": 1.481,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.945,
+      "vulnerability": 0.944,
       "game_script": 1.034,
       "pace": 0.99,
-      "opportunity": 1.013
+      "opportunity": 1.015
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 10.8,
@@ -7630,51 +7630,6 @@
     }
   },
   {
-    "player_name": "Jack Bech",
-    "position": "WR",
-    "team": "LV",
-    "opponent": "MIA",
-    "salary": 4800,
-    "projection": 4.26,
-    "floor_projection": 1.1,
-    "ceiling_projection": 9.96,
-    "value_score": 0.887,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-151741",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 24.8,
-    "smash_score": 2.075,
-    "smash_alignment": 2,
-    "signal_multipliers": {
-      "vulnerability": 1.034,
-      "game_script": 1.0,
-      "pace": 0.98,
-      "opportunity": 1.109
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 33.7,
-      "season_avg_allowed": 29.87,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 51.6,
-      "season_avg_plays": 55.76
-    },
-    "advanced_metrics": {
-      "target_share": 0.137,
-      "air_yards_share": 0.203,
-      "wopr": 0.347,
-      "redzone_touches_per_game": 1.33,
-      "redzone_share": 0.196
-    }
-  },
-  {
     "player_name": "Jeremy Ruckert",
     "position": "TE",
     "team": "NYJ",
@@ -7695,12 +7650,12 @@
     "is_regression_candidate": false,
     "projected_ownership_pct": 26.4,
     "smash_score": 0.967,
-    "smash_alignment": 1,
+    "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.133,
+      "vulnerability": 1.132,
       "game_script": 1.0,
       "pace": 0.996,
-      "opportunity": 1.02
+      "opportunity": 1.022
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.14,
@@ -7720,15 +7675,60 @@
     }
   },
   {
+    "player_name": "Jack Bech",
+    "position": "WR",
+    "team": "LV",
+    "opponent": "MIA",
+    "salary": 4800,
+    "projection": 4.25,
+    "floor_projection": 1.1,
+    "ceiling_projection": 9.96,
+    "value_score": 0.885,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-151741",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 24.8,
+    "smash_score": 2.075,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.033,
+      "game_script": 1.0,
+      "pace": 0.98,
+      "opportunity": 1.11
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 33.7,
+      "season_avg_allowed": 29.87,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 51.6,
+      "season_avg_plays": 55.76
+    },
+    "advanced_metrics": {
+      "target_share": 0.137,
+      "air_yards_share": 0.203,
+      "wopr": 0.347,
+      "redzone_touches_per_game": 1.33,
+      "redzone_share": 0.196
+    }
+  },
+  {
     "player_name": "Xavier Weaver",
     "position": "WR",
     "team": "ARI",
     "opponent": "LAC",
     "salary": 4000,
-    "projection": 3.54,
+    "projection": 3.53,
     "floor_projection": 2.19,
-    "ceiling_projection": 5.46,
-    "value_score": 0.885,
+    "ceiling_projection": 5.45,
+    "value_score": 0.882,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "Q",
@@ -7739,13 +7739,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 23.1,
-    "smash_score": 1.365,
+    "smash_score": 1.363,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 1.016,
+      "vulnerability": 1.014,
       "game_script": 1.0,
       "pace": 0.995,
-      "opportunity": 0.982
+      "opportunity": 0.983
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 32.5,
@@ -7787,7 +7787,7 @@
     "smash_score": 1.147,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.956,
+      "vulnerability": 0.955,
       "game_script": 1.028,
       "pace": 1.008,
       "opportunity": 0.894
@@ -7866,10 +7866,10 @@
     "team": "CIN",
     "opponent": "TB",
     "salary": 4600,
-    "projection": 3.8,
+    "projection": 3.79,
     "floor_projection": 1.33,
     "ceiling_projection": 7.08,
-    "value_score": 0.826,
+    "value_score": 0.824,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -7886,7 +7886,7 @@
       "vulnerability": 1.176,
       "game_script": 1.0,
       "pace": 1.009,
-      "opportunity": 0.944
+      "opportunity": 0.945
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.78,
@@ -7911,10 +7911,10 @@
     "team": "TB",
     "opponent": "CIN",
     "salary": 5400,
-    "projection": 4.36,
+    "projection": 4.35,
     "floor_projection": 1.82,
     "ceiling_projection": 8.09,
-    "value_score": 0.807,
+    "value_score": 0.806,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "Q",
@@ -7928,14 +7928,14 @@
     "smash_score": 1.498,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.921,
+      "vulnerability": 0.92,
       "game_script": 1.0,
       "pace": 1.006,
       "opportunity": 0.991
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,
-      "season_avg_allowed": 25.27,
+      "season_avg_allowed": 25.29,
       "games_sampled": 17
     },
     "pace": {
@@ -7957,7 +7957,7 @@
     "opponent": "ARI",
     "salary": 4100,
     "projection": 3.3,
-    "floor_projection": 2.94,
+    "floor_projection": 2.93,
     "ceiling_projection": 3.58,
     "value_score": 0.805,
     "name_match_quality": "exact",
@@ -7973,10 +7973,10 @@
     "smash_score": 0.873,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.213,
+      "vulnerability": 1.212,
       "game_script": 1.0,
       "pace": 1.009,
-      "opportunity": 0.929
+      "opportunity": 0.93
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 23.28,
@@ -8001,10 +8001,10 @@
     "team": "CIN",
     "opponent": "TB",
     "salary": 4500,
-    "projection": 3.61,
+    "projection": 3.6,
     "floor_projection": 2.02,
     "ceiling_projection": 6.14,
-    "value_score": 0.802,
+    "value_score": 0.8,
     "name_match_quality": "fuzzy",
     "is_stale": false,
     "injury_status": "",
@@ -8018,10 +8018,10 @@
     "smash_score": 1.364,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.966,
+      "vulnerability": 0.965,
       "game_script": 1.0,
       "pace": 1.009,
-      "opportunity": 1.026
+      "opportunity": 1.027
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 24.78,
@@ -8038,51 +8038,6 @@
       "wopr": 0.284,
       "redzone_touches_per_game": 1.25,
       "redzone_share": 0.13
-    }
-  },
-  {
-    "player_name": "Mo Alie-Cox",
-    "position": "TE",
-    "team": "IND",
-    "opponent": "BAL",
-    "salary": 4100,
-    "projection": 3.27,
-    "floor_projection": 0.98,
-    "ceiling_projection": 6.52,
-    "value_score": 0.798,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-24533",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 24.4,
-    "smash_score": 1.59,
-    "smash_alignment": 0,
-    "signal_multipliers": {
-      "vulnerability": 0.91,
-      "game_script": 1.0,
-      "pace": 0.997,
-      "opportunity": 0.973
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 9.44,
-      "season_avg_allowed": 10.92,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 59.6,
-      "season_avg_plays": 59.88
-    },
-    "advanced_metrics": {
-      "target_share": 0.074,
-      "air_yards_share": 0.044,
-      "wopr": 0.141,
-      "redzone_touches_per_game": 1.0,
-      "redzone_share": 0.098
     }
   },
   {
@@ -8131,6 +8086,51 @@
     }
   },
   {
+    "player_name": "Mo Alie-Cox",
+    "position": "TE",
+    "team": "IND",
+    "opponent": "BAL",
+    "salary": 4100,
+    "projection": 3.26,
+    "floor_projection": 0.98,
+    "ceiling_projection": 6.52,
+    "value_score": 0.795,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-24533",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 24.4,
+    "smash_score": 1.59,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 0.91,
+      "game_script": 1.0,
+      "pace": 0.997,
+      "opportunity": 0.975
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 9.44,
+      "season_avg_allowed": 10.92,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 59.6,
+      "season_avg_plays": 59.88
+    },
+    "advanced_metrics": {
+      "target_share": 0.074,
+      "air_yards_share": 0.044,
+      "wopr": 0.141,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.098
+    }
+  },
+  {
     "player_name": "Daniel Bellinger",
     "position": "TE",
     "team": "TEN",
@@ -8138,7 +8138,7 @@
     "salary": 4500,
     "projection": 3.54,
     "floor_projection": 0.0,
-    "ceiling_projection": 11.23,
+    "ceiling_projection": 11.24,
     "value_score": 0.787,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -8150,13 +8150,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 25.3,
-    "smash_score": 2.496,
+    "smash_score": 2.498,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.142,
+      "vulnerability": 1.141,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 0.984
+      "opportunity": 0.986
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.16,
@@ -8221,51 +8221,6 @@
     }
   },
   {
-    "player_name": "Kendrick Bourne",
-    "position": "WR",
-    "team": "ARI",
-    "opponent": "LAC",
-    "salary": 4700,
-    "projection": 3.54,
-    "floor_projection": 0.24,
-    "ceiling_projection": 7.86,
-    "value_score": 0.753,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-80289",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 22.8,
-    "smash_score": 1.672,
-    "smash_alignment": 0,
-    "signal_multipliers": {
-      "vulnerability": 1.016,
-      "game_script": 1.0,
-      "pace": 0.995,
-      "opportunity": 0.926
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 32.5,
-      "season_avg_allowed": 27.42,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 57.4,
-      "season_avg_plays": 63.18
-    },
-    "advanced_metrics": {
-      "target_share": 0.074,
-      "air_yards_share": 0.098,
-      "wopr": 0.179,
-      "redzone_touches_per_game": 1.0,
-      "redzone_share": 0.064
-    }
-  },
-  {
     "player_name": "Olamide Zaccheaus",
     "position": "WR",
     "team": "ATL",
@@ -8288,7 +8243,7 @@
     "smash_score": 1.721,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 1.016,
+      "vulnerability": 1.015,
       "game_script": 1.0,
       "pace": 1.004,
       "opportunity": 0.992
@@ -8311,6 +8266,51 @@
     }
   },
   {
+    "player_name": "Kendrick Bourne",
+    "position": "WR",
+    "team": "ARI",
+    "opponent": "LAC",
+    "salary": 4700,
+    "projection": 3.53,
+    "floor_projection": 0.24,
+    "ceiling_projection": 7.85,
+    "value_score": 0.751,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-80289",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 22.8,
+    "smash_score": 1.67,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 1.014,
+      "game_script": 1.0,
+      "pace": 0.995,
+      "opportunity": 0.927
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 32.5,
+      "season_avg_allowed": 27.42,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 57.4,
+      "season_avg_plays": 63.18
+    },
+    "advanced_metrics": {
+      "target_share": 0.074,
+      "air_yards_share": 0.098,
+      "wopr": 0.179,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.064
+    }
+  },
+  {
     "player_name": "Cedric Tillman",
     "position": "WR",
     "team": "CLE",
@@ -8318,7 +8318,7 @@
     "salary": 4400,
     "projection": 3.28,
     "floor_projection": 1.07,
-    "ceiling_projection": 6.54,
+    "ceiling_projection": 6.55,
     "value_score": 0.745,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -8330,7 +8330,7 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 22.2,
-    "smash_score": 1.486,
+    "smash_score": 1.489,
     "smash_alignment": 0,
     "signal_multipliers": {
       "vulnerability": 1.0,
@@ -8442,8 +8442,8 @@
     "opponent": "CIN",
     "salary": 6400,
     "projection": 4.63,
-    "floor_projection": 2.58,
-    "ceiling_projection": 8.56,
+    "floor_projection": 2.57,
+    "ceiling_projection": 8.55,
     "value_score": 0.723,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -8455,17 +8455,17 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 24.2,
-    "smash_score": 1.338,
+    "smash_score": 1.336,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.921,
+      "vulnerability": 0.92,
       "game_script": 1.0,
       "pace": 1.006,
-      "opportunity": 1.108
+      "opportunity": 1.109
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,
-      "season_avg_allowed": 25.27,
+      "season_avg_allowed": 25.29,
       "games_sampled": 17
     },
     "pace": {
@@ -8488,7 +8488,7 @@
     "salary": 5200,
     "projection": 3.76,
     "floor_projection": 2.88,
-    "ceiling_projection": 5.76,
+    "ceiling_projection": 5.77,
     "value_score": 0.723,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -8500,13 +8500,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 25.6,
-    "smash_score": 1.108,
+    "smash_score": 1.11,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 0.995,
       "game_script": 1.0,
       "pace": 0.993,
-      "opportunity": 1.136
+      "opportunity": 1.137
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 12.22,
@@ -8592,7 +8592,7 @@
       "vulnerability": 1.102,
       "game_script": 0.986,
       "pace": 1.002,
-      "opportunity": 0.949
+      "opportunity": 0.95
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.74,
@@ -8625,7 +8625,7 @@
     "salary": 4200,
     "projection": 2.96,
     "floor_projection": 0.69,
-    "ceiling_projection": 5.51,
+    "ceiling_projection": 5.5,
     "value_score": 0.705,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -8637,10 +8637,10 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 21.4,
-    "smash_score": 1.312,
+    "smash_score": 1.31,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.033,
+      "vulnerability": 1.032,
       "game_script": 0.986,
       "pace": 1.002,
       "opportunity": 0.867
@@ -8676,7 +8676,7 @@
     "salary": 4100,
     "projection": 2.89,
     "floor_projection": 0.0,
-    "ceiling_projection": 6.87,
+    "ceiling_projection": 6.86,
     "value_score": 0.705,
     "name_match_quality": "fuzzy",
     "is_stale": false,
@@ -8688,13 +8688,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 21.4,
-    "smash_score": 1.676,
+    "smash_score": 1.673,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.994,
+      "vulnerability": 0.993,
       "game_script": 1.0,
       "pace": 1.004,
-      "opportunity": 0.935
+      "opportunity": 0.936
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 30.3,
@@ -8721,7 +8721,7 @@
     "salary": 4200,
     "projection": 2.91,
     "floor_projection": 0.34,
-    "ceiling_projection": 7.12,
+    "ceiling_projection": 7.13,
     "value_score": 0.693,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -8733,13 +8733,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 23.4,
-    "smash_score": 1.695,
+    "smash_score": 1.698,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 0.786,
       "game_script": 0.892,
       "pace": 0.99,
-      "opportunity": 1.05
+      "opportunity": 1.052
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 2.82,
@@ -8772,7 +8772,7 @@
     "salary": 4800,
     "projection": 3.31,
     "floor_projection": 0.26,
-    "ceiling_projection": 8.88,
+    "ceiling_projection": 8.89,
     "value_score": 0.69,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -8784,13 +8784,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 24.3,
-    "smash_score": 1.85,
+    "smash_score": 1.852,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.142,
+      "vulnerability": 1.141,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 1.127
+      "opportunity": 1.129
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.16,
@@ -8815,10 +8815,10 @@
     "team": "MIA",
     "opponent": "LV",
     "salary": 5800,
-    "projection": 3.88,
+    "projection": 3.87,
     "floor_projection": 0.28,
-    "ceiling_projection": 9.6,
-    "value_score": 0.669,
+    "ceiling_projection": 9.59,
+    "value_score": 0.667,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -8829,13 +8829,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 22.6,
-    "smash_score": 1.655,
+    "smash_score": 1.653,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.982,
+      "vulnerability": 0.981,
       "game_script": 1.0,
       "pace": 0.986,
-      "opportunity": 1.035
+      "opportunity": 1.036
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 25.86,
@@ -8931,7 +8931,7 @@
       "vulnerability": 1.122,
       "game_script": 1.0,
       "pace": 1.004,
-      "opportunity": 0.942
+      "opportunity": 0.943
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.52,
@@ -8996,6 +8996,51 @@
     }
   },
   {
+    "player_name": "Jimmy Horn Jr.",
+    "position": "WR",
+    "team": "CAR",
+    "opponent": "CHI",
+    "salary": 4100,
+    "projection": 2.67,
+    "floor_projection": 2.04,
+    "ceiling_projection": 3.65,
+    "value_score": 0.651,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-157438",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 20.7,
+    "smash_score": 0.89,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 1.081,
+      "game_script": 1.0,
+      "pace": 0.988,
+      "opportunity": 1.011
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 54.6,
+      "season_avg_plays": 59.47
+    },
+    "advanced_metrics": {
+      "target_share": 0.043,
+      "air_yards_share": -0.032,
+      "wopr": 0.042,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.217
+    }
+  },
+  {
     "player_name": "Ladd McConkey",
     "position": "WR",
     "team": "LAC",
@@ -9016,12 +9061,12 @@
     "is_regression_candidate": false,
     "projected_ownership_pct": 23.3,
     "smash_score": 1.514,
-    "smash_alignment": 2,
+    "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.021,
+      "vulnerability": 1.02,
       "game_script": 1.0,
       "pace": 1.009,
-      "opportunity": 1.148
+      "opportunity": 1.149
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 31.96,
@@ -9038,51 +9083,6 @@
       "wopr": 0.437,
       "redzone_touches_per_game": 1.8,
       "redzone_share": 0.2
-    }
-  },
-  {
-    "player_name": "Jimmy Horn Jr.",
-    "position": "WR",
-    "team": "CAR",
-    "opponent": "CHI",
-    "salary": 4100,
-    "projection": 2.62,
-    "floor_projection": 2.0,
-    "ceiling_projection": 3.58,
-    "value_score": 0.639,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-157438",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 20.6,
-    "smash_score": 0.873,
-    "smash_alignment": 1,
-    "signal_multipliers": {
-      "vulnerability": 1.06,
-      "game_script": 1.0,
-      "pace": 0.988,
-      "opportunity": 1.01
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 54.6,
-      "season_avg_plays": 59.47
-    },
-    "advanced_metrics": {
-      "target_share": 0.043,
-      "air_yards_share": -0.032,
-      "wopr": 0.042,
-      "redzone_touches_per_game": 1.0,
-      "redzone_share": 0.217
     }
   },
   {
@@ -9187,10 +9187,10 @@
     "team": "BAL",
     "opponent": "IND",
     "salary": 4300,
-    "projection": 2.69,
+    "projection": 2.68,
     "floor_projection": 0.0,
     "ceiling_projection": 8.42,
-    "value_score": 0.626,
+    "value_score": 0.623,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -9204,7 +9204,7 @@
     "smash_score": 1.958,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.082,
+      "vulnerability": 1.081,
       "game_script": 1.0,
       "pace": 0.993,
       "opportunity": 0.972
@@ -9249,7 +9249,7 @@
     "smash_score": 0.871,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.966,
+      "vulnerability": 0.965,
       "game_script": 1.0,
       "pace": 1.009,
       "opportunity": 0.988
@@ -9322,10 +9322,10 @@
     "team": "HOU",
     "opponent": "BUF",
     "salary": 4200,
-    "projection": 2.52,
+    "projection": 2.51,
     "floor_projection": 0.86,
     "ceiling_projection": 5.39,
-    "value_score": 0.6,
+    "value_score": 0.598,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -9335,14 +9335,14 @@
     "fanduel_id": "133104-111637",
     "is_sleeper": false,
     "is_regression_candidate": true,
-    "projected_ownership_pct": 22.2,
+    "projected_ownership_pct": 22.0,
     "smash_score": 1.283,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 0.959,
       "game_script": 0.966,
       "pace": 1.006,
-      "opportunity": 1.076
+      "opportunity": 1.077
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 13.34,
@@ -9390,10 +9390,10 @@
     "smash_score": 1.258,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.033,
+      "vulnerability": 1.032,
       "game_script": 0.986,
       "pace": 1.002,
-      "opportunity": 1.004
+      "opportunity": 1.005
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 31.4,
@@ -9531,7 +9531,7 @@
     "smash_score": 1.737,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.982,
+      "vulnerability": 0.981,
       "game_script": 1.0,
       "pace": 0.986,
       "opportunity": 0.94
@@ -9559,10 +9559,10 @@
     "team": "MIA",
     "opponent": "LV",
     "salary": 4000,
-    "projection": 2.28,
+    "projection": 2.27,
     "floor_projection": 0.0,
     "ceiling_projection": 7.5,
-    "value_score": 0.57,
+    "value_score": 0.568,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -9576,7 +9576,7 @@
     "smash_score": 1.875,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.982,
+      "vulnerability": 0.981,
       "game_script": 1.0,
       "pace": 0.986,
       "opportunity": 1.052
@@ -9606,7 +9606,7 @@
     "salary": 4600,
     "projection": 2.58,
     "floor_projection": 1.7,
-    "ceiling_projection": 4.12,
+    "ceiling_projection": 4.13,
     "value_score": 0.561,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -9618,13 +9618,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 20.0,
-    "smash_score": 0.896,
+    "smash_score": 0.898,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 0.993,
-      "opportunity": 1.055
+      "opportunity": 1.056
     },
     "pace": {
       "recent_avg_plays": 57.2,
@@ -9715,7 +9715,7 @@
       "vulnerability": 0.959,
       "game_script": 0.966,
       "pace": 1.006,
-      "opportunity": 0.971
+      "opportunity": 0.972
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 13.34,
@@ -9746,10 +9746,10 @@
     "team": "LV",
     "opponent": "MIA",
     "salary": 4600,
-    "projection": 2.5,
+    "projection": 2.51,
     "floor_projection": 0.0,
-    "ceiling_projection": 8.91,
-    "value_score": 0.543,
+    "ceiling_projection": 8.96,
+    "value_score": 0.546,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -9759,18 +9759,18 @@
     "fanduel_id": "133104-138998",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 21.5,
-    "smash_score": 1.937,
+    "projected_ownership_pct": 21.7,
+    "smash_score": 1.948,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.062,
+      "vulnerability": 1.066,
       "game_script": 1.0,
       "pace": 0.98,
-      "opportunity": 1.107
+      "opportunity": 1.109
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 15.42,
-      "season_avg_allowed": 16.22,
+      "recent_avg_allowed": 15.62,
+      "season_avg_allowed": 16.28,
       "games_sampled": 17
     },
     "pace": {
@@ -9811,7 +9811,7 @@
       "vulnerability": 1.079,
       "game_script": 1.028,
       "pace": 1.008,
-      "opportunity": 0.912
+      "opportunity": 0.913
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.04,
@@ -9844,7 +9844,7 @@
     "salary": 4300,
     "projection": 2.27,
     "floor_projection": 0.0,
-    "ceiling_projection": 6.94,
+    "ceiling_projection": 6.95,
     "value_score": 0.528,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -9856,13 +9856,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 20.2,
-    "smash_score": 1.614,
+    "smash_score": 1.616,
     "smash_alignment": 0,
     "signal_multipliers": {
       "vulnerability": 0.836,
       "game_script": 0.952,
       "pace": 0.983,
-      "opportunity": 0.949
+      "opportunity": 0.95
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 6.54,
@@ -9893,10 +9893,10 @@
     "team": "NYJ",
     "opponent": "TEN",
     "salary": 4300,
-    "projection": 2.21,
+    "projection": 2.2,
     "floor_projection": 1.11,
     "ceiling_projection": 3.74,
-    "value_score": 0.514,
+    "value_score": 0.512,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
@@ -9910,10 +9910,10 @@
     "smash_score": 0.87,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.054,
+      "vulnerability": 1.053,
       "game_script": 1.0,
       "pace": 0.996,
-      "opportunity": 0.974
+      "opportunity": 0.975
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.72,
@@ -10023,6 +10023,51 @@
     }
   },
   {
+    "player_name": "Xavier Legette",
+    "position": "WR",
+    "team": "CAR",
+    "opponent": "CHI",
+    "salary": 4800,
+    "projection": 2.35,
+    "floor_projection": 0.61,
+    "ceiling_projection": 5.46,
+    "value_score": 0.49,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-114198",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 19.6,
+    "smash_score": 1.137,
+    "smash_alignment": 2,
+    "signal_multipliers": {
+      "vulnerability": 1.081,
+      "game_script": 1.0,
+      "pace": 0.988,
+      "opportunity": 1.1
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 54.6,
+      "season_avg_plays": 59.47
+    },
+    "advanced_metrics": {
+      "target_share": 0.106,
+      "air_yards_share": 0.144,
+      "wopr": 0.259,
+      "redzone_touches_per_game": 1.4,
+      "redzone_share": 0.304
+    }
+  },
+  {
     "player_name": "KeAndre Lambert-Smith",
     "position": "WR",
     "team": "LAC",
@@ -10043,12 +10088,12 @@
     "is_regression_candidate": false,
     "projected_ownership_pct": 18.5,
     "smash_score": 1.517,
-    "smash_alignment": 1,
+    "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 1.021,
+      "vulnerability": 1.02,
       "game_script": 1.0,
       "pace": 1.009,
-      "opportunity": 0.958
+      "opportunity": 0.959
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 31.96,
@@ -10086,14 +10131,14 @@
     "fanduel_id": "133104-119788",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 19.5,
+    "projected_ownership_pct": 19.3,
     "smash_score": 1.517,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.922,
+      "vulnerability": 0.921,
       "game_script": 0.966,
       "pace": 1.006,
-      "opportunity": 1.054
+      "opportunity": 1.055
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.54,
@@ -10126,7 +10171,7 @@
     "salary": 4100,
     "projection": 1.99,
     "floor_projection": 0.0,
-    "ceiling_projection": 5.74,
+    "ceiling_projection": 5.75,
     "value_score": 0.485,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -10138,7 +10183,7 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 18.3,
-    "smash_score": 1.4,
+    "smash_score": 1.402,
     "smash_alignment": 0,
     "signal_multipliers": {
       "vulnerability": 1.0,
@@ -10156,96 +10201,6 @@
       "wopr": 0.091,
       "redzone_touches_per_game": 1.0,
       "redzone_share": 0.143
-    }
-  },
-  {
-    "player_name": "Xavier Legette",
-    "position": "WR",
-    "team": "CAR",
-    "opponent": "CHI",
-    "salary": 4800,
-    "projection": 2.3,
-    "floor_projection": 0.6,
-    "ceiling_projection": 5.35,
-    "value_score": 0.479,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-114198",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 19.3,
-    "smash_score": 1.115,
-    "smash_alignment": 2,
-    "signal_multipliers": {
-      "vulnerability": 1.06,
-      "game_script": 1.0,
-      "pace": 0.988,
-      "opportunity": 1.1
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 54.6,
-      "season_avg_plays": 59.47
-    },
-    "advanced_metrics": {
-      "target_share": 0.106,
-      "air_yards_share": 0.144,
-      "wopr": 0.259,
-      "redzone_touches_per_game": 1.4,
-      "redzone_share": 0.304
-    }
-  },
-  {
-    "player_name": "David Sills V",
-    "position": "WR",
-    "team": "TB",
-    "opponent": "CIN",
-    "salary": 4100,
-    "projection": 1.95,
-    "floor_projection": 0.0,
-    "ceiling_projection": 6.59,
-    "value_score": 0.476,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-61555",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 18.0,
-    "smash_score": 1.607,
-    "smash_alignment": 1,
-    "signal_multipliers": {
-      "vulnerability": 0.921,
-      "game_script": 1.0,
-      "pace": 1.006,
-      "opportunity": 1.052
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 21.98,
-      "season_avg_allowed": 25.27,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 64.0,
-      "season_avg_plays": 62.82
-    },
-    "advanced_metrics": {
-      "target_share": 0.13,
-      "air_yards_share": 0.177,
-      "wopr": 0.318,
-      "redzone_touches_per_game": 1.5,
-      "redzone_share": 0.144
     }
   },
   {
@@ -10267,14 +10222,14 @@
     "fanduel_id": "133104-87418",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 18.6,
+    "projected_ownership_pct": 18.7,
     "smash_score": 0.913,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.956,
+      "vulnerability": 0.955,
       "game_script": 1.028,
       "pace": 1.008,
-      "opportunity": 0.958
+      "opportunity": 0.959
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 25.94,
@@ -10345,6 +10300,51 @@
     }
   },
   {
+    "player_name": "David Sills V",
+    "position": "WR",
+    "team": "TB",
+    "opponent": "CIN",
+    "salary": 4100,
+    "projection": 1.94,
+    "floor_projection": 0.0,
+    "ceiling_projection": 6.59,
+    "value_score": 0.473,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-61555",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 17.9,
+    "smash_score": 1.607,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 0.92,
+      "game_script": 1.0,
+      "pace": 1.006,
+      "opportunity": 1.052
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 21.98,
+      "season_avg_allowed": 25.29,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 64.0,
+      "season_avg_plays": 62.82
+    },
+    "advanced_metrics": {
+      "target_share": 0.13,
+      "air_yards_share": 0.177,
+      "wopr": 0.318,
+      "redzone_touches_per_game": 1.5,
+      "redzone_share": 0.144
+    }
+  },
+  {
     "player_name": "Corey Kiner",
     "position": "RB",
     "team": "ARI",
@@ -10397,7 +10397,7 @@
     "salary": 4600,
     "projection": 2.13,
     "floor_projection": 1.07,
-    "ceiling_projection": 3.79,
+    "ceiling_projection": 3.78,
     "value_score": 0.463,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -10409,13 +10409,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 18.4,
-    "smash_score": 0.824,
+    "smash_score": 0.822,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 1.034,
+      "vulnerability": 1.033,
       "game_script": 1.0,
       "pace": 0.98,
-      "opportunity": 1.021
+      "opportunity": 1.022
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.7,
@@ -10493,7 +10493,7 @@
     "salary": 4000,
     "projection": 1.83,
     "floor_projection": 0.47,
-    "ceiling_projection": 3.7,
+    "ceiling_projection": 3.71,
     "value_score": 0.458,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -10505,13 +10505,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 19.5,
-    "smash_score": 0.925,
+    "smash_score": 0.927,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.142,
+      "vulnerability": 1.141,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 0.959
+      "opportunity": 0.96
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.16,
@@ -10641,7 +10641,7 @@
       "vulnerability": 0.963,
       "game_script": 1.0,
       "pace": 0.986,
-      "opportunity": 1.011
+      "opportunity": 1.012
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 12.68,
@@ -10683,10 +10683,10 @@
     "smash_score": 0.559,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.948,
+      "vulnerability": 0.947,
       "game_script": 1.0,
       "pace": 1.008,
-      "opportunity": 0.974
+      "opportunity": 0.975
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 24.16,
@@ -10728,10 +10728,10 @@
     "smash_score": 1.281,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 1.016,
+      "vulnerability": 1.015,
       "game_script": 1.0,
       "pace": 1.004,
-      "opportunity": 0.988
+      "opportunity": 0.989
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 29.26,
@@ -10818,10 +10818,10 @@
     "smash_score": 1.256,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.922,
+      "vulnerability": 0.921,
       "game_script": 0.966,
       "pace": 1.006,
-      "opportunity": 0.946
+      "opportunity": 0.947
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.54,
@@ -10872,7 +10872,7 @@
       "vulnerability": 0.836,
       "game_script": 0.952,
       "pace": 0.983,
-      "opportunity": 1.025
+      "opportunity": 1.027
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 6.54,
@@ -10968,7 +10968,7 @@
       "vulnerability": 0.939,
       "game_script": 1.0,
       "pace": 1.008,
-      "opportunity": 0.926
+      "opportunity": 0.927
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 10.36,
@@ -11040,7 +11040,7 @@
     "salary": 4100,
     "projection": 1.63,
     "floor_projection": 0.0,
-    "ceiling_projection": 4.91,
+    "ceiling_projection": 4.92,
     "value_score": 0.398,
     "name_match_quality": "fuzzy",
     "is_stale": false,
@@ -11052,13 +11052,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 17.9,
-    "smash_score": 1.198,
+    "smash_score": 1.2,
     "smash_alignment": 0,
     "signal_multipliers": {
       "vulnerability": 0.91,
       "game_script": 1.0,
       "pace": 0.997,
-      "opportunity": 0.933
+      "opportunity": 0.934
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 9.44,
@@ -11085,7 +11085,7 @@
     "salary": 4000,
     "projection": 1.59,
     "floor_projection": 0.0,
-    "ceiling_projection": 5.03,
+    "ceiling_projection": 5.04,
     "value_score": 0.398,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -11097,13 +11097,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 17.4,
-    "smash_score": 1.258,
+    "smash_score": 1.26,
     "smash_alignment": 0,
     "signal_multipliers": {
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 0.993,
-      "opportunity": 0.983
+      "opportunity": 0.984
     },
     "pace": {
       "recent_avg_plays": 57.2,
@@ -11290,7 +11290,7 @@
       "vulnerability": 1.102,
       "game_script": 0.986,
       "pace": 1.002,
-      "opportunity": 0.967
+      "opportunity": 0.968
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.74,
@@ -11341,7 +11341,7 @@
       "vulnerability": 0.955,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 0.897
+      "opportunity": 0.898
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 11.38,
@@ -11364,7 +11364,7 @@
     "salary": 4200,
     "projection": 1.49,
     "floor_projection": 0.0,
-    "ceiling_projection": 5.15,
+    "ceiling_projection": 5.16,
     "value_score": 0.355,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -11376,7 +11376,7 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 15.7,
-    "smash_score": 1.226,
+    "smash_score": 1.229,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 0.94,
@@ -11399,51 +11399,6 @@
       "wopr": 0.135,
       "redzone_touches_per_game": 1.0,
       "redzone_share": 0.217
-    }
-  },
-  {
-    "player_name": "Rashod Bateman",
-    "position": "WR",
-    "team": "BAL",
-    "opponent": "IND",
-    "salary": 5200,
-    "projection": 1.83,
-    "floor_projection": 0.0,
-    "ceiling_projection": 5.86,
-    "value_score": 0.352,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-85845",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 17.4,
-    "smash_score": 1.127,
-    "smash_alignment": 1,
-    "signal_multipliers": {
-      "vulnerability": 1.082,
-      "game_script": 1.0,
-      "pace": 0.993,
-      "opportunity": 0.996
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 36.84,
-      "season_avg_allowed": 36.13,
-      "games_sampled": 17
-    },
-    "pace": {
-      "recent_avg_plays": 58.6,
-      "season_avg_plays": 57.29
-    },
-    "advanced_metrics": {
-      "target_share": 0.069,
-      "air_yards_share": 0.103,
-      "wopr": 0.176,
-      "redzone_touches_per_game": 1.6,
-      "redzone_share": 0.143
     }
   },
   {
@@ -11492,6 +11447,51 @@
     }
   },
   {
+    "player_name": "Rashod Bateman",
+    "position": "WR",
+    "team": "BAL",
+    "opponent": "IND",
+    "salary": 5200,
+    "projection": 1.82,
+    "floor_projection": 0.0,
+    "ceiling_projection": 5.86,
+    "value_score": 0.35,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-85845",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 17.4,
+    "smash_score": 1.127,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 1.081,
+      "game_script": 1.0,
+      "pace": 0.993,
+      "opportunity": 0.996
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 36.84,
+      "season_avg_allowed": 36.13,
+      "games_sampled": 17
+    },
+    "pace": {
+      "recent_avg_plays": 58.6,
+      "season_avg_plays": 57.29
+    },
+    "advanced_metrics": {
+      "target_share": 0.069,
+      "air_yards_share": 0.103,
+      "wopr": 0.176,
+      "redzone_touches_per_game": 1.6,
+      "redzone_share": 0.143
+    }
+  },
+  {
     "player_name": "Jack Stoll",
     "position": "TE",
     "team": "CLE",
@@ -11499,7 +11499,7 @@
     "salary": 4000,
     "projection": 1.39,
     "floor_projection": 0.95,
-    "ceiling_projection": 1.93,
+    "ceiling_projection": 1.94,
     "value_score": 0.347,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -11511,13 +11511,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 14.9,
-    "smash_score": 0.482,
+    "smash_score": 0.485,
     "smash_alignment": 0,
     "signal_multipliers": {
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 0.993,
-      "opportunity": 0.945
+      "opportunity": 0.946
     },
     "pace": {
       "recent_avg_plays": 57.2,
@@ -11527,57 +11527,6 @@
       "target_share": 0.034,
       "air_yards_share": -0.004,
       "wopr": 0.047,
-      "redzone_touches_per_game": 1.0,
-      "redzone_share": 0.125
-    }
-  },
-  {
-    "player_name": "Samori Toure",
-    "position": "WR",
-    "team": "PHI",
-    "opponent": "WAS",
-    "salary": 4000,
-    "projection": 1.33,
-    "floor_projection": 1.33,
-    "ceiling_projection": 1.32,
-    "value_score": 0.333,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-152631",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 16.7,
-    "smash_score": 0.33,
-    "smash_alignment": 1,
-    "signal_multipliers": {
-      "vulnerability": 1.033,
-      "game_script": 0.986,
-      "pace": 1.002,
-      "opportunity": 0.992
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 31.4,
-      "season_avg_allowed": 34.91,
-      "games_sampled": 17
-    },
-    "game_context": {
-      "implied_team_total": 20.8,
-      "spread_line": 3.0,
-      "total_line": 38.5,
-      "is_home": true
-    },
-    "pace": {
-      "recent_avg_plays": 62.8,
-      "season_avg_plays": 59.41
-    },
-    "advanced_metrics": {
-      "target_share": 0.088,
-      "air_yards_share": 0.107,
-      "wopr": 0.207,
       "redzone_touches_per_game": 1.0,
       "redzone_share": 0.125
     }
@@ -11634,6 +11583,57 @@
     }
   },
   {
+    "player_name": "Samori Toure",
+    "position": "WR",
+    "team": "PHI",
+    "opponent": "WAS",
+    "salary": 4000,
+    "projection": 1.32,
+    "floor_projection": 1.32,
+    "ceiling_projection": 1.31,
+    "value_score": 0.33,
+    "name_match_quality": "exact",
+    "is_stale": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-152631",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 16.7,
+    "smash_score": 0.328,
+    "smash_alignment": 1,
+    "signal_multipliers": {
+      "vulnerability": 1.032,
+      "game_script": 0.986,
+      "pace": 1.002,
+      "opportunity": 0.992
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 31.4,
+      "season_avg_allowed": 34.91,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 20.8,
+      "spread_line": 3.0,
+      "total_line": 38.5,
+      "is_home": true
+    },
+    "pace": {
+      "recent_avg_plays": 62.8,
+      "season_avg_plays": 59.41
+    },
+    "advanced_metrics": {
+      "target_share": 0.088,
+      "air_yards_share": 0.107,
+      "wopr": 0.207,
+      "redzone_touches_per_game": 1.0,
+      "redzone_share": 0.125
+    }
+  },
+  {
     "player_name": "DJ Moore",
     "position": "WR",
     "team": "BUF",
@@ -11656,10 +11656,10 @@
     "smash_score": 0.886,
     "smash_alignment": 2,
     "signal_multipliers": {
-      "vulnerability": 0.956,
+      "vulnerability": 0.955,
       "game_script": 1.028,
       "pace": 1.008,
-      "opportunity": 1.07
+      "opportunity": 1.071
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 25.94,
@@ -11707,14 +11707,14 @@
     "smash_score": 1.055,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.889,
+      "vulnerability": 0.89,
       "game_script": 0.952,
       "pace": 0.983,
-      "opportunity": 1.03
+      "opportunity": 1.031
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -11743,7 +11743,7 @@
     "salary": 4700,
     "projection": 1.49,
     "floor_projection": 0.94,
-    "ceiling_projection": 2.58,
+    "ceiling_projection": 2.59,
     "value_score": 0.317,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -11755,13 +11755,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 15.5,
-    "smash_score": 0.549,
+    "smash_score": 0.551,
     "smash_alignment": 1,
     "signal_multipliers": {
       "vulnerability": 0.94,
       "game_script": 1.0,
       "pace": 0.988,
-      "opportunity": 1.12
+      "opportunity": 1.121
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 10.14,
@@ -11806,7 +11806,7 @@
       "vulnerability": 1.099,
       "game_script": 1.0,
       "pace": 1.004,
-      "opportunity": 0.935
+      "opportunity": 0.936
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 18.52,
@@ -11893,10 +11893,10 @@
     "smash_score": 0.959,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.922,
+      "vulnerability": 0.921,
       "game_script": 0.966,
       "pace": 1.006,
-      "opportunity": 1.045
+      "opportunity": 1.046
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.54,
@@ -11947,7 +11947,7 @@
       "vulnerability": 0.906,
       "game_script": 1.0,
       "pace": 0.995,
-      "opportunity": 1.035
+      "opportunity": 1.037
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 9.42,
@@ -11989,14 +11989,14 @@
     "smash_score": 0.918,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.921,
+      "vulnerability": 0.92,
       "game_script": 1.0,
       "pace": 1.006,
       "opportunity": 1.045
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,
-      "season_avg_allowed": 25.27,
+      "season_avg_allowed": 25.29,
       "games_sampled": 17
     },
     "pace": {
@@ -12034,7 +12034,7 @@
     "smash_score": 0.729,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 0.904,
+      "vulnerability": 0.903,
       "game_script": 0.892,
       "pace": 0.99,
       "opportunity": 1.04
@@ -12133,7 +12133,7 @@
       "vulnerability": 0.786,
       "game_script": 0.892,
       "pace": 0.99,
-      "opportunity": 0.951
+      "opportunity": 0.952
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 2.82,
@@ -12184,7 +12184,7 @@
       "vulnerability": 0.786,
       "game_script": 0.892,
       "pace": 0.99,
-      "opportunity": 1.103
+      "opportunity": 1.104
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 2.82,
@@ -12273,10 +12273,10 @@
     "smash_score": 0.573,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.904,
+      "vulnerability": 0.903,
       "game_script": 0.892,
       "pace": 0.99,
-      "opportunity": 0.945
+      "opportunity": 0.946
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.6,
@@ -12354,7 +12354,7 @@
     "salary": 4000,
     "projection": 0.79,
     "floor_projection": 0.0,
-    "ceiling_projection": 2.5,
+    "ceiling_projection": 2.51,
     "value_score": 0.198,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -12366,13 +12366,13 @@
     "is_sleeper": false,
     "is_regression_candidate": false,
     "projected_ownership_pct": 13.1,
-    "smash_score": 0.625,
+    "smash_score": 0.627,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.133,
+      "vulnerability": 1.132,
       "game_script": 1.0,
       "pace": 0.996,
-      "opportunity": 0.982
+      "opportunity": 0.983
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.14,
@@ -12397,20 +12397,20 @@
     "team": "TEN",
     "opponent": "NYJ",
     "salary": 6000,
-    "projection": 0.0,
-    "floor_projection": 0.0,
-    "ceiling_projection": 0.0,
+    "projection": 1.11,
+    "floor_projection": 0.59,
+    "ceiling_projection": 1.5,
     "value_score": 0.185,
     "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
     "injury_details": "",
     "is_out": false,
-    "manually_excluded": true,
+    "manually_excluded": false,
     "fanduel_id": "133104-38628",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.0,
+    "projected_ownership_pct": 13.9,
     "smash_score": 0.25,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -12455,7 +12455,7 @@
     "fanduel_id": "133104-89607",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 13.6,
+    "projected_ownership_pct": 13.3,
     "smash_score": 0.523,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -12466,7 +12466,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 19.28,
-      "season_avg_allowed": 19.53,
+      "season_avg_allowed": 19.56,
       "games_sampled": 17
     },
     "game_context": {
@@ -12602,7 +12602,7 @@
     "fanduel_id": "133104-92020",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 13.1,
+    "projected_ownership_pct": 12.8,
     "smash_score": 0.287,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -12647,7 +12647,7 @@
     "fanduel_id": "133104-200653",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 12.6,
+    "projected_ownership_pct": 12.2,
     "smash_score": 0.462,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -12702,7 +12702,7 @@
     "smash_score": 0.145,
     "smash_alignment": 1,
     "signal_multipliers": {
-      "vulnerability": 1.054,
+      "vulnerability": 1.053,
       "game_script": 1.0,
       "pace": 0.996,
       "opportunity": 0.849
@@ -12792,7 +12792,7 @@
     "smash_score": 0.062,
     "smash_alignment": 0,
     "signal_multipliers": {
-      "vulnerability": 0.966,
+      "vulnerability": 0.965,
       "game_script": 1.0,
       "pace": 1.009,
       "opportunity": 0.805
@@ -12833,7 +12833,7 @@
     "fanduel_id": "133104-154450",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 12.0,
+    "projected_ownership_pct": 11.7,
     "smash_score": 0.792,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -13118,7 +13118,7 @@
     "fanduel_id": "133104-90572",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 0.6,
+    "projected_ownership_pct": 0.5,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13391,7 +13391,7 @@
     "fanduel_id": "133104-243753",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 0.8,
+    "projected_ownership_pct": 0.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13517,7 +13517,7 @@
     "fanduel_id": "133104-103591",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.0,
+    "projected_ownership_pct": 0.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13561,7 +13561,7 @@
     "fanduel_id": "133104-86200",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.1,
+    "projected_ownership_pct": 1.0,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13670,7 +13670,7 @@
     "fanduel_id": "133104-129315",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.4,
+    "projected_ownership_pct": 1.3,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13708,7 +13708,7 @@
     "fanduel_id": "133104-90406",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.5,
+    "projected_ownership_pct": 1.4,
     "smash_score": 0.03,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13753,7 +13753,7 @@
     "fanduel_id": "133104-120105",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.6,
+    "projected_ownership_pct": 1.5,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13791,7 +13791,7 @@
     "fanduel_id": "133104-151938",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.7,
+    "projected_ownership_pct": 1.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13829,7 +13829,7 @@
     "fanduel_id": "133104-103824",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.9,
+    "projected_ownership_pct": 1.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13867,7 +13867,7 @@
     "fanduel_id": "133104-151969",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.0,
+    "projected_ownership_pct": 1.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13905,7 +13905,7 @@
     "fanduel_id": "133104-60840",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.2,
+    "projected_ownership_pct": 2.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13943,7 +13943,7 @@
     "fanduel_id": "133104-166314",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.3,
+    "projected_ownership_pct": 2.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13981,7 +13981,7 @@
     "fanduel_id": "133104-110000",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.5,
+    "projected_ownership_pct": 2.4,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14019,7 +14019,7 @@
     "fanduel_id": "133104-185776",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.7,
+    "projected_ownership_pct": 2.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14057,7 +14057,7 @@
     "fanduel_id": "133104-22994",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.9,
+    "projected_ownership_pct": 2.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14095,7 +14095,7 @@
     "fanduel_id": "133104-53729",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.1,
+    "projected_ownership_pct": 3.0,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14133,7 +14133,7 @@
     "fanduel_id": "133104-33259",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.3,
+    "projected_ownership_pct": 3.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14162,7 +14162,7 @@
     "fanduel_id": "133104-152044",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.5,
+    "projected_ownership_pct": 3.4,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14206,7 +14206,7 @@
     "fanduel_id": "133104-134655",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.8,
+    "projected_ownership_pct": 3.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14244,7 +14244,7 @@
     "fanduel_id": "133104-160265",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.0,
+    "projected_ownership_pct": 3.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14282,7 +14282,7 @@
     "fanduel_id": "133104-102933",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.3,
+    "projected_ownership_pct": 4.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14320,7 +14320,7 @@
     "fanduel_id": "133104-87594",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.6,
+    "projected_ownership_pct": 4.4,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14364,7 +14364,7 @@
     "fanduel_id": "133104-208467",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.8,
+    "projected_ownership_pct": 4.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14402,7 +14402,7 @@
     "fanduel_id": "133104-208491",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.1,
+    "projected_ownership_pct": 5.0,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14413,7 +14413,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 19.28,
-      "season_avg_allowed": 19.53,
+      "season_avg_allowed": 19.56,
       "games_sampled": 17
     },
     "game_context": {
@@ -14446,7 +14446,7 @@
     "fanduel_id": "133104-135811",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.4,
+    "projected_ownership_pct": 5.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14484,7 +14484,7 @@
     "fanduel_id": "133104-187015",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.8,
+    "projected_ownership_pct": 5.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14518,7 +14518,7 @@
     "fanduel_id": "133104-184983",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 6.1,
+    "projected_ownership_pct": 5.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14556,7 +14556,7 @@
     "fanduel_id": "133104-69294",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 6.4,
+    "projected_ownership_pct": 6.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14594,7 +14594,7 @@
     "fanduel_id": "133104-70324",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 6.8,
+    "projected_ownership_pct": 6.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14638,7 +14638,7 @@
     "fanduel_id": "133104-139985",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 7.1,
+    "projected_ownership_pct": 6.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14676,7 +14676,7 @@
     "fanduel_id": "133104-92975",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 7.5,
+    "projected_ownership_pct": 7.3,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14714,7 +14714,7 @@
     "fanduel_id": "133104-53095",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 7.9,
+    "projected_ownership_pct": 7.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14758,7 +14758,7 @@
     "fanduel_id": "133104-88937",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 8.3,
+    "projected_ownership_pct": 8.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14792,7 +14792,7 @@
     "fanduel_id": "133104-119670",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 8.7,
+    "projected_ownership_pct": 8.5,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14830,7 +14830,7 @@
     "fanduel_id": "133104-14225",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 9.2,
+    "projected_ownership_pct": 8.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14841,7 +14841,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 19.28,
-      "season_avg_allowed": 19.53,
+      "season_avg_allowed": 19.56,
       "games_sampled": 17
     },
     "game_context": {
@@ -14874,7 +14874,7 @@
     "fanduel_id": "133104-128944",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 9.6,
+    "projected_ownership_pct": 9.3,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14912,7 +14912,7 @@
     "fanduel_id": "133104-111557",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 10.1,
+    "projected_ownership_pct": 9.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14950,7 +14950,7 @@
     "fanduel_id": "133104-85983",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 10.5,
+    "projected_ownership_pct": 10.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14988,7 +14988,7 @@
     "fanduel_id": "133104-166892",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 11.0,
+    "projected_ownership_pct": 10.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15026,7 +15026,7 @@
     "fanduel_id": "133104-129010",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 11.5,
+    "projected_ownership_pct": 11.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15271,7 +15271,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.06,
-      "season_avg_allowed": 35.61,
+      "season_avg_allowed": 35.7,
       "games_sampled": 17
     },
     "pace": {
@@ -15500,8 +15500,8 @@
       "opportunity": 1.014
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {
@@ -15591,7 +15591,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -15631,7 +15631,7 @@
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 0.992
+      "opportunity": 0.993
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 25.86,
@@ -15795,7 +15795,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.06,
-      "season_avg_allowed": 35.61,
+      "season_avg_allowed": 35.7,
       "games_sampled": 17
     },
     "pace": {
@@ -16416,7 +16416,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -16456,11 +16456,11 @@
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 1.013
+      "opportunity": 1.014
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -16688,7 +16688,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,
-      "season_avg_allowed": 25.27,
+      "season_avg_allowed": 25.29,
       "games_sampled": 17
     },
     "pace": {
@@ -16804,7 +16804,7 @@
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 0.933
+      "opportunity": 0.934
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 36.84,
@@ -16928,8 +16928,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {
@@ -16985,7 +16985,7 @@
     "floor_projection": 0.0,
     "ceiling_projection": 0.0,
     "value_score": 0.0,
-    "name_match_quality": "unmatched",
+    "name_match_quality": "exact",
     "is_stale": false,
     "injury_status": "",
     "injury_details": "",
@@ -17001,7 +17001,7 @@
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 1.0
+      "opportunity": 0.86
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 20.6,
@@ -17017,6 +17017,13 @@
     "pace": {
       "recent_avg_plays": 55.8,
       "season_avg_plays": 59.41
+    },
+    "advanced_metrics": {
+      "target_share": 0.067,
+      "air_yards_share": 0.077,
+      "wopr": 0.154,
+      "redzone_touches_per_game": 0.0,
+      "redzone_share": 0.0
     }
   },
   {
@@ -17198,7 +17205,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -17249,7 +17256,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.06,
-      "season_avg_allowed": 35.61,
+      "season_avg_allowed": 35.7,
       "games_sampled": 17
     },
     "pace": {
@@ -17524,8 +17531,8 @@
       "opportunity": 0.91
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {
@@ -17864,7 +17871,7 @@
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 0.823
+      "opportunity": 0.824
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 10.8,
@@ -17997,7 +18004,7 @@
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 0.864
+      "opportunity": 0.865
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.74,
@@ -18285,7 +18292,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,
-      "season_avg_allowed": 25.27,
+      "season_avg_allowed": 25.29,
       "games_sampled": 17
     },
     "pace": {
@@ -18401,8 +18408,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
       "games_sampled": 17
     },
     "pace": {
@@ -18481,7 +18488,7 @@
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 0.92
+      "opportunity": 0.921
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 16.06,
@@ -18681,7 +18688,7 @@
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 0.901
+      "opportunity": 0.902
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 32.5,
@@ -19004,7 +19011,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.06,
-      "season_avg_allowed": 35.61,
+      "season_avg_allowed": 35.7,
       "games_sampled": 17
     },
     "pace": {
@@ -19038,7 +19045,7 @@
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 1.026
+      "opportunity": 1.027
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 29.26,
@@ -19124,8 +19131,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 15.42,
-      "season_avg_allowed": 16.22,
+      "recent_avg_allowed": 15.62,
+      "season_avg_allowed": 16.28,
       "games_sampled": 17
     },
     "pace": {
@@ -19373,7 +19380,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -20358,7 +20365,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,
-      "season_avg_allowed": 25.27,
+      "season_avg_allowed": 25.29,
       "games_sampled": 17
     },
     "pace": {
@@ -20886,8 +20893,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
       "games_sampled": 17
     },
     "pace": {
@@ -21193,8 +21200,8 @@
       "opportunity": 0.809
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {
@@ -21552,8 +21559,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 15.42,
-      "season_avg_allowed": 16.22,
+      "recent_avg_allowed": 15.62,
+      "season_avg_allowed": 16.28,
       "games_sampled": 17
     },
     "pace": {
@@ -21635,8 +21642,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {
@@ -21989,7 +21996,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,
-      "season_avg_allowed": 25.27,
+      "season_avg_allowed": 25.29,
       "games_sampled": 17
     },
     "pace": {
@@ -22343,8 +22350,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {
@@ -22733,7 +22740,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,
-      "season_avg_allowed": 25.27,
+      "season_avg_allowed": 25.29,
       "games_sampled": 17
     },
     "pace": {
@@ -23347,8 +23354,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
       "games_sampled": 17
     },
     "pace": {
@@ -23386,7 +23393,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -23728,8 +23735,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
       "games_sampled": 17
     },
     "pace": {
@@ -24097,7 +24104,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.06,
-      "season_avg_allowed": 35.61,
+      "season_avg_allowed": 35.7,
       "games_sampled": 17
     },
     "pace": {
@@ -24457,7 +24464,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -24583,8 +24590,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {
@@ -24701,7 +24708,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.06,
-      "season_avg_allowed": 35.61,
+      "season_avg_allowed": 35.7,
       "games_sampled": 17
     },
     "pace": {
@@ -24937,11 +24944,11 @@
       "vulnerability": 1.0,
       "game_script": 1.0,
       "pace": 1.0,
-      "opportunity": 1.028
+      "opportunity": 1.029
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
       "games_sampled": 17
     },
     "pace": {
@@ -25195,7 +25202,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 33.06,
-      "season_avg_allowed": 35.61,
+      "season_avg_allowed": 35.7,
       "games_sampled": 17
     },
     "pace": {
@@ -25352,8 +25359,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
       "games_sampled": 17
     },
     "pace": {
@@ -25462,8 +25469,8 @@
       "opportunity": 0.809
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 15.42,
-      "season_avg_allowed": 16.22,
+      "recent_avg_allowed": 15.62,
+      "season_avg_allowed": 16.28,
       "games_sampled": 17
     },
     "pace": {
@@ -26022,8 +26029,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 15.42,
-      "season_avg_allowed": 16.22,
+      "recent_avg_allowed": 15.62,
+      "season_avg_allowed": 16.28,
       "games_sampled": 17
     },
     "pace": {
@@ -26490,7 +26497,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 17.64,
-      "season_avg_allowed": 26.49,
+      "season_avg_allowed": 26.78,
       "games_sampled": 17
     },
     "game_context": {
@@ -26925,8 +26932,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 15.42,
-      "season_avg_allowed": 16.22,
+      "recent_avg_allowed": 15.62,
+      "season_avg_allowed": 16.28,
       "games_sampled": 17
     },
     "pace": {
@@ -27974,8 +27981,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {
@@ -28237,8 +28244,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 34.46,
-      "season_avg_allowed": 35.53,
+      "recent_avg_allowed": 36.76,
+      "season_avg_allowed": 36.21,
       "games_sampled": 17
     },
     "pace": {
@@ -28275,8 +28282,8 @@
       "opportunity": 0.8
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {
@@ -28320,8 +28327,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {
@@ -28833,7 +28840,7 @@
     },
     "matchup_vulnerability": {
       "recent_avg_allowed": 21.98,
-      "season_avg_allowed": 25.27,
+      "season_avg_allowed": 25.29,
       "games_sampled": 17
     },
     "pace": {
@@ -29857,8 +29864,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 15.42,
-      "season_avg_allowed": 16.22,
+      "recent_avg_allowed": 15.62,
+      "season_avg_allowed": 16.28,
       "games_sampled": 17
     },
     "pace": {
@@ -30405,8 +30412,8 @@
       "opportunity": 1.0
     },
     "matchup_vulnerability": {
-      "recent_avg_allowed": 37.1,
-      "season_avg_allowed": 35.7,
+      "recent_avg_allowed": 37.98,
+      "season_avg_allowed": 35.96,
       "games_sampled": 17
     },
     "pace": {

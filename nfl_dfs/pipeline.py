@@ -74,6 +74,18 @@ class DfsPipeline:
         explore: bool = False,
         exclude_players: list[str] | None = None,
     ) -> None:
+        self._write_run_config(
+            output_path,
+            season=season,
+            single_risk_level=single_risk_level,
+            num_lineups=num_lineups,
+            randomness=randomness,
+            max_player_salary=max_player_salary,
+            max_salary_leftover=max_salary_leftover,
+            explore=explore,
+            exclude_players=exclude_players or [],
+        )
+
         weekly_stats = self._data_source.fetch_weekly_stats(season)
 
         vulnerability_calc = VulnerabilityCalculator(self._data_source)
@@ -167,6 +179,44 @@ class DfsPipeline:
             self._write_lineup_set([lineup] if lineup else [], single_risk_level, output_path)
 
     # ------------------------------------------------------------------
+
+    def _write_run_config(
+        self,
+        output_path: str | Path,
+        season: int,
+        single_risk_level: float,
+        num_lineups: int,
+        randomness: float,
+        max_player_salary: int | None,
+        max_salary_leftover: int | None,
+        explore: bool,
+        exclude_players: list[str],
+    ) -> None:
+        """Records the actual parameters this run used, so the
+        dashboard's rebuild-without-this-player feature (a browser-side
+        GitHub Actions workflow_dispatch call — see frontend/index.html)
+        knows what settings to replay rather than guessing or resetting
+        to defaults."""
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        config_path = output_path.parent / "run_config.json"
+
+        config_path.write_text(
+            json.dumps(
+                {
+                    "season": season,
+                    "risk_level": round(single_risk_level, 3),
+                    "risk_scale": round(single_risk_level * 9 + 1),
+                    "num_lineups": num_lineups,
+                    "randomness": randomness,
+                    "max_player_salary": max_player_salary,
+                    "max_salary_leftover": max_salary_leftover,
+                    "explore": explore,
+                    "exclude_players": exclude_players,
+                },
+                indent=2,
+            )
+        )
 
     def _apply_manual_exclusions(self, player_values, exclude_players: list[str] | None) -> None:
         """Zeroes out and flags any player matching a name in
