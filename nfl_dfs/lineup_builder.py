@@ -176,7 +176,10 @@ class LineupBuilder:
         usable = [
             p
             for p in players
-            if p.name_match_quality != "unmatched" and not p.is_stale and not p.is_out and not p.manually_excluded
+            if p.name_match_quality != "unmatched"
+            and not p.is_stale
+            and not p.is_out
+            and not p.manually_excluded
         ]
         if max_player_salary is not None:
             usable = [p for p in usable if p.salary <= max_player_salary]

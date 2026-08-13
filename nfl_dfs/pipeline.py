@@ -104,10 +104,15 @@ class DfsPipeline:
             redzone_data = self._data_source.fetch_redzone_data(season)
             advanced_metrics = self._advanced_calc.compute(weekly_stats, redzone_data)
 
+        # snap counts is a small, fast fetch (unlike pbp) — always
+        # fetched regardless of skip_redzone, since it's what catches
+        # the "technically played, but actually a backup now" case
+        snap_counts = self._data_source.fetch_snap_counts(season)
+
         salaries = self._salary_importer.load(salary_csv_path)
 
         value_calc = ValueCalculator(
-            vulnerability_scores, weekly_stats, game_contexts, pace_profiles, advanced_metrics
+            vulnerability_scores, weekly_stats, game_contexts, pace_profiles, advanced_metrics, snap_counts
         )
         player_values = value_calc.build(salaries)
 
@@ -267,6 +272,7 @@ class DfsPipeline:
                 "value_score": pv.value_score,
                 "name_match_quality": pv.name_match_quality,
                 "is_stale": pv.is_stale,
+                "is_backup_qb": pv.is_backup_qb,
                 "injury_status": pv.injury_status,
                 "injury_details": pv.injury_details,
                 "is_out": pv.is_out,
@@ -442,6 +448,7 @@ class DfsPipeline:
                     "is_regression_candidate": s.player.is_regression_candidate,
                     "injury_status": s.player.injury_status,
                     "injury_details": s.player.injury_details,
+                    "is_backup_qb": s.player.is_backup_qb,
                     "fanduel_id": s.player.fanduel_id,
                 }
                 for s in lineup.slots

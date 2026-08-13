@@ -51,3 +51,15 @@ class StatDataSource(ABC):
         """Return red-zone touch counts, keyed by player_id (not name
         — see RedZoneWeekly's docstring for why)."""
         raise NotImplementedError
+
+    @abstractmethod
+    def fetch_snap_counts(self, season: int) -> dict[str, list[tuple[int, float]]]:
+        """Return {player_name: [(week, offense_snap_pct), ...]} — a
+        player's real involvement in a given game, distinct from
+        whether they merely appeared in the box score at all. A player
+        who logs 35% of snaps in their most recent game clearly wasn't
+        the full-game starter that week, even though they technically
+        "played" — the staleness gate alone can't catch this since it
+        only knows about the last time someone recorded ANY stat line,
+        not how much they actually played."""
+        raise NotImplementedError

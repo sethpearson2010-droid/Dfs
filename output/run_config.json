@@ -2,10 +2,12 @@
   "season": 2025,
   "risk_level": 0.667,
   "risk_scale": 7,
-  "num_lineups": 20,
+  "num_lineups": 10,
   "randomness": 1.0,
   "max_player_salary": null,
   "max_salary_leftover": 2000,
   "explore": false,
-  "exclude_players": []
+  "exclude_players": [
+    "Kenny Gainwell"
+  ]
 }

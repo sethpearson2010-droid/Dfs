@@ -37,6 +37,10 @@ def _pbp_url(season: int) -> str:
     return f"{BASE_URL}/pbp/play_by_play_{season}.csv.gz"
 
 
+def _snap_counts_url(season: int) -> str:
+    return f"{BASE_URL}/snap_counts/snap_counts_{season}.csv"
+
+
 # only need a handful of the ~370 pbp columns for red-zone counting;
 # yardline_100 <= 20 defines "red zone" by the standard convention
 RED_ZONE_YARDLINE_THRESHOLD = 20.0
@@ -179,6 +183,34 @@ class NflverseDataSource(StatDataSource):
         for team in plays_by_team:
             plays_by_team[team].sort(key=lambda pair: pair[0])
         return dict(plays_by_team)
+
+    def fetch_snap_counts(self, season: int) -> dict[str, list[tuple[int, float]]]:
+        # keyed by name, not id: this file uses PFR-style player IDs
+        # (e.g. "MillDa00"), a different namespace than the GSIS-style
+        # IDs (e.g. "00-0037744") used in stats_player_week/pbp, so it
+        # can't be joined the same reliable way redzone data is. Name
+        # matching (with normalization) is the practical option here.
+        rows = self._get_csv_rows(_snap_counts_url(season), f"snap_counts_{season}.csv", season)
+        by_player: dict[str, list[tuple[int, float]]] = defaultdict(list)
+
+        for row in rows:
+            if row.get("game_type") != "REG":
+                continue
+            name = row.get("player")
+            week_raw = row.get("week")
+            pct_raw = row.get("offense_pct")
+            if not name or not week_raw or not pct_raw:
+                continue
+            try:
+                week = int(float(week_raw))
+                pct = float(pct_raw)
+            except ValueError:
+                continue
+            by_player[name].append((week, pct))
+
+        for name in by_player:
+            by_player[name].sort(key=lambda pair: pair[0])
+        return dict(by_player)
 
     def fetch_redzone_data(self, season: int) -> RedZoneWeekly:
         player_touches: dict[str, dict[int, int]] = defaultdict(lambda: defaultdict(int))

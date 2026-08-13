@@ -277,9 +277,21 @@ let activeFilter = null;
 let sortKey = "value_score";
 let sortDir = -1;
 
+// GitHub Pages sets Cache-Control: max-age=600 by default on the
+// static JSON files this dashboard reads — without cache-busting, a
+// fetch shortly after a rebuild (exactly when freshness matters most)
+// can silently return the PREVIOUS run's data instead of the new one.
+// A unique query string per load forces both the browser and any
+// intermediate CDN to treat it as a new URL rather than serving a
+// cached response.
+function freshFetch(url) {
+  const bust = `${url}?_=${Date.now()}`;
+  return fetch(bust, { cache: "no-store" });
+}
+
 async function loadData() {
   try {
-    const res = await fetch("../output/players.json");
+    const res = await freshFetch("../output/players.json");
     if (!res.ok) throw new Error("not found");
     allPlayers = await res.json();
   } catch (e) {
@@ -288,28 +300,28 @@ async function loadData() {
   }
 
   try {
-    const sleeperRes = await fetch("../output/sleepers.json");
+    const sleeperRes = await freshFetch("../output/sleepers.json");
     if (sleeperRes.ok) sleepers = await sleeperRes.json();
   } catch (e) {
     sleepers = [];
   }
 
   try {
-    const regressionRes = await fetch("../output/regression_candidates.json");
+    const regressionRes = await freshFetch("../output/regression_candidates.json");
     if (regressionRes.ok) regressionCandidates = await regressionRes.json();
   } catch (e) {
     regressionCandidates = [];
   }
 
   try {
-    const lineupRes = await fetch("../output/lineups.json");
+    const lineupRes = await freshFetch("../output/lineups.json");
     if (lineupRes.ok) lineups = await lineupRes.json();
   } catch (e) {
     lineups = [];
   }
 
   try {
-    const configRes = await fetch("../output/run_config.json");
+    const configRes = await freshFetch("../output/run_config.json");
     if (configRes.ok) runConfig = await configRes.json();
   } catch (e) {
     runConfig = null;
@@ -612,10 +624,13 @@ function renderSelectedLineup(index) {
     const injuryTag = (s.injury_status === "Q" || s.injury_status === "D")
       ? ` <span style="color:#f59e0b;" title="${s.injury_details || 'FanDuel: ' + s.injury_status}">🩹${s.injury_status}</span>`
       : "";
+    const backupQbTag = s.is_backup_qb
+      ? ` <span style="color:#a78bfa;" title="Low snap share in their most recent game — may no longer be the starter, or may have just been rested in a meaningless late-season game. Verify before trusting either way.">🪑?</span>`
+      : "";
     const ownTag = s.projected_ownership_pct ? ` · own ${s.projected_ownership_pct}%` : "";
     row.innerHTML = `
       <span class="lineup-slot-label">${slotName}</span>
-      <span>${s.player_name}${sleeperTag}${regressionTag}${injuryTag} <span style="color:var(--muted);">(${s.team} vs ${s.opponent}${ownTag})</span></span>
+      <span>${s.player_name}${sleeperTag}${regressionTag}${injuryTag}${backupQbTag} <span style="color:var(--muted);">(${s.team} vs ${s.opponent}${ownTag})</span></span>
       <span>$${s.salary.toLocaleString()}</span>
       <span style="color:var(--muted);">floor ${s.floor_projection}</span>
       <span style="color:var(--accent);">ceil ${s.ceiling_projection}</span>
@@ -731,9 +746,12 @@ function render() {
       : (p.injury_status === "Q" || p.injury_status === "D")
         ? `<span class="warn-badge" style="background:#f59e0b22;color:#f59e0b;" title="${p.injury_details || 'FanDuel injury designation: ' + p.injury_status}">🩹 ${p.injury_status}</span>`
         : "";
+    const backupQbBadge = p.is_backup_qb
+      ? `<span class="warn-badge" style="background:#a78bfa22;color:#a78bfa;" title="Low snap share in their most recent game — may no longer be the starter, but this can also just mean they were rested in a meaningless late-season game. Not auto-excluded — verify before trusting either way.">🪑 check starter?</span>`
+      : "";
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${p.player_name}<button class="exclude-btn" data-player="${p.player_name}" title="Queue for exclusion & rebuild">🚫</button>${nameWarning}${injuryBadge}${staleBadge}${sleeperBadge}${regressionBadge}</td>
+      <td>${p.player_name}<button class="exclude-btn" data-player="${p.player_name}" title="Queue for exclusion & rebuild">🚫</button>${nameWarning}${injuryBadge}${backupQbBadge}${staleBadge}${sleeperBadge}${regressionBadge}</td>
       <td><span class="pos-badge">${p.position}</span></td>
       <td>${p.team}</td>
       <td>${p.opponent}</td>

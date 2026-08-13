@@ -404,6 +404,41 @@ data: correctly caught Garrett Wilson (last played Week 10 of 18),
 Jayden Daniels (Week 14), Tua Tagovailoa (Week 15) — 82 players
 flagged across a full 735-player slate, all genuine.
 
+**A backup QB who filled in for an injury, then reverted to the bench
+once the real starter returned**: Davis Mills started 4 straight games
+(Weeks 9-12) with legitimately strong production while Houston's real
+starter was out, so his median-based projection stayed high — correct
+given that real recent history, but wrong given his current actual
+role once benched again. The staleness gate above doesn't catch this:
+he *did* record a stat line recently (Week 18), just at a much smaller
+share of the game. Added `fetch_snap_counts` (a new nflverse data
+source, joined by *normalized name* rather than player_id — this file
+uses PFR-style IDs, a different namespace than the GSIS IDs used
+elsewhere) to check each QB's offense-snap-% in their single most
+recent game — confirmed Mills' last game was 35% of snaps vs. 100% in
+his real starts.
+
+**This does NOT auto-exclude, only flags — a real false positive
+caught it before shipping**: an early version zeroed out any QB below
+a 50% recent-snap threshold, the same treatment as `is_stale`. Testing
+it broadly immediately surfaced a dangerous case: Josh Allen — an
+unambiguous elite starter — showed just 1% snaps in his most recent
+game, because Buffalo had already clinched playoff seeding and pulled
+him from a Week 18 game with nothing riding on it. That's structurally
+identical, from snap-share data alone, to Davis Mills' real bench
+case — there's no way to tell "genuinely lost the job" apart from
+"coach rested him in a meaningless game" without real depth-chart or
+news context this tool doesn't have. Auto-excluding a real starter
+would be a far worse failure than occasionally missing a genuine
+bench case, so `is_backup_qb` is now a visible warning badge (🪑,
+same treatment as a Questionable/Doubtful injury tag) rather than a
+hard exclusion — verified Josh Allen's projection stays fully intact
+(23.46, unaffected) despite carrying the flag, while Davis Mills also
+shows a real (not zeroed) projection with the same warning, so you can
+judge for yourself and use the manual exclude button (below) when you
+know for certain, rather than trust an automated call that's been
+directly shown to misfire on real starters.
+
 **The same top player appearing in nearly every lineup of a GPP
 batch** (worst at TE, where real slates often have fewer viable
 options than RB/WR): the overlap-based diversity check in
@@ -622,6 +657,18 @@ declared inputs).
 (`GITHUB_OWNER`/`GITHUB_REPO`/`GITHUB_WORKFLOW_FILE` constants near
 the top of the script) — if you ever fork or rename this repo, update
 those three constants to match.
+
+**Stale data after a rebuild — a real bug found and fixed**: GitHub
+Pages sets `Cache-Control: max-age=600` on static files by default,
+which means a `fetch()` shortly after a rebuild completes can return
+the *previous* run's cached JSON instead of the fresh one — exactly
+when freshness matters most. All data fetches now go through a
+`freshFetch()` helper that appends a cache-busting timestamp query
+string and sets `cache: "no-store"`, forcing both the browser and any
+intermediate CDN to treat each load as a new request. If exclusions
+still seem to not be taking effect after a rebuild, a hard refresh
+(clear browser cache) rules out any remaining caching layer this
+doesn't cover.
 
 ## Exporting lineups
 

@@ -25,7 +25,7 @@ from nfl_dfs.models import (
     VulnerabilityScore,
     WeeklyStatLine,
 )
-from nfl_dfs.name_matching import PlayerNameMatcher
+from nfl_dfs.name_matching import PlayerNameMatcher, normalize_name
 from nfl_dfs.salary import OUT_INJURY_STATUSES
 
 # how much the opponent's vulnerability shifts the projection, as a
@@ -59,6 +59,14 @@ MAD_CONSISTENCY_CONSTANT = 1.4826
 # average" computed from Weeks 1-5, since there's simply no newer data
 # to reflect that they're no longer playing.
 STALE_WEEK_THRESHOLD = 2
+
+# a QB whose most recent game shows less than this share of the
+# team's offensive snaps almost certainly wasn't the full-game starter
+# that week — see _is_backup_qb for the real case this catches
+# (a backup who filled in for a multi-week injury, then reverted to
+# the bench once the real starter returned, but still technically has
+# a recent stat line so the staleness gate alone doesn't catch it).
+STARTER_SNAP_THRESHOLD = 0.5
 
 # WOPR (target share + air yards share, nflverse-computed) and red
 # zone touch share are earned-opportunity signals, distinct from raw
@@ -94,6 +102,7 @@ class ValueCalculator:
         game_contexts: dict[tuple[str, str], GameContext] | None = None,
         pace_profiles: dict[str, PaceProfile] | None = None,
         advanced_metrics: dict[str, AdvancedMetrics] | None = None,
+        snap_counts: dict[str, list[tuple[int, float]]] | None = None,
     ) -> None:
         self._vulnerability = vulnerability_scores
         self._game_contexts = game_contexts or {}
@@ -109,6 +118,7 @@ class ValueCalculator:
         self._league_avg_wopr_by_position, self._league_avg_rz_share_by_position = (
             self._build_league_avg_opportunity(weekly_stats)
         )
+        self._recent_snap_pct_by_normalized_name = self._build_recent_snap_pcts(snap_counts or {})
         self._name_matcher = PlayerNameMatcher(known_names=list(self._recent_player_avg.keys()))
 
     def build(self, salaries: list[SalaryEntry]) -> list[PlayerValue]:
@@ -156,12 +166,19 @@ class ValueCalculator:
         name_match = self._name_matcher.match(entry.player_name)
         canonical_name = name_match.canonical_name
         is_stale = self._is_stale(canonical_name) if canonical_name else False
+        is_backup_qb = self._is_backup_qb(entry.position, canonical_name) if canonical_name else False
 
         if is_stale:
             # hasn't recorded a stat line recently enough to trust —
             # likely injured/inactive/benched. Zero everything out
             # rather than let old, no-longer-relevant numbers make
-            # them look like a viable play.
+            # them look like a viable play. NOTE: is_backup_qb is
+            # deliberately NOT included in this hard-exclusion branch
+            # — see _is_backup_qb's docstring for the false-positive
+            # this would otherwise cause (confirmed: flagged Josh Allen
+            # as a "backup" because Buffalo rested him in a Week 18
+            # game that didn't matter for seeding — indistinguishable
+            # from a real QB change using snap-share data alone).
             return PlayerValue(
                 player_name=entry.player_name,
                 position=entry.position,
@@ -177,6 +194,7 @@ class ValueCalculator:
                 floor_projection=0.0,
                 ceiling_projection=0.0,
                 is_stale=True,
+                is_backup_qb=is_backup_qb,
                 fanduel_id=entry.fanduel_id,
                 injury_status=entry.injury_status,
                 injury_details=entry.injury_details,
@@ -222,6 +240,7 @@ class ValueCalculator:
             game_script_multiplier=round(script_multiplier, 3),
             pace_multiplier=round(pace_multiplier, 3),
             opportunity_multiplier=round(opportunity_multiplier, 3),
+            is_backup_qb=is_backup_qb,
             fanduel_id=entry.fanduel_id,
             injury_status=entry.injury_status,
             injury_details=entry.injury_details,
@@ -333,6 +352,59 @@ class ValueCalculator:
         if last_played is None:
             return False  # no history at all — that's "unmatched", a separate/existing case
         return (self._max_week_overall - last_played) > STALE_WEEK_THRESHOLD
+
+    def _build_recent_snap_pcts(
+        self, snap_counts: dict[str, list[tuple[int, float]]]
+    ) -> dict[str, float]:
+        """Keyed by normalized name (snap_counts uses PFR-style player
+        IDs, incompatible with the GSIS IDs used for the red-zone join,
+        so name matching is the practical option here). Value is the
+        offense snap % from that player's single most recent game —
+        deliberately NOT averaged/smoothed, since the question this
+        answers is "are they playing real snaps *right now*", and
+        averaging in real starts from weeks ago would mask exactly the
+        reversion-to-backup pattern this exists to catch."""
+        result: dict[str, float] = {}
+        for name, weeks in snap_counts.items():
+            if not weeks:
+                continue
+            most_recent_week, most_recent_pct = max(weeks, key=lambda pair: pair[0])
+            result[normalize_name(name)] = most_recent_pct
+        return result
+
+    def _is_backup_qb(self, position: Position, canonical_name: str) -> bool:
+        """QB-specific: a player whose most recent game shows a low
+        offense snap share almost certainly wasn't the full-game
+        starter that week, even though they technically recorded a
+        stat line — this is exactly what the staleness gate above
+        can't see (it only knows THAT someone played, not how much).
+        Scoped to QB only for now: RB/WR/TE routinely have legitimate
+        partial snap shares from normal committee/rotational usage, so
+        the same threshold there would misfire constantly — QB is close
+        to binary (a real starter plays ~90-100% of offensive snaps
+        barring an in-game injury exit).
+
+        This flags but does NOT auto-exclude (unlike is_stale) — tested
+        directly against real data and it produced a dangerous false
+        positive: Josh Allen showed 1% snaps in a Week 18 game Buffalo
+        had nothing left to play for (already-clinched seeding), which
+        looks structurally identical, from snap-share data alone, to a
+        real case like a backup who filled in for weeks then reverted
+        to the bench once the actual starter returned. There's no
+        reliable way to tell those apart without real depth-chart or
+        news context this tool doesn't have — so this surfaces as a
+        visible warning (same treatment as a Questionable/Doubtful
+        injury tag) for you to judge, rather than risk silently
+        dropping a real starter from consideration. Use the dashboard's
+        manual exclude button when you know for certain, the way
+        `is_out` (an actual O/IR designation) already handles a genuine
+        auto-exclusion case safely."""
+        if position != Position.QB:
+            return False
+        recent_pct = self._recent_snap_pct_by_normalized_name.get(normalize_name(canonical_name))
+        if recent_pct is None:
+            return False  # no snap data for them — don't penalize on missing data
+        return recent_pct < STARTER_SNAP_THRESHOLD
 
     def _build_player_averages(self, weekly_stats: list[WeeklyStatLine]) -> dict[str, float]:
         by_player: dict[str, list[float]] = defaultdict(list)
