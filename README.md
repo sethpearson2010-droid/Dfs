@@ -62,6 +62,19 @@ This avoids Termux/local Python entirely; the tradeoff is a manual
 CSV-paste step each week since FanDuel has no API GitHub Actions could
 pull from automatically, same limitation as running locally.
 
+**A real gotcha worth knowing**: GitHub's workflow-dispatch form
+**remembers the last value you typed into each field across separate
+runs** — it does not reset to the YAML-defined default automatically.
+If you test a small `num_lineups` value once, it'll silently stay in
+that field on your next run even with a completely different
+`risk_scale`. This caused real confusion (a "successful" run that only
+built 4 lineups despite a high risk setting). `main.py` now prints a
+`::warning::` GitHub Actions annotation (shows up highlighted in the
+run's log) whenever an explicit `num_lineups` is suspiciously small
+relative to what `risk_level` alone would derive — but the safest habit
+is to explicitly clear/re-check every field before each run rather
+than assume it reset.
+
 ## Running it locally
 
 ```bash
@@ -327,6 +340,22 @@ instead (`value.py`'s `_build_player_averages`) — a median only moves
 if *multiple* recent games support the higher number, so a single
 fluke game can't dominate a small sample the way a mean can.
 
+**Follow-up bug from the same root cause, on ceiling this time**: even
+after the median fix above, that same outlier game was still inflating
+the player's *ceiling* — floor/ceiling are built from a standard
+deviation around the point estimate, and one 28.86-point outlier in an
+otherwise sub-1-point game log produces a population stdev of 12.17
+(vs. a typical spread of well under 1). That's a huge, misleading
+ceiling (18.24 in the real case) that made the exact same player look
+like a legitimate GPP boom-or-bust play even though he was correctly
+filtered out of cash lineups by the median fix. Fixed by switching the
+spread calculation to **Median Absolute Deviation** (MAD, scaled by
+the standard 1.4826 consistency constant) instead of population
+stdev — the same "resist a single outlier" property as the median fix,
+applied consistently to the spread as well as the center. Verified:
+the real case's ceiling dropped from 18.24 to 1.5, correctly
+unattractive across the entire risk spectrum, not just at cash.
+
 **A season-ending injury not being reflected**: a player who got hurt
 in Week 10 and hasn't played since would still show a perfectly
 reasonable-looking average computed from Weeks 1-10, since there's no
@@ -387,6 +416,45 @@ all 50, with WR variety still strong (14 unique WRs used, average
 overlap of 1.24 between consecutive lineups — the strict cap of 2
 held for the large majority of the batch).
 
+## Injury flagging (real data, not just heuristics)
+
+FanDuel's salary CSV already includes real `Injury Indicator` /
+`Injury Details` columns (`O`, `Q`, `D`, `IR`, etc.) that were sitting
+unused. Now parsed in `salary.py` and threaded through as
+`injury_status`/`injury_details`:
+
+- **`O` (Out), `IR`, `NFI`, `SUSP`, `PUP`** (`OUT_INJURY_STATUSES`):
+  excluded from lineup building entirely, same treatment as a stale or
+  unmatched player — tagged `is_out` in the output.
+- **`Q` (Questionable), `D` (Doubtful)**: still eligible (these
+  players often do play), but flagged with a visible dashboard badge
+  so you can judge the risk yourself rather than the tool silently
+  either including or excluding them.
+
+This is a more direct, authoritative signal than the staleness gate
+above — the staleness gate only knows about past games, while
+FanDuel's own injury designation reflects this week's actual status.
+Verified against real data: 17 players correctly excluded (IR,
+Out) on one real slate.
+
+## Risk scale (1-10) and matchup-depth weighting
+
+`--risk-scale` (1-10, 1=safest/cash, 10=riskiest/max GPP) is a
+friendlier alternative to the raw `--risk-level` (0.0-1.0) — converts
+internally via `risk_level = (scale-1)/9`. The GitHub Actions workflow
+now exposes `risk_scale` as the primary input, with the raw
+`risk_level` float kept available as an "advanced" fallback input.
+
+**"Risky lineups draw from deeper picks based on matchups"**: added a
+new `MATCHUP_DEPTH_WEIGHT` term to the lineup-building objective,
+distinct from the existing ceiling-chase and ownership-leverage terms
+— it specifically rewards a genuinely favorable matchup
+(`vulnerability_multiplier > 1`, meaning the opponent is soft against
+this position) more heavily as risk_level climbs. This pulls in
+cheaper/less-obvious players whose case is "great matchup, not just
+name recognition," scaling to zero at cash (risk_level=0) same as the
+other risk-scaled bonuses.
+
 ## Salary constraints
 
 Two more lineup-builder knobs, both in `lineup_builder.py`:
@@ -402,22 +470,31 @@ Two more lineup-builder knobs, both in `lineup_builder.py`:
   entirely (a punt/no-studs build constraint). Unset by default.
 
 **A batch of lineups (`--num-lineups` > 1) handles spend differently
-on purpose**: applying `_enforce_salary_floor` to every candidate in a
-batch is a real bug I hit and fixed — it's a *deterministic* pass (no
-noise involved in which upgrade path it picks), so it converged nearly
-every noise-randomized candidate onto the same "objectively best"
-upgrades regardless of how diverse the candidate started out.
-Verified: a 20-lineup request under a tight `--max-player-salary`
-collapsed to **1** unique lineup before this was caught. Instead,
-`build_many()` skips that deterministic pass and relies on a small,
-always-on salary-utilization term baked into `_objective()` itself
-(`SALARY_UTILIZATION_WEIGHT`) — noise-influenced like everything else,
-so it nudges the whole batch toward efficient spend without
-flattening it. Re-verified after the fix: the same 20-lineup request
-returned 20 genuinely unique lineup compositions (13 different WRs in
-rotation), with somewhat higher leftover than the strict $2,000 target
-(typically $6k-15k depending on constraints) as the honest tradeoff
-for keeping real diversity.
+on purpose — this took two attempts to get right**: applying
+`_enforce_salary_floor` to every candidate in a batch collapsed a
+20-lineup request under a tight `--max-player-salary` to **1** unique
+lineup. First fix attempt: made the enforcement pick randomly among
+near-tied upgrade options (using each candidate's own seeded
+randomness) instead of always the single deterministic best — this
+sounded like it should preserve diversity, but testing showed it
+*still* collapsed every candidate to the same final lineup. Root
+cause, confirmed by direct debugging: under a tight
+`--max-player-salary`, the pool of genuinely *good* expensive upgrade
+options is itself small enough that any sufficiently-thorough
+salary-maximizing search funnels toward the same few, regardless of
+starting point or tie-breaking randomness — a real structural tension
+between "spend near the cap" and "stay diverse" in a constrained pool,
+not a bug to keep coding around. Final fix: `build_many()` skips the
+deterministic pass entirely and instead relies on a stronger always-on
+salary-utilization term baked into `_objective()` itself
+(`SALARY_UTILIZATION_WEIGHT`, tuned up after the diversity fix) — this
+nudges the whole batch toward efficient spend without ever forcing
+convergence. Re-verified: a 20-lineup request under the $6,000 cap
+returned 20 genuinely unique lineups (salary $45,000-$50,300) — real
+diversity, spend pushed up meaningfully from where the weaker version
+of this bias left it, but honestly still short of the $2,000-leftover
+target under this tight a constraint (that gap is the price of
+diversity, not a bug).
 
 **`--max-player-salary` and `--max-salary-leftover` can also
 mathematically conflict for single-lineup builds**: with 9 required

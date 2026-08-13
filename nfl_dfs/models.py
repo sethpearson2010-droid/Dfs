@@ -202,6 +202,8 @@ class SalaryEntry:
     opponent: str
     salary: int
     fanduel_id: str = ""
+    injury_status: str = ""  # FanDuel's own indicator: O (out), Q (questionable), D (doubtful), IR, etc.
+    injury_details: str = ""
 
 
 @dataclass
@@ -230,6 +232,9 @@ class PlayerValue:
     pace_multiplier: float = 1.0
     opportunity_multiplier: float = 1.0
     is_stale: bool = False  # hasn't recorded a stat line recently enough to trust — likely injured/inactive
+    injury_status: str = ""  # FanDuel's own designation (O/Q/D/IR/etc) — see salary.py's OUT_INJURY_STATUSES
+    injury_details: str = ""
+    is_out: bool = False  # injury_status is in OUT_INJURY_STATUSES — excluded from lineup building entirely
     fanduel_id: str = ""  # for CSV export back to FanDuel's bulk-upload format
     value_score: float = field(init=False)
     smash_score: float = field(init=False)  # ceiling per $1000 salary — "value" using upside, not the mean

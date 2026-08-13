@@ -49,7 +49,16 @@ def main() -> None:
         default=None,
         help="A single point on the cash-to-GPP slider (0.0=cash, 1.0=max GPP). This now also "
         f"drives lineup count directly: 0.0 builds 1 lineup, 1.0 builds {MAX_LINEUPS} (scaling "
-        "linearly between), unless --num-lineups explicitly overrides it.",
+        "linearly between), unless --num-lineups explicitly overrides it. Ignored if --risk-scale is set.",
+    )
+    parser.add_argument(
+        "--risk-scale",
+        type=int,
+        default=None,
+        choices=range(1, 11),
+        metavar="1-10",
+        help="A friendlier version of --risk-level: 1=safest/cash, 10=riskiest/max GPP. "
+        "Converts internally to risk_level=(scale-1)/9. Takes priority over --risk-level if both are set.",
     )
     parser.add_argument(
         "--num-lineups",
@@ -90,8 +99,23 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    if args.risk_scale is not None:
+        args.risk_level = (args.risk_scale - 1) / 9.0
+        print(f"--risk-scale {args.risk_scale} -> risk_level={args.risk_level:.3f}")
+
     if args.num_lineups is not None and args.num_lineups > MAX_LINEUPS:
         print(f"--num-lineups capped at {MAX_LINEUPS} (requested {args.num_lineups})")
+
+    if args.risk_level is not None and args.num_lineups is not None:
+        auto_derived = max(1, round(args.risk_level * MAX_LINEUPS))
+        if args.num_lineups < auto_derived / 2:
+            print(
+                f"::warning::--num-lineups is explicitly set to {args.num_lineups}, but "
+                f"--risk-level {args.risk_level} alone would build ~{auto_derived}. If you didn't "
+                f"mean to override it this low, check the num_lineups field — GitHub's workflow "
+                f"form remembers the last value you typed there across separate runs, it does NOT "
+                f"reset to blank automatically."
+            )
 
     data_source = NflverseDataSource(cache_dir=args.cache_dir)
     pipeline = DfsPipeline(data_source)

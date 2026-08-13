@@ -58,12 +58,27 @@ MAX_LINEUPS = 50
 # and fully active at max GPP (risk=1)
 LEVERAGE_WEIGHT = 0.15
 
+# how much a genuinely good matchup (vulnerability_multiplier > 1)
+# boosts the objective, scaled by risk_level — the "risky lineups draw
+# from deeper picks based on matchups" mechanic. Distinct from
+# LEVERAGE_WEIGHT (ownership) and the ceiling-chase from risk_level
+# itself: this specifically rewards matchup quality.
+MATCHUP_DEPTH_WEIGHT = 0.20
+
 # a gentle, always-on nudge (not risk-scaled, unlike leverage/stack)
 # toward spending more of the salary cap — small enough that real
 # projection differences still dominate player selection, but enough
 # to break ties toward the pricier option and lean batches toward
 # efficient spend without a separate deterministic pass.
-SALARY_UTILIZATION_WEIGHT = 0.03
+SALARY_UTILIZATION_WEIGHT = 0.08
+
+# how close two upgrade options need to be (in _enforce_salary_floor)
+# to be treated as a tie and chosen between randomly rather than
+# always picking the single best — this is what lets salary-floor
+# enforcement run per-candidate in a batch without collapsing
+# diversity to one lineup.
+TIE_BREAK_TOLERANCE_FRACTION = 0.25
+TIE_BREAK_TOLERANCE_FLOOR = 0.5
 
 # stacking: a flat fantasy-point-equivalent bonus per pass-catcher
 # rostered alongside the QB (same team), and a smaller "bring-back"
@@ -150,7 +165,7 @@ class LineupBuilder:
         money unused — see `_enforce_salary_floor`'s docstring for why
         this is a best-effort greedy pass, not a hard guarantee."""
         risk_level = max(0.0, min(1.0, risk_level))
-        usable = [p for p in players if p.name_match_quality != "unmatched" and not p.is_stale]
+        usable = [p for p in players if p.name_match_quality != "unmatched" and not p.is_stale and not p.is_out]
         if max_player_salary is not None:
             usable = [p for p in usable if p.salary <= max_player_salary]
         noise = player_noise or {}
@@ -176,6 +191,7 @@ class LineupBuilder:
         max_exposure_pct: float = DEFAULT_MAX_EXPOSURE_PCT,
         max_position_overlap: int = DEFAULT_MAX_POSITION_OVERLAP,
         max_player_salary: int | None = None,
+        max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
@@ -202,14 +218,16 @@ class LineupBuilder:
         DEFAULT_MAX_EXPOSURE_PCT for why this exists separately from
         the overlap checks.
 
-        No `max_salary_leftover` parameter here on purpose: pushing
-        every candidate to hit a specific spend target with a
-        deterministic pass (as the standalone `build()` does) flattens
-        batch diversity — verified: it collapsed a 20-lineup request to
-        1 unique lineup under a tight `max_player_salary`. Instead,
-        `_objective()`'s always-on salary-utilization term nudges the
-        whole batch toward efficient spend organically, without that
-        collapse."""
+        `max_salary_leftover` has no effect here on purpose (batches
+        use the always-on `SALARY_UTILIZATION_WEIGHT` bias instead) —
+        tested both a deterministic and a randomized-tie-break version
+        of strict enforcement per candidate, and under a tight
+        `--max-player-salary` the pool of genuinely good expensive
+        upgrades is itself small enough that both still converged
+        every candidate to the same final lineup regardless of
+        starting point. That's a real structural tension between
+        spending near the cap and staying diverse when the pool this
+        constrained — not a bug to code around further."""
         count = max(1, min(count, MAX_LINEUPS))
         accepted: list[Lineup] = []
         usage_count: dict[str, int] = {}
@@ -260,14 +278,17 @@ class LineupBuilder:
                 player_noise=noise,
                 local_search_iterations=BUILD_MANY_LOCAL_SEARCH_ITERATIONS,
                 max_player_salary=max_player_salary,
-                # NOT max_salary_leftover here on purpose: the
-                # deterministic post-process greedily picks the single
-                # "best" upgrade regardless of noise, which flattens
-                # batch diversity (verified: caused a 20-lineup request
-                # to collapse to 1 unique lineup under a tight
-                # --max-player-salary). The always-on salary_utilization
-                # term in _objective() nudges spend without that
-                # homogenizing effect.
+                # NOT max_salary_leftover here, even with randomized
+                # tie-breaking: verified directly that under a tight
+                # --max-player-salary, the pool of genuinely GOOD
+                # expensive upgrade options is itself small enough that
+                # the enforcement loop still funnels every candidate
+                # toward the same final lineup regardless of starting
+                # point or random tie-breaks — this is a real structural
+                # tension (spend-near-cap vs. diversity), not a fixable
+                # bug, once the constrained pool is this thin. The
+                # stronger always-on SALARY_UTILIZATION_WEIGHT below
+                # pushes spend up without that collapse.
                 max_salary_leftover=None,
             )
             if candidate is None:
@@ -300,6 +321,16 @@ class LineupBuilder:
             # how far up the GPP end of the slider we are
             ownership_fraction = player.projected_ownership_pct / 100.0
             base *= 1 + LEVERAGE_WEIGHT * risk_level * (1 - ownership_fraction)
+
+        # "risky lineups draw from deeper picks based on matchups":
+        # reward a genuinely favorable matchup (vulnerability_multiplier
+        # > 1 — the opponent is soft against this position) more heavily
+        # as risk_level climbs. This is distinct from the ceiling-chase
+        # and ownership-leverage terms above — it specifically pulls in
+        # cheaper/less-obvious players whose case is "great matchup",
+        # not just "high variance" or "low owned". A no-op at cash.
+        if risk_level > 0 and player.vulnerability_multiplier > 1.0:
+            base *= 1 + MATCHUP_DEPTH_WEIGHT * risk_level * (player.vulnerability_multiplier - 1.0)
 
         # a small, uniform (not risk-scaled) nudge toward higher-salary
         # players, so lineups lean toward spending closer to the cap
@@ -434,22 +465,32 @@ class LineupBuilder:
         risk_level: float,
         noise: dict[str, float],
         max_leftover: int,
+        rng: random.Random | None = None,
     ) -> dict[str, PlayerValue]:
-        """Greedily upgrades players to more expensive same-slot
-        alternatives until total salary reaches (cap - max_leftover),
-        preferring whichever upgrade costs the least objective (or
-        gains the most). This is a best-effort pass, not a guarantee:
-        if the pool genuinely can't support spending that close to the
-        cap (e.g. combined with a low --max-player-salary that caps
-        every slot's ceiling), it stops once no further upgrade is
-        possible rather than looping forever or breaking the cap."""
+        """Upgrades players to more expensive same-slot alternatives
+        until total salary reaches (cap - max_leftover). This is a
+        best-effort pass, not a guarantee: if the pool genuinely can't
+        support spending that close to the cap (e.g. combined with a
+        low --max-player-salary), it stops once no further upgrade is
+        possible rather than looping forever or breaking the cap.
+
+        Picks RANDOMLY among near-tied upgrade options (within
+        TIE_BREAK_TOLERANCE of the best available score), using the
+        same per-candidate `rng` as everything else in this build —
+        not always the single deterministic "best" swap. A first
+        version always took the single best option regardless of
+        noise, which converged nearly every candidate in a batch onto
+        the same lineup (verified: collapsed a 20-lineup request to 1
+        unique lineup). Random tie-breaking lets this run for every
+        candidate in a multi-lineup batch without that collapse, while
+        still reliably pushing spend toward the target."""
+        rng = rng or self._random
         target_min_salary = self._salary_cap - max_leftover
         current = dict(assigned)
 
         while self._total_salary(current) < target_min_salary:
             used_players = {p.player_name for p in current.values()}
-            best_swap: tuple[str, PlayerValue] | None = None
-            best_score: float | None = None
+            scored_options: list[tuple[float, str, PlayerValue]] = []
 
             for slot_name, incumbent in current.items():
                 eligible_positions = ROSTER_SLOTS[slot_name]
@@ -467,14 +508,16 @@ class LineupBuilder:
                     score = self._objective(challenger, risk_level, noise) - self._objective(
                         incumbent, risk_level, noise
                     )
-                    if best_score is None or score > best_score:
-                        best_score = score
-                        best_swap = (slot_name, challenger)
+                    scored_options.append((score, slot_name, challenger))
 
-            if best_swap is None:
+            if not scored_options:
                 break  # no upgrade left that fits under the cap — stop rather than loop forever
 
-            slot_name, challenger = best_swap
+            best_score = max(option[0] for option in scored_options)
+            tolerance = abs(best_score) * TIE_BREAK_TOLERANCE_FRACTION + TIE_BREAK_TOLERANCE_FLOOR
+            near_best = [option for option in scored_options if option[0] >= best_score - tolerance]
+
+            _, slot_name, challenger = rng.choice(near_best)
             current[slot_name] = challenger
 
         return current

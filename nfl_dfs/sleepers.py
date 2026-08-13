@@ -75,7 +75,7 @@ class SleeperCalculator:
 
         candidates: list[SleeperPick] = []
         for pv in players:
-            if pv.name_match_quality == "unmatched" or pv.is_stale:
+            if pv.name_match_quality == "unmatched" or pv.is_stale or pv.is_out:
                 continue
             if pv.salary > salary_threshold:
                 continue

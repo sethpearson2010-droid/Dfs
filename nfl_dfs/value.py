@@ -26,6 +26,7 @@ from nfl_dfs.models import (
     WeeklyStatLine,
 )
 from nfl_dfs.name_matching import PlayerNameMatcher
+from nfl_dfs.salary import OUT_INJURY_STATUSES
 
 # how much the opponent's vulnerability shifts the projection, as a
 # fraction of the league-average points allowed at that position.
@@ -47,6 +48,7 @@ PACE_WEIGHT = 0.15
 FLOOR_STDEV_MULTIPLIER = 1.0
 CEILING_STDEV_MULTIPLIER = 1.5
 RECENT_FORM_WINDOW = 5
+MAD_CONSISTENCY_CONSTANT = 1.4826
 
 # a player whose most recent recorded stat line is more than this many
 # weeks behind the latest week in the dataset is treated as likely
@@ -119,6 +121,34 @@ class ValueCalculator:
         if entry.position == Position.DST:
             return self._value_dst(entry)
 
+        is_out = entry.injury_status.upper() in OUT_INJURY_STATUSES
+        if is_out:
+            # FanDuel's own injury designation says this player isn't
+            # realistically playing (Out, IR, suspended, etc.) — this
+            # is a direct, authoritative signal, more reliable than the
+            # staleness heuristic below for whatever this week's actual
+            # status is (staleness only knows about past games, not
+            # this week's injury report).
+            return PlayerValue(
+                player_name=entry.player_name,
+                position=entry.position,
+                team=entry.team,
+                opponent=entry.opponent,
+                salary=entry.salary,
+                projection=0.0,
+                matchup_vulnerability=None,
+                game_context=None,
+                pace_profile=None,
+                name_match_quality="exact",
+                base_projection=0.0,
+                floor_projection=0.0,
+                ceiling_projection=0.0,
+                fanduel_id=entry.fanduel_id,
+                injury_status=entry.injury_status,
+                injury_details=entry.injury_details,
+                is_out=True,
+            )
+
         vuln = self._vulnerability.get((entry.opponent, entry.position))
         game_context = self._game_contexts.get((entry.team, entry.opponent))
         pace_profile = self._pace_profiles.get(entry.team)
@@ -148,6 +178,8 @@ class ValueCalculator:
                 ceiling_projection=0.0,
                 is_stale=True,
                 fanduel_id=entry.fanduel_id,
+                injury_status=entry.injury_status,
+                injury_details=entry.injury_details,
             )
 
         base_projection = self._recent_player_avg.get(canonical_name, 0.0) if canonical_name else 0.0
@@ -191,6 +223,8 @@ class ValueCalculator:
             pace_multiplier=round(pace_multiplier, 3),
             opportunity_multiplier=round(opportunity_multiplier, 3),
             fanduel_id=entry.fanduel_id,
+            injury_status=entry.injury_status,
+            injury_details=entry.injury_details,
         )
 
     def _apply_opportunity_ceiling(
@@ -243,6 +277,8 @@ class ValueCalculator:
             floor_projection=round(max(0.0, projection - DST_FLOOR_SPREAD), 2),
             ceiling_projection=round(projection + DST_CEILING_SPREAD, 2),
             fanduel_id=entry.fanduel_id,
+            injury_status=entry.injury_status,
+            injury_details=entry.injury_details,
         )
 
     def _project(
@@ -321,10 +357,28 @@ class ValueCalculator:
         for line in weekly_stats:
             by_player[line.player_name].append(line.fantasy_points_ppr)
 
+        # Median Absolute Deviation, not population stdev — same
+        # reasoning as the median point-estimate fix above: a single
+        # outlier game (the Trubisky Week-18 case) inflates a stdev
+        # dramatically (12.17 in that real example) even though the
+        # player's TYPICAL spread is small, which was quietly making
+        # such players look like legitimate high-ceiling GPP plays
+        # (ceiling = median + 1.5x that inflated spread) even after
+        # the point estimate itself was already fixed. MAD resists
+        # this the same way the median resists it for the center.
+        # x1.4826 is the standard consistency constant that makes MAD
+        # comparable in scale to stdev for approximately-normal data,
+        # so the existing FLOOR/CEILING_STDEV_MULTIPLIER tuning still
+        # applies sensibly without needing to be re-tuned from scratch.
         stdevs: dict[str, float] = {}
         for name, pts in by_player.items():
             recent = pts[-RECENT_FORM_WINDOW:]
-            stdevs[name] = round(statistics.pstdev(recent), 2) if len(recent) >= 2 else 0.0
+            if len(recent) < 2:
+                stdevs[name] = 0.0
+                continue
+            median_val = statistics.median(recent)
+            mad = statistics.median([abs(x - median_val) for x in recent])
+            stdevs[name] = round(mad * MAD_CONSISTENCY_CONSTANT, 2)
         return stdevs
 
     def _build_league_averages(self) -> dict[Position, float]:

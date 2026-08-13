@@ -122,6 +122,7 @@ class DfsPipeline:
                     effective_count,
                     randomness=randomness,
                     max_player_salary=max_player_salary,
+                    max_salary_leftover=max_salary_leftover,
                 )
                 self._write_lineup_set(lineups, single_risk_level, output_path, sleeper_keys)
             else:
@@ -170,6 +171,9 @@ class DfsPipeline:
                 "value_score": pv.value_score,
                 "name_match_quality": pv.name_match_quality,
                 "is_stale": pv.is_stale,
+                "injury_status": pv.injury_status,
+                "injury_details": pv.injury_details,
+                "is_out": pv.is_out,
                 "fanduel_id": pv.fanduel_id,
                 "is_sleeper": (pv.player_name, pv.team) in sleeper_keys,
                 "is_regression_candidate": (pv.player_name, pv.team) in regression_keys,

@@ -29,7 +29,15 @@ _COLUMN_ALIASES: dict[str, list[str]] = {
     "salary": ["Salary"],
     "team": ["Team"],
     "opponent": ["Opponent"],
+    "injury_status": ["Injury Indicator"],
+    "injury_details": ["Injury Details"],
 }
+
+# FanDuel's own designations that mean "not realistically going to
+# play" — excluded from lineup consideration entirely, same as a
+# staleness/unmatched player, rather than just flagged. "NA" means
+# no designation (healthy), not "not available".
+OUT_INJURY_STATUSES = {"O", "IR", "NFI", "SUSP", "PUP"}
 
 
 class FanDuelSalaryImporter:
@@ -72,4 +80,6 @@ class FanDuelSalaryImporter:
             opponent=row.get(column_map.get("opponent", ""), ""),
             salary=int(float(row[column_map["salary"]])),
             fanduel_id=row.get(column_map.get("id", ""), ""),
+            injury_status=row.get(column_map.get("injury_status", ""), "").strip(),
+            injury_details=row.get(column_map.get("injury_details", ""), "").strip(),
         )

@@ -444,9 +444,14 @@ function render() {
     const staleBadge = p.is_stale
       ? `<span class="warn-badge unmatched" title="Hasn't recorded a stat line recently enough to trust — likely injured/inactive/benched">⚠️ inactive?</span>`
       : "";
+    const injuryBadge = p.is_out
+      ? `<span class="warn-badge unmatched" title="${p.injury_details || 'FanDuel lists this player as ' + p.injury_status}">🚑 ${p.injury_status}</span>`
+      : (p.injury_status === "Q" || p.injury_status === "D")
+        ? `<span class="warn-badge" style="background:#f59e0b22;color:#f59e0b;" title="${p.injury_details || 'FanDuel injury designation: ' + p.injury_status}">🩹 ${p.injury_status}</span>`
+        : "";
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${p.player_name}${nameWarning}${staleBadge}${sleeperBadge}${regressionBadge}</td>
+      <td>${p.player_name}${nameWarning}${injuryBadge}${staleBadge}${sleeperBadge}${regressionBadge}</td>
       <td><span class="pos-badge">${p.position}</span></td>
       <td>${p.team}</td>
       <td>${p.opponent}</td>

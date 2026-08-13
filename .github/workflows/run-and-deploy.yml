@@ -15,8 +15,12 @@ on:
         description: "Season year, e.g. 2026"
         required: true
         default: "2026"
+      risk_scale:
+        description: "Cash-to-GPP scale: 1 = safest/cash (1 lineup), 10 = riskiest/max GPP (up to 50 lineups, deeper matchup-based picks weighted more heavily). Leave blank for the old 5-point exploration spread instead."
+        required: false
+        default: ""
       risk_level:
-        description: "Cash-to-GPP slider: 0.0 builds 1 cash lineup, 1.0 builds up to 50 max-GPP lineups (scales in between). Leave blank for the old 5-point exploration spread instead."
+        description: "Advanced: raw 0.0-1.0 risk level instead of the 1-10 scale above. Ignored if risk_scale is set."
         required: false
         default: ""
       num_lineups:
@@ -72,7 +76,12 @@ jobs:
       - name: Run pipeline
         run: |
           ARGS="--season ${{ inputs.season }} --salary-csv inputs/salary.csv --output output/players.json"
-          if [ -n "${{ inputs.risk_level }}" ]; then
+          if [ -n "${{ inputs.risk_scale }}" ]; then
+            ARGS="$ARGS --risk-scale ${{ inputs.risk_scale }} --randomness ${{ inputs.randomness }}"
+            if [ -n "${{ inputs.num_lineups }}" ]; then
+              ARGS="$ARGS --num-lineups ${{ inputs.num_lineups }}"
+            fi
+          elif [ -n "${{ inputs.risk_level }}" ]; then
             ARGS="$ARGS --risk-level ${{ inputs.risk_level }} --randomness ${{ inputs.randomness }}"
             if [ -n "${{ inputs.num_lineups }}" ]; then
               ARGS="$ARGS --num-lineups ${{ inputs.num_lineups }}"
