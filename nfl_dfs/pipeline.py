@@ -14,6 +14,7 @@ from nfl_dfs.advanced_stats import AdvancedMetricsCalculator
 from nfl_dfs.data.base import StatDataSource
 from nfl_dfs.lineup_builder import DEFAULT_MAX_SALARY_LEFTOVER, LineupBuilder, MAX_LINEUPS
 from nfl_dfs.models import Lineup
+from nfl_dfs.name_matching import normalize_name
 from nfl_dfs.ownership import OwnershipEstimator
 from nfl_dfs.pace import PaceCalculator
 from nfl_dfs.regression import RegressionCalculator
@@ -71,6 +72,7 @@ class DfsPipeline:
         max_player_salary: int | None = None,
         max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
         explore: bool = False,
+        exclude_players: list[str] | None = None,
     ) -> None:
         weekly_stats = self._data_source.fetch_weekly_stats(season)
 
@@ -97,6 +99,8 @@ class DfsPipeline:
         )
         player_values = value_calc.build(salaries)
 
+        self._apply_manual_exclusions(player_values, exclude_players)
+
         self._ownership_estimator.assign(player_values)
 
         sleeper_picks = self._sleeper_calc.identify(player_values)
@@ -104,6 +108,17 @@ class DfsPipeline:
 
         regression_candidates = self._regression_calc.identify(player_values)
         regression_keys = {(rc.player_name, rc.team) for rc in regression_candidates}
+
+        # set directly on the objects (not just tracked via the key
+        # sets above) so lineup_builder can read is_sleeper /
+        # is_regression_candidate straight off PlayerValue and factor
+        # them into which players actually get selected, instead of
+        # these being purely informational side-panels.
+        for pv in player_values:
+            if (pv.player_name, pv.team) in sleeper_keys:
+                pv.is_sleeper = True
+            if (pv.player_name, pv.team) in regression_keys:
+                pv.is_regression_candidate = True
 
         self._write_output(player_values, output_path, sleeper_keys, regression_keys)
         self._write_sleepers(sleeper_picks, output_path)
@@ -121,7 +136,6 @@ class DfsPipeline:
                 player_values,
                 output_path,
                 risk_levels or DEFAULT_RISK_LEVELS,
-                sleeper_keys,
                 max_player_salary,
                 max_salary_leftover,
             )
@@ -142,7 +156,7 @@ class DfsPipeline:
                 max_player_salary=max_player_salary,
                 max_salary_leftover=max_salary_leftover,
             )
-            self._write_lineup_set(lineups, single_risk_level, output_path, sleeper_keys)
+            self._write_lineup_set(lineups, single_risk_level, output_path)
         else:
             lineup = self._lineup_builder.build(
                 player_values,
@@ -150,9 +164,32 @@ class DfsPipeline:
                 max_player_salary=max_player_salary,
                 max_salary_leftover=max_salary_leftover,
             )
-            self._write_lineup_set([lineup] if lineup else [], single_risk_level, output_path, sleeper_keys)
+            self._write_lineup_set([lineup] if lineup else [], single_risk_level, output_path)
 
     # ------------------------------------------------------------------
+
+    def _apply_manual_exclusions(self, player_values, exclude_players: list[str] | None) -> None:
+        """Zeroes out and flags any player matching a name in
+        exclude_players — an easy override for late-breaking news or a
+        personal judgment call, independent of the automatic is_out
+        injury exclusion (which only fires for FanDuel's own O/IR/etc
+        designations). Matches on a normalized, substring-tolerant
+        basis so 'Trubisky' matches 'Mitchell Trubisky' without needing
+        the exact full name or worrying about Jr./II punctuation."""
+        if not exclude_players:
+            return
+
+        normalized_excludes = [normalize_name(name) for name in exclude_players if name.strip()]
+        if not normalized_excludes:
+            return
+
+        for pv in player_values:
+            normalized_player = normalize_name(pv.player_name)
+            if any(exc in normalized_player or normalized_player in exc for exc in normalized_excludes):
+                pv.projection = 0.0
+                pv.floor_projection = 0.0
+                pv.ceiling_projection = 0.0
+                pv.manually_excluded = True
 
     def _write_output(
         self,
@@ -183,6 +220,7 @@ class DfsPipeline:
                 "injury_status": pv.injury_status,
                 "injury_details": pv.injury_details,
                 "is_out": pv.is_out,
+                "manually_excluded": pv.manually_excluded,
                 "fanduel_id": pv.fanduel_id,
                 "is_sleeper": (pv.player_name, pv.team) in sleeper_keys,
                 "is_regression_candidate": (pv.player_name, pv.team) in regression_keys,
@@ -270,13 +308,11 @@ class DfsPipeline:
         player_values,
         output_path: str | Path,
         risk_levels: dict[float, str],
-        sleeper_keys: set[tuple[str, str]] | None = None,
         max_player_salary: int | None = None,
         max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
     ) -> None:
         output_path = Path(output_path)
         lineups_path = output_path.parent / "lineups.json"
-        sleeper_keys = sleeper_keys or set()
 
         serializable = []
         for risk_level, label in sorted(risk_levels.items()):
@@ -289,7 +325,7 @@ class DfsPipeline:
             if lineup is None:
                 serializable.append(self._error_entry(risk_level, label, lineup_number=1))
                 continue
-            serializable.append(self._serialize_lineup(lineup, label, sleeper_keys, lineup_number=1, total=1))
+            serializable.append(self._serialize_lineup(lineup, label, lineup_number=1, total=1))
 
         lineups_path.write_text(json.dumps(serializable, indent=2))
 
@@ -298,18 +334,16 @@ class DfsPipeline:
         lineups: list[Lineup],
         risk_level: float,
         output_path: str | Path,
-        sleeper_keys: set[tuple[str, str]] | None = None,
     ) -> None:
         output_path = Path(output_path)
         lineups_path = output_path.parent / "lineups.json"
-        sleeper_keys = sleeper_keys or set()
         label = label_for_risk(risk_level)
 
         if not lineups:
             serializable = [self._error_entry(risk_level, label, lineup_number=1)]
         else:
             serializable = [
-                self._serialize_lineup(lineup, label, sleeper_keys, lineup_number=i + 1, total=len(lineups))
+                self._serialize_lineup(lineup, label, lineup_number=i + 1, total=len(lineups))
                 for i, lineup in enumerate(lineups)
             ]
 
@@ -328,7 +362,6 @@ class DfsPipeline:
         self,
         lineup: Lineup,
         label: str,
-        sleeper_keys: set[tuple[str, str]],
         lineup_number: int,
         total: int,
     ) -> dict:
@@ -355,7 +388,10 @@ class DfsPipeline:
                     "floor_projection": s.player.floor_projection,
                     "ceiling_projection": s.player.ceiling_projection,
                     "projected_ownership_pct": s.player.projected_ownership_pct,
-                    "is_sleeper": (s.player.player_name, s.player.team) in sleeper_keys,
+                    "is_sleeper": s.player.is_sleeper,
+                    "is_regression_candidate": s.player.is_regression_candidate,
+                    "injury_status": s.player.injury_status,
+                    "injury_details": s.player.injury_details,
                     "fanduel_id": s.player.fanduel_id,
                 }
                 for s in lineup.slots

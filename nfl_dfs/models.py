@@ -235,6 +235,9 @@ class PlayerValue:
     injury_status: str = ""  # FanDuel's own designation (O/Q/D/IR/etc) — see salary.py's OUT_INJURY_STATUSES
     injury_details: str = ""
     is_out: bool = False  # injury_status is in OUT_INJURY_STATUSES — excluded from lineup building entirely
+    is_sleeper: bool = False  # set post-hoc by pipeline.py after SleeperCalculator runs; read by lineup_builder
+    is_regression_candidate: bool = False  # set post-hoc by pipeline.py after RegressionCalculator runs
+    manually_excluded: bool = False  # user-specified --exclude-players match — excluded like is_out
     fanduel_id: str = ""  # for CSV export back to FanDuel's bulk-upload format
     value_score: float = field(init=False)
     smash_score: float = field(init=False)  # ceiling per $1000 salary — "value" using upside, not the mean

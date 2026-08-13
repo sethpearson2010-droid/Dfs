@@ -106,6 +106,15 @@ def main() -> None:
         "low --max-player-salary), the actual leftover may exceed this rather than break the cap or fail "
         "outright. Pass a large number (e.g. 60000) to effectively disable this.",
     )
+    parser.add_argument(
+        "--exclude-players",
+        default=None,
+        help="Comma-separated player names to exclude from lineup building entirely, e.g. "
+        "'Mitchell Trubisky,Christian McCaffrey'. Independent of the automatic injury exclusion "
+        "(is_out) — use this for late-breaking news or a personal judgment call, regardless of "
+        "whether FanDuel's own injury designation has caught up yet. Matches on a normalized, "
+        "substring-tolerant basis, so 'Trubisky' alone is enough.",
+    )
     args = parser.parse_args()
 
     if args.num_lineups > MAX_LINEUPS:
@@ -125,6 +134,11 @@ def main() -> None:
         levels = [float(x.strip()) for x in args.risk_levels.split(",")]
         risk_levels = {lvl: label_for_risk(lvl) for lvl in levels}
 
+    exclude_players = None
+    if args.exclude_players:
+        exclude_players = [name.strip() for name in args.exclude_players.split(",") if name.strip()]
+        print(f"Excluding: {', '.join(exclude_players)}")
+
     pipeline.run(
         season=args.season,
         salary_csv_path=args.salary_csv,
@@ -137,6 +151,7 @@ def main() -> None:
         max_player_salary=args.max_player_salary,
         max_salary_leftover=args.max_salary_leftover,
         explore=args.explore,
+        exclude_players=exclude_players,
     )
 
     print(f"Done. Wrote player values to {args.output}")

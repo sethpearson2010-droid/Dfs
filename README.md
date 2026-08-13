@@ -115,6 +115,22 @@ box. Player rows in `players.json` also carry an `is_sleeper` boolean
 for cross-referencing, and the dashboard shows a dedicated panel plus
 a 💤 badge on flagged rows.
 
+**Now actually influences lineup construction, not just an
+informational panel**: `is_sleeper` (and `is_regression_candidate`,
+below) are set directly on each player by `pipeline.py` after
+detection runs, and `lineup_builder.py`'s objective gives either flag
+an 8% boost (`SLEEPER_BONUS_WEIGHT`) — not risk-scaled, since good
+value is good value in cash as much as GPP. Verified this actually
+moves the selection score (direct test: +8.0% exactly as designed).
+Whether a specific sleeper ends up in a real lineup still depends on
+whether it's competitive even with that boost — a 5-6 point bench
+player usually won't out-score a real starter's ceiling even boosted,
+and that's correct: the bonus nudges toward already-good options, it
+doesn't override real point differences. Lineup slots in `lineups.json`
+now carry `is_sleeper`/`is_regression_candidate` too, shown with 💤/📈
+badges directly in the dashboard's lineup panel, not just the main
+player table.
+
 ## Advanced usage metrics
 
 Every non-DST player in `players.json` carries an `advanced_metrics`
@@ -331,6 +347,9 @@ relative gaps, as expected from a smaller, noisier sample.
 
 Player rows in `players.json` carry an `is_regression_candidate`
 boolean, and the dashboard shows a dedicated panel plus a 📈 badge.
+Like sleeper picks (below), this now also feeds an 8% boost into
+lineup construction itself — see "Sleeper picks" for the full
+explanation of how that bonus works and what it doesn't guarantee.
 
 ## What's automated vs. manual
 
@@ -453,6 +472,46 @@ above — the staleness gate only knows about past games, while
 FanDuel's own injury designation reflects this week's actual status.
 Verified against real data: 17 players correctly excluded (IR,
 Out) on one real slate.
+
+`injury_status`/`injury_details` are also included on every lineup
+slot in `lineups.json` now, not just the main player table — a
+Questionable/Doubtful player who made it into a built lineup shows a
+🩹 badge right there in the dashboard's lineup panel, so you don't
+have to cross-reference the player table separately to notice.
+
+### Manual exclusion (`--exclude-players`)
+
+FanDuel's injury designation doesn't always catch up to real-time
+news, and sometimes you just want to override the model's judgment on
+a specific player regardless of any injury tag. `--exclude-players`
+takes a comma-separated list of names and excludes them from lineup
+building entirely — completely independent of the automatic `is_out`
+exclusion above:
+
+```bash
+python -m nfl_dfs.main --season 2026 --salary-csv salaries.csv --exclude-players "Mitchell Trubisky, Christian McCaffrey"
+```
+
+Matching is normalized and substring-tolerant (via the same
+`normalize_name` used for the FanDuel-to-nflverse join), so a bare
+last name is enough — `--exclude-players "Trubisky"` matches "Mitchell
+Trubisky" without needing the full name or worrying about Jr./II
+punctuation. Verified: excluded players are confirmed absent from
+every lineup in a real multi-lineup batch, and matching works
+correctly both with a full name and a last name alone.
+
+Excluded players are tagged `manually_excluded: true` in
+`players.json` for transparency (distinct from `is_out`, so you can
+tell "the model auto-excluded this from injury data" apart from "I
+manually removed this").
+
+The GitHub Actions workflow exposes this as the `exclude_players`
+input. **Implementation note**: this value commonly contains spaces
+and commas ("Mitchell Trubisky, Christian McCaffrey"), so it's passed
+to the pipeline as a separately-quoted argument rather than folded
+into the same unquoted `$ARGS` string used for every other input
+(which are all single tokens like numbers) — folding a multi-word
+value into that pattern would break bash's word-splitting.
 
 ## Risk scale (1-10) and matchup-depth weighting
 

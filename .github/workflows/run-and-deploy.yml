@@ -44,6 +44,10 @@ on:
         description: "Push lineups to spend within this much of the $60,000 cap (default 2000). Best-effort — see README if combined with max_player_salary."
         required: false
         default: "2000"
+      exclude_players:
+        description: "Comma-separated player names to leave out entirely (late-breaking news, personal judgment call), e.g. 'Mitchell Trubisky, Christian McCaffrey'. Leave blank for none."
+        required: false
+        default: ""
       skip_redzone:
         description: "Skip the play-by-play red-zone fetch for a faster run"
         type: boolean
@@ -100,8 +104,13 @@ jobs:
           if [ "${{ inputs.skip_redzone }}" = "true" ]; then
             ARGS="$ARGS --skip-redzone"
           fi
-          echo "Running: python -m nfl_dfs.main $ARGS"
-          python -m nfl_dfs.main $ARGS
+          echo "Running: python -m nfl_dfs.main $ARGS --exclude-players '${{ inputs.exclude_players }}'"
+          # exclude_players is quoted separately (not folded into $ARGS)
+          # since it commonly contains spaces/commas — the rest of ARGS
+          # is safe to expand unquoted because every other value here is
+          # a single token (a number or flag), but doing that to a
+          # multi-word name list would break bash's word-splitting.
+          python -m nfl_dfs.main $ARGS --exclude-players "${{ inputs.exclude_players }}"
 
       - name: Assemble static site
         run: |

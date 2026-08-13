@@ -65,6 +65,14 @@ LEVERAGE_WEIGHT = 0.15
 # itself: this specifically rewards matchup quality.
 MATCHUP_DEPTH_WEIGHT = 0.20
 
+# flat, not risk-scaled bonuses for players already flagged by
+# sleepers.py / regression.py — see their own modules for the
+# threshold logic that decides who qualifies. Kept modest so these
+# nudge selection toward already-good options rather than overriding
+# real projection differences.
+SLEEPER_BONUS_WEIGHT = 0.08
+REGRESSION_BONUS_WEIGHT = 0.08
+
 # a gentle, always-on nudge (not risk-scaled, unlike leverage/stack)
 # toward spending more of the salary cap — small enough that real
 # projection differences still dominate player selection, but enough
@@ -165,7 +173,11 @@ class LineupBuilder:
         money unused — see `_enforce_salary_floor`'s docstring for why
         this is a best-effort greedy pass, not a hard guarantee."""
         risk_level = max(0.0, min(1.0, risk_level))
-        usable = [p for p in players if p.name_match_quality != "unmatched" and not p.is_stale and not p.is_out]
+        usable = [
+            p
+            for p in players
+            if p.name_match_quality != "unmatched" and not p.is_stale and not p.is_out and not p.manually_excluded
+        ]
         if max_player_salary is not None:
             usable = [p for p in usable if p.salary <= max_player_salary]
         noise = player_noise or {}
@@ -331,6 +343,19 @@ class LineupBuilder:
         # not just "high variance" or "low owned". A no-op at cash.
         if risk_level > 0 and player.vulnerability_multiplier > 1.0:
             base *= 1 + MATCHUP_DEPTH_WEIGHT * risk_level * (player.vulnerability_multiplier - 1.0)
+
+        # sleeper.py and regression.py already do the harder analytical
+        # work of deciding WHICH players qualify (see their own
+        # threshold logic) — these bonuses make that identification
+        # actually influence roster construction instead of being
+        # purely an informational side-panel. Not risk-scaled: a
+        # sleeper (cheap + real role + matchup boost) is good value in
+        # cash too, not just GPP, and a regression candidate's
+        # underlying volume is real regardless of risk appetite.
+        if player.is_sleeper:
+            base *= 1 + SLEEPER_BONUS_WEIGHT
+        if player.is_regression_candidate:
+            base *= 1 + REGRESSION_BONUS_WEIGHT
 
         # a small, uniform (not risk-scaled) nudge toward higher-salary
         # players, so lineups lean toward spending closer to the cap

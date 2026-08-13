@@ -330,10 +330,14 @@ function renderSelectedLineup(index) {
     const row = document.createElement("div");
     row.className = "lineup-slot-row";
     const sleeperTag = s.is_sleeper ? " 💤" : "";
+    const regressionTag = s.is_regression_candidate ? " 📈" : "";
+    const injuryTag = (s.injury_status === "Q" || s.injury_status === "D")
+      ? ` <span style="color:#f59e0b;" title="${s.injury_details || 'FanDuel: ' + s.injury_status}">🩹${s.injury_status}</span>`
+      : "";
     const ownTag = s.projected_ownership_pct ? ` · own ${s.projected_ownership_pct}%` : "";
     row.innerHTML = `
       <span class="lineup-slot-label">${slotName}</span>
-      <span>${s.player_name}${sleeperTag} <span style="color:var(--muted);">(${s.team} vs ${s.opponent}${ownTag})</span></span>
+      <span>${s.player_name}${sleeperTag}${regressionTag}${injuryTag} <span style="color:var(--muted);">(${s.team} vs ${s.opponent}${ownTag})</span></span>
       <span>$${s.salary.toLocaleString()}</span>
       <span style="color:var(--muted);">floor ${s.floor_projection}</span>
       <span style="color:var(--accent);">ceil ${s.ceiling_projection}</span>
