@@ -5,9 +5,9 @@
     "team": "TB",
     "opponent": "CIN",
     "salary": 5500,
-    "projection": 0.0,
-    "floor_projection": 0.0,
-    "ceiling_projection": 0.0,
+    "projection": 19.82,
+    "floor_projection": 14.72,
+    "ceiling_projection": 31.07,
     "value_score": 3.604,
     "name_match_quality": "exact",
     "is_stale": false,
@@ -16,11 +16,11 @@
     "injury_status": "",
     "injury_details": "",
     "is_out": false,
-    "manually_excluded": true,
+    "manually_excluded": false,
     "fanduel_id": "133104-90912",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.5,
+    "projected_ownership_pct": 39.6,
     "smash_score": 5.649,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -803,7 +803,7 @@
     "fanduel_id": "133104-89956",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 37.5,
+    "projected_ownership_pct": 37.1,
     "smash_score": 4.932,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -1159,7 +1159,7 @@
     "fanduel_id": "133104-89493",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 38.4,
+    "projected_ownership_pct": 38.0,
     "smash_score": 3.947,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -1346,7 +1346,7 @@
     "fanduel_id": "133104-174215",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 36.6,
+    "projected_ownership_pct": 36.3,
     "smash_score": 3.575,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -1571,7 +1571,7 @@
     "fanduel_id": "133104-63759",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 35.6,
+    "projected_ownership_pct": 35.3,
     "smash_score": 3.063,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -1618,7 +1618,7 @@
     "fanduel_id": "133104-89628",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 28.4,
+    "projected_ownership_pct": 28.9,
     "smash_score": 4.91,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -1718,7 +1718,7 @@
     "fanduel_id": "133104-64401",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 37.3,
+    "projected_ownership_pct": 36.9,
     "smash_score": 3.743,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -2021,7 +2021,7 @@
     "fanduel_id": "133104-129368",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 37.8,
+    "projected_ownership_pct": 37.4,
     "smash_score": 5.269,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -2068,7 +2068,7 @@
     "fanduel_id": "133104-112057",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 35.3,
+    "projected_ownership_pct": 34.9,
     "smash_score": 4.654,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -2199,7 +2199,7 @@
     "fanduel_id": "133104-29358",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 25.8,
+    "projected_ownership_pct": 26.3,
     "smash_score": 4.673,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -2252,7 +2252,7 @@
     "fanduel_id": "133104-138820",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 36.1,
+    "projected_ownership_pct": 35.8,
     "smash_score": 2.728,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -2562,7 +2562,7 @@
     "fanduel_id": "133104-87127",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 32.6,
+    "projected_ownership_pct": 32.3,
     "smash_score": 4.025,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -2636,7 +2636,7 @@
     "fanduel_id": "133104-26483",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 26.2,
+    "projected_ownership_pct": 26.7,
     "smash_score": 2.81,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -2933,7 +2933,7 @@
     "fanduel_id": "133104-157150",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 30.0,
+    "projected_ownership_pct": 29.7,
     "smash_score": 6.027,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -2980,7 +2980,7 @@
     "fanduel_id": "133104-129471",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 25.0,
+    "projected_ownership_pct": 25.5,
     "smash_score": 2.468,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -3033,7 +3033,7 @@
     "fanduel_id": "133104-69189",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 26.7,
+    "projected_ownership_pct": 27.2,
     "smash_score": 2.514,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -3254,59 +3254,6 @@
     }
   },
   {
-    "player_name": "Jayden Daniels",
-    "position": "QB",
-    "team": "WAS",
-    "opponent": "PHI",
-    "salary": 7900,
-    "projection": 14.71,
-    "floor_projection": 12.26,
-    "ceiling_projection": 17.98,
-    "value_score": 1.862,
-    "name_match_quality": "exact",
-    "is_stale": false,
-    "is_backup_qb": false,
-    "force_included": true,
-    "injury_status": "",
-    "injury_details": "",
-    "is_out": false,
-    "manually_excluded": false,
-    "fanduel_id": "133104-102785",
-    "is_sleeper": false,
-    "is_regression_candidate": false,
-    "projected_ownership_pct": 26.5,
-    "smash_score": 2.276,
-    "smash_alignment": 0,
-    "signal_multipliers": {
-      "vulnerability": 0.917,
-      "game_script": 0.952,
-      "pace": 0.983,
-      "opportunity": 0.978
-    },
-    "matchup_vulnerability": {
-      "recent_avg_allowed": 11.15,
-      "season_avg_allowed": 14.53,
-      "games_sampled": 17
-    },
-    "game_context": {
-      "implied_team_total": 17.8,
-      "spread_line": 3.0,
-      "total_line": 38.5,
-      "is_home": false
-    },
-    "pace": {
-      "recent_avg_plays": 52.4,
-      "season_avg_plays": 58.24
-    },
-    "advanced_metrics": {
-      "target_share": 0.0,
-      "air_yards_share": 0.0,
-      "wopr": 0.0,
-      "redzone_touches_per_game": 1.25,
-      "redzone_share": 0.128
-    }
-  },
-  {
     "player_name": "Michael Carter",
     "position": "RB",
     "team": "TEN",
@@ -3327,7 +3274,7 @@
     "fanduel_id": "133104-93539",
     "is_sleeper": true,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 27.5,
+    "projected_ownership_pct": 27.2,
     "smash_score": 2.364,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -3374,7 +3321,7 @@
     "fanduel_id": "133104-41535",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 25.2,
+    "projected_ownership_pct": 26.0,
     "smash_score": 1.967,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -3668,7 +3615,7 @@
     "fanduel_id": "133104-91598",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 32.6,
+    "projected_ownership_pct": 32.3,
     "smash_score": 3.974,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -3840,7 +3787,7 @@
     "fanduel_id": "133104-40442",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 31.0,
+    "projected_ownership_pct": 30.7,
     "smash_score": 2.761,
     "smash_alignment": 3,
     "signal_multipliers": {
@@ -3940,7 +3887,7 @@
     "fanduel_id": "133104-52451",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 27.8,
+    "projected_ownership_pct": 27.5,
     "smash_score": 3.069,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -4065,7 +4012,7 @@
     "fanduel_id": "133104-8023",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 22.5,
+    "projected_ownership_pct": 23.3,
     "smash_score": 3.498,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -4159,7 +4106,7 @@
     "fanduel_id": "133104-103308",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 26.1,
+    "projected_ownership_pct": 25.8,
     "smash_score": 4.153,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -4437,7 +4384,7 @@
     "fanduel_id": "133104-107293",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 27.7,
+    "projected_ownership_pct": 27.4,
     "smash_score": 3.618,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -4574,7 +4521,7 @@
     "fanduel_id": "133104-169410",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 30.5,
+    "projected_ownership_pct": 30.1,
     "smash_score": 4.1,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -4690,7 +4637,7 @@
     "fanduel_id": "133104-89675",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 31.9,
+    "projected_ownership_pct": 31.6,
     "smash_score": 2.986,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -4784,7 +4731,7 @@
     "fanduel_id": "133104-134023",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 24.4,
+    "projected_ownership_pct": 24.1,
     "smash_score": 2.386,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -4915,7 +4862,7 @@
     "fanduel_id": "133104-63050",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 25.4,
+    "projected_ownership_pct": 25.1,
     "smash_score": 2.388,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -5073,7 +5020,7 @@
     "fanduel_id": "133104-87691",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 21.3,
+    "projected_ownership_pct": 22.0,
     "smash_score": 3.589,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -5167,7 +5114,7 @@
     "fanduel_id": "133104-184183",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 20.6,
+    "projected_ownership_pct": 21.3,
     "smash_score": 2.934,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -5209,7 +5156,7 @@
     "fanduel_id": "133104-39280",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 30.9,
+    "projected_ownership_pct": 30.6,
     "smash_score": 2.178,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -5256,7 +5203,7 @@
     "fanduel_id": "133104-167031",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 28.7,
+    "projected_ownership_pct": 28.4,
     "smash_score": 2.94,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -5303,7 +5250,7 @@
     "fanduel_id": "133104-144102",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 26.6,
+    "projected_ownership_pct": 26.3,
     "smash_score": 2.384,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -5350,7 +5297,7 @@
     "fanduel_id": "133104-72297",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 27.6,
+    "projected_ownership_pct": 27.3,
     "smash_score": 2.107,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -5397,7 +5344,7 @@
     "fanduel_id": "133104-91626",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 29.3,
+    "projected_ownership_pct": 29.0,
     "smash_score": 4.859,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -5503,7 +5450,7 @@
     "fanduel_id": "133104-117178",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 25.1,
+    "projected_ownership_pct": 24.8,
     "smash_score": 3.332,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -5609,7 +5556,7 @@
     "fanduel_id": "133104-152575",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 19.4,
+    "projected_ownership_pct": 20.1,
     "smash_score": 3.827,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -5662,7 +5609,7 @@
     "fanduel_id": "133104-22038",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 19.6,
+    "projected_ownership_pct": 20.3,
     "smash_score": 3.358,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -5756,7 +5703,7 @@
     "fanduel_id": "133104-128633",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 23.1,
+    "projected_ownership_pct": 22.8,
     "smash_score": 4.082,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -5803,7 +5750,7 @@
     "fanduel_id": "133104-160620",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 27.1,
+    "projected_ownership_pct": 26.8,
     "smash_score": 1.594,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -5999,7 +5946,7 @@
     "fanduel_id": "133104-128693",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 21.1,
+    "projected_ownership_pct": 20.8,
     "smash_score": 3.283,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -6052,7 +5999,7 @@
     "fanduel_id": "133104-69017",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 20.6,
+    "projected_ownership_pct": 21.3,
     "smash_score": 2.589,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -6199,7 +6146,7 @@
     "fanduel_id": "133104-137059",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 22.0,
+    "projected_ownership_pct": 21.7,
     "smash_score": 2.316,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -6246,7 +6193,7 @@
     "fanduel_id": "133104-160938",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 18.2,
+    "projected_ownership_pct": 18.9,
     "smash_score": 2.833,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -6336,7 +6283,7 @@
     "fanduel_id": "133104-88699",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 19.9,
+    "projected_ownership_pct": 19.7,
     "smash_score": 3.82,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -6383,7 +6330,7 @@
     "fanduel_id": "133104-174486",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 21.4,
+    "projected_ownership_pct": 21.1,
     "smash_score": 3.045,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -6425,7 +6372,7 @@
     "fanduel_id": "133104-138774",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 22.3,
+    "projected_ownership_pct": 22.0,
     "smash_score": 1.808,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -6478,7 +6425,7 @@
     "fanduel_id": "133104-70051",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 17.5,
+    "projected_ownership_pct": 18.2,
     "smash_score": 3.558,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -6619,7 +6566,7 @@
     "fanduel_id": "133104-151806",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 19.2,
+    "projected_ownership_pct": 18.9,
     "smash_score": 1.674,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -6661,7 +6608,7 @@
     "fanduel_id": "133104-72731",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 24.5,
+    "projected_ownership_pct": 24.2,
     "smash_score": 3.239,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -6767,7 +6714,7 @@
     "fanduel_id": "133104-86875",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 20.1,
+    "projected_ownership_pct": 19.8,
     "smash_score": 2.478,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -6820,7 +6767,7 @@
     "fanduel_id": "133104-152103",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 19.2,
+    "projected_ownership_pct": 18.9,
     "smash_score": 2.961,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -6867,7 +6814,7 @@
     "fanduel_id": "133104-103064",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 22.5,
+    "projected_ownership_pct": 22.2,
     "smash_score": 2.571,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -7008,7 +6955,7 @@
     "fanduel_id": "133104-152664",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 24.3,
+    "projected_ownership_pct": 24.0,
     "smash_score": 1.565,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -7402,7 +7349,7 @@
     "fanduel_id": "133104-137902",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 18.9,
+    "projected_ownership_pct": 18.7,
     "smash_score": 1.7,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -7455,7 +7402,7 @@
     "fanduel_id": "133104-73273",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 19.5,
+    "projected_ownership_pct": 19.3,
     "smash_score": 1.849,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -7802,7 +7749,7 @@
     "fanduel_id": "133104-154008",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 17.6,
+    "projected_ownership_pct": 17.4,
     "smash_score": 2.462,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -8478,7 +8425,7 @@
     "fanduel_id": "133104-93382",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 16.9,
+    "projected_ownership_pct": 17.5,
     "smash_score": 0.637,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -8619,7 +8566,7 @@
     "fanduel_id": "133104-119641",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 16.3,
+    "projected_ownership_pct": 16.9,
     "smash_score": 1.17,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -8844,7 +8791,7 @@
     "fanduel_id": "133104-87467",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 17.2,
+    "projected_ownership_pct": 17.0,
     "smash_score": 1.024,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -8985,7 +8932,7 @@
     "fanduel_id": "133104-27229",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 16.8,
+    "projected_ownership_pct": 16.6,
     "smash_score": 1.574,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -9328,7 +9275,7 @@
     "fanduel_id": "133104-69833",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 15.6,
+    "projected_ownership_pct": 16.3,
     "smash_score": 0.528,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -9428,7 +9375,7 @@
     "fanduel_id": "133104-160213",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 16.0,
+    "projected_ownership_pct": 15.7,
     "smash_score": 1.995,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -9569,7 +9516,7 @@
     "fanduel_id": "133104-92677",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 16.0,
+    "projected_ownership_pct": 15.8,
     "smash_score": 0.796,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -9622,7 +9569,7 @@
     "fanduel_id": "133104-137488",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 15.4,
+    "projected_ownership_pct": 15.2,
     "smash_score": 0.993,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -9763,7 +9710,7 @@
     "fanduel_id": "133104-87371",
     "is_sleeper": false,
     "is_regression_candidate": true,
-    "projected_ownership_pct": 14.6,
+    "projected_ownership_pct": 14.4,
     "smash_score": 1.839,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -9963,7 +9910,7 @@
     "fanduel_id": "133104-92575",
     "is_sleeper": false,
     "is_regression_candidate": true,
-    "projected_ownership_pct": 15.8,
+    "projected_ownership_pct": 15.6,
     "smash_score": 1.194,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -10146,7 +10093,7 @@
     "fanduel_id": "133104-103694",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 14.8,
+    "projected_ownership_pct": 14.6,
     "smash_score": 1.643,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -10499,7 +10446,7 @@
     "fanduel_id": "133104-155293",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 14.0,
+    "projected_ownership_pct": 13.8,
     "smash_score": 1.342,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -10788,7 +10735,7 @@
     "fanduel_id": "133104-28827",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 13.7,
+    "projected_ownership_pct": 13.5,
     "smash_score": 1.586,
     "smash_alignment": 2,
     "signal_multipliers": {
@@ -10882,7 +10829,7 @@
     "fanduel_id": "133104-151740",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 12.9,
+    "projected_ownership_pct": 12.7,
     "smash_score": 1.173,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -10976,7 +10923,7 @@
     "fanduel_id": "133104-56648",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 13.0,
+    "projected_ownership_pct": 12.8,
     "smash_score": 0.955,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -11076,7 +11023,7 @@
     "fanduel_id": "133104-103698",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 15.0,
+    "projected_ownership_pct": 15.6,
     "smash_score": 1.087,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -11118,7 +11065,7 @@
     "fanduel_id": "133104-90428",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 13.9,
+    "projected_ownership_pct": 13.7,
     "smash_score": 0.771,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -11306,7 +11253,7 @@
     "fanduel_id": "133104-149696",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 14.4,
+    "projected_ownership_pct": 15.0,
     "smash_score": 0.678,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -11459,7 +11406,7 @@
     "fanduel_id": "133104-93107",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 12.1,
+    "projected_ownership_pct": 12.0,
     "smash_score": 0.502,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -11742,7 +11689,7 @@
     "fanduel_id": "133104-90562",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 12.8,
+    "projected_ownership_pct": 12.6,
     "smash_score": 0.519,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -11789,7 +11736,7 @@
     "fanduel_id": "133104-91488",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 12.1,
+    "projected_ownership_pct": 11.9,
     "smash_score": 0.551,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -12121,7 +12068,7 @@
     "fanduel_id": "133104-152520",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 11.6,
+    "projected_ownership_pct": 11.4,
     "smash_score": 0.856,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -12674,7 +12621,7 @@
     "fanduel_id": "133104-110978",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 11.1,
+    "projected_ownership_pct": 10.9,
     "smash_score": 0.578,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -12827,7 +12774,7 @@
     "fanduel_id": "133104-166749",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 11.1,
+    "projected_ownership_pct": 11.0,
     "smash_score": 0.578,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -12923,7 +12870,7 @@
     "fanduel_id": "133104-6714",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 13.9,
+    "projected_ownership_pct": 14.4,
     "smash_score": 0.61,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -13017,7 +12964,7 @@
     "fanduel_id": "133104-38628",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 13.3,
+    "projected_ownership_pct": 13.9,
     "smash_score": 0.25,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -13064,7 +13011,7 @@
     "fanduel_id": "133104-89607",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 12.8,
+    "projected_ownership_pct": 13.3,
     "smash_score": 0.428,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -13117,7 +13064,7 @@
     "fanduel_id": "133104-86055",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 10.7,
+    "projected_ownership_pct": 10.5,
     "smash_score": 0.35,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -13170,7 +13117,7 @@
     "fanduel_id": "133104-137122",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 10.4,
+    "projected_ownership_pct": 10.2,
     "smash_score": 0.183,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13217,7 +13164,7 @@
     "fanduel_id": "133104-92020",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 12.2,
+    "projected_ownership_pct": 12.8,
     "smash_score": 0.267,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -13264,7 +13211,7 @@
     "fanduel_id": "133104-200653",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 11.7,
+    "projected_ownership_pct": 12.2,
     "smash_score": 0.217,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -13364,7 +13311,7 @@
     "fanduel_id": "133104-138028",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 10.1,
+    "projected_ownership_pct": 9.9,
     "smash_score": 0.105,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -13458,7 +13405,7 @@
     "fanduel_id": "133104-154450",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 11.2,
+    "projected_ownership_pct": 11.7,
     "smash_score": 0.05,
     "smash_alignment": 1,
     "signal_multipliers": {
@@ -13482,6 +13429,52 @@
       "wopr": 0.0,
       "redzone_touches_per_game": 1.0,
       "redzone_share": 0.098
+    }
+  },
+  {
+    "player_name": "Jayden Daniels",
+    "position": "QB",
+    "team": "WAS",
+    "opponent": "PHI",
+    "salary": 7900,
+    "projection": 0.0,
+    "floor_projection": 0.0,
+    "ceiling_projection": 0.0,
+    "value_score": 0.0,
+    "name_match_quality": "exact",
+    "is_stale": true,
+    "is_backup_qb": false,
+    "force_included": false,
+    "injury_status": "",
+    "injury_details": "",
+    "is_out": false,
+    "manually_excluded": false,
+    "fanduel_id": "133104-102785",
+    "is_sleeper": false,
+    "is_regression_candidate": false,
+    "projected_ownership_pct": 0.5,
+    "smash_score": 0.0,
+    "smash_alignment": 0,
+    "signal_multipliers": {
+      "vulnerability": 1.0,
+      "game_script": 1.0,
+      "pace": 1.0,
+      "opportunity": 1.0
+    },
+    "matchup_vulnerability": {
+      "recent_avg_allowed": 11.15,
+      "season_avg_allowed": 14.53,
+      "games_sampled": 17
+    },
+    "game_context": {
+      "implied_team_total": 17.8,
+      "spread_line": 3.0,
+      "total_line": 38.5,
+      "is_home": false
+    },
+    "pace": {
+      "recent_avg_plays": 52.4,
+      "season_avg_plays": 58.24
     }
   },
   {
@@ -13751,7 +13744,7 @@
     "fanduel_id": "133104-88797",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 0.5,
+    "projected_ownership_pct": 0.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -13912,7 +13905,7 @@
     "fanduel_id": "133104-103444",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 0.6,
+    "projected_ownership_pct": 0.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14038,7 +14031,7 @@
     "fanduel_id": "133104-152646",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 0.7,
+    "projected_ownership_pct": 0.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14084,7 +14077,7 @@
     "fanduel_id": "133104-152673",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 0.8,
+    "projected_ownership_pct": 0.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14176,7 +14169,7 @@
     "fanduel_id": "133104-86200",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 0.9,
+    "projected_ownership_pct": 1.0,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14216,7 +14209,7 @@
     "fanduel_id": "133104-86243",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.0,
+    "projected_ownership_pct": 1.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14256,7 +14249,7 @@
     "fanduel_id": "133104-152820",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.1,
+    "projected_ownership_pct": 1.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14291,7 +14284,7 @@
     "fanduel_id": "133104-129315",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.2,
+    "projected_ownership_pct": 1.3,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14331,7 +14324,7 @@
     "fanduel_id": "133104-90406",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.3,
+    "projected_ownership_pct": 1.4,
     "smash_score": 0.03,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14378,7 +14371,7 @@
     "fanduel_id": "133104-120105",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.4,
+    "projected_ownership_pct": 1.5,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14418,7 +14411,7 @@
     "fanduel_id": "133104-151938",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.5,
+    "projected_ownership_pct": 1.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14458,7 +14451,7 @@
     "fanduel_id": "133104-103824",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.6,
+    "projected_ownership_pct": 1.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14498,7 +14491,7 @@
     "fanduel_id": "133104-151969",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.8,
+    "projected_ownership_pct": 1.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14538,7 +14531,7 @@
     "fanduel_id": "133104-60840",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.9,
+    "projected_ownership_pct": 2.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14578,7 +14571,7 @@
     "fanduel_id": "133104-166314",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.1,
+    "projected_ownership_pct": 2.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14618,7 +14611,7 @@
     "fanduel_id": "133104-110000",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.2,
+    "projected_ownership_pct": 2.4,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14658,7 +14651,7 @@
     "fanduel_id": "133104-185776",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.4,
+    "projected_ownership_pct": 2.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14698,7 +14691,7 @@
     "fanduel_id": "133104-22994",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.6,
+    "projected_ownership_pct": 2.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14738,7 +14731,7 @@
     "fanduel_id": "133104-53729",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.8,
+    "projected_ownership_pct": 3.0,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14778,7 +14771,7 @@
     "fanduel_id": "133104-33259",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.0,
+    "projected_ownership_pct": 3.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14809,7 +14802,7 @@
     "fanduel_id": "133104-152044",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.2,
+    "projected_ownership_pct": 3.4,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14855,7 +14848,7 @@
     "fanduel_id": "133104-134655",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.4,
+    "projected_ownership_pct": 3.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14895,7 +14888,7 @@
     "fanduel_id": "133104-160265",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.6,
+    "projected_ownership_pct": 3.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14935,7 +14928,7 @@
     "fanduel_id": "133104-102933",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.9,
+    "projected_ownership_pct": 4.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -14975,7 +14968,7 @@
     "fanduel_id": "133104-87594",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.1,
+    "projected_ownership_pct": 4.4,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15021,7 +15014,7 @@
     "fanduel_id": "133104-208467",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.4,
+    "projected_ownership_pct": 4.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15061,7 +15054,7 @@
     "fanduel_id": "133104-208491",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.7,
+    "projected_ownership_pct": 5.0,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15107,7 +15100,7 @@
     "fanduel_id": "133104-135811",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.0,
+    "projected_ownership_pct": 5.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15147,7 +15140,7 @@
     "fanduel_id": "133104-187015",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.2,
+    "projected_ownership_pct": 5.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15183,7 +15176,7 @@
     "fanduel_id": "133104-184983",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.6,
+    "projected_ownership_pct": 5.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15223,7 +15216,7 @@
     "fanduel_id": "133104-69294",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.9,
+    "projected_ownership_pct": 6.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15263,7 +15256,7 @@
     "fanduel_id": "133104-70324",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 6.2,
+    "projected_ownership_pct": 6.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15309,7 +15302,7 @@
     "fanduel_id": "133104-139985",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 6.6,
+    "projected_ownership_pct": 6.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15349,7 +15342,7 @@
     "fanduel_id": "133104-92975",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 6.9,
+    "projected_ownership_pct": 7.3,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15389,7 +15382,7 @@
     "fanduel_id": "133104-53095",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 7.3,
+    "projected_ownership_pct": 7.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15435,7 +15428,7 @@
     "fanduel_id": "133104-88937",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 7.7,
+    "projected_ownership_pct": 8.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15471,7 +15464,7 @@
     "fanduel_id": "133104-119670",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 8.1,
+    "projected_ownership_pct": 8.5,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15511,7 +15504,7 @@
     "fanduel_id": "133104-14225",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 8.5,
+    "projected_ownership_pct": 8.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15557,7 +15550,7 @@
     "fanduel_id": "133104-128944",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 8.9,
+    "projected_ownership_pct": 9.3,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15597,7 +15590,7 @@
     "fanduel_id": "133104-111557",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 9.3,
+    "projected_ownership_pct": 9.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15637,7 +15630,7 @@
     "fanduel_id": "133104-85983",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 9.8,
+    "projected_ownership_pct": 10.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15677,7 +15670,7 @@
     "fanduel_id": "133104-166892",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 10.2,
+    "projected_ownership_pct": 10.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -15717,7 +15710,7 @@
     "fanduel_id": "133104-129010",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 10.7,
+    "projected_ownership_pct": 11.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -17305,7 +17298,7 @@
     "fanduel_id": "133104-166898",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 0.6,
+    "projected_ownership_pct": 0.5,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -18604,7 +18597,7 @@
     "fanduel_id": "133104-168916",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 0.7,
+    "projected_ownership_pct": 0.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -19974,7 +19967,7 @@
     "fanduel_id": "133104-128765",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 0.9,
+    "projected_ownership_pct": 0.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -20910,7 +20903,7 @@
     "fanduel_id": "133104-173113",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.3,
+    "projected_ownership_pct": 1.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -21549,7 +21542,7 @@
     "fanduel_id": "133104-140407",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.4,
+    "projected_ownership_pct": 1.3,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -21589,7 +21582,7 @@
     "fanduel_id": "133104-158836",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.5,
+    "projected_ownership_pct": 1.4,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -22078,7 +22071,7 @@
     "fanduel_id": "133104-200865",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.7,
+    "projected_ownership_pct": 1.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -22276,7 +22269,7 @@
     "fanduel_id": "133104-105648",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 1.8,
+    "projected_ownership_pct": 1.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -24537,7 +24530,7 @@
     "fanduel_id": "133104-166313",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.7,
+    "projected_ownership_pct": 2.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -24657,7 +24650,7 @@
     "fanduel_id": "133104-92590",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.8,
+    "projected_ownership_pct": 2.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -25031,7 +25024,7 @@
     "fanduel_id": "133104-26057",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 2.9,
+    "projected_ownership_pct": 2.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -25662,7 +25655,7 @@
     "fanduel_id": "133104-185827",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.0,
+    "projected_ownership_pct": 2.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -25912,7 +25905,7 @@
     "fanduel_id": "133104-184821",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.2,
+    "projected_ownership_pct": 3.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -26171,7 +26164,7 @@
     "fanduel_id": "133104-160287",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.3,
+    "projected_ownership_pct": 3.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -26211,7 +26204,7 @@
     "fanduel_id": "133104-73247",
     "is_sleeper": false,
     "is_regression_candidate": true,
-    "projected_ownership_pct": 3.4,
+    "projected_ownership_pct": 3.3,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -26596,7 +26589,7 @@
     "fanduel_id": "133104-225850",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.6,
+    "projected_ownership_pct": 3.5,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -27174,7 +27167,7 @@
     "fanduel_id": "133104-206447",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.7,
+    "projected_ownership_pct": 3.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -27300,7 +27293,7 @@
     "fanduel_id": "133104-201342",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 3.9,
+    "projected_ownership_pct": 3.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -27452,7 +27445,7 @@
     "fanduel_id": "133104-172683",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.0,
+    "projected_ownership_pct": 3.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -28096,7 +28089,7 @@
     "fanduel_id": "133104-158399",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.2,
+    "projected_ownership_pct": 4.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -28280,7 +28273,7 @@
     "fanduel_id": "133104-111325",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.3,
+    "projected_ownership_pct": 4.2,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -28320,7 +28313,7 @@
     "fanduel_id": "133104-104165",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.5,
+    "projected_ownership_pct": 4.4,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -28360,7 +28353,7 @@
     "fanduel_id": "133104-152295",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.7,
+    "projected_ownership_pct": 4.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -28480,7 +28473,7 @@
     "fanduel_id": "133104-156400",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 4.8,
+    "projected_ownership_pct": 4.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -28646,7 +28639,7 @@
     "fanduel_id": "133104-86780",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.0,
+    "projected_ownership_pct": 4.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -28686,7 +28679,7 @@
     "fanduel_id": "133104-226048",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.2,
+    "projected_ownership_pct": 5.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -28927,7 +28920,7 @@
     "fanduel_id": "133104-71444",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.4,
+    "projected_ownership_pct": 5.3,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -29020,7 +29013,7 @@
     "fanduel_id": "133104-152350",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.6,
+    "projected_ownership_pct": 5.5,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -29180,7 +29173,7 @@
     "fanduel_id": "133104-71459",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 5.8,
+    "projected_ownership_pct": 5.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -29266,7 +29259,7 @@
     "fanduel_id": "133104-158511",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 6.0,
+    "projected_ownership_pct": 5.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -29432,7 +29425,7 @@
     "fanduel_id": "133104-201526",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 6.2,
+    "projected_ownership_pct": 6.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -29478,7 +29471,7 @@
     "fanduel_id": "133104-119615",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 6.4,
+    "projected_ownership_pct": 6.3,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -29554,7 +29547,7 @@
     "fanduel_id": "133104-185153",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 6.6,
+    "projected_ownership_pct": 6.5,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -29716,7 +29709,7 @@
     "fanduel_id": "133104-91989",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 6.8,
+    "projected_ownership_pct": 6.7,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -29762,7 +29755,7 @@
     "fanduel_id": "133104-103252",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 7.0,
+    "projected_ownership_pct": 6.9,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -29919,7 +29912,7 @@
     "fanduel_id": "133104-158553",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 7.3,
+    "projected_ownership_pct": 7.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -30128,7 +30121,7 @@
     "fanduel_id": "133104-139114",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 7.5,
+    "projected_ownership_pct": 7.4,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -30168,7 +30161,7 @@
     "fanduel_id": "133104-156523",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 7.7,
+    "projected_ownership_pct": 7.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -30360,7 +30353,7 @@
     "fanduel_id": "133104-119672",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 8.0,
+    "projected_ownership_pct": 7.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -30440,7 +30433,7 @@
     "fanduel_id": "133104-185215",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 8.2,
+    "projected_ownership_pct": 8.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -30480,7 +30473,7 @@
     "fanduel_id": "133104-94087",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 8.5,
+    "projected_ownership_pct": 8.3,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -30855,7 +30848,7 @@
     "fanduel_id": "133104-128920",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 8.7,
+    "projected_ownership_pct": 8.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -30981,7 +30974,7 @@
     "fanduel_id": "133104-159649",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 9.0,
+    "projected_ownership_pct": 8.8,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -31021,7 +31014,7 @@
     "fanduel_id": "133104-119718",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 9.3,
+    "projected_ownership_pct": 9.1,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -31253,7 +31246,7 @@
     "fanduel_id": "133104-187313",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 9.5,
+    "projected_ownership_pct": 9.4,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {
@@ -31955,7 +31948,7 @@
     "fanduel_id": "133104-152574",
     "is_sleeper": false,
     "is_regression_candidate": false,
-    "projected_ownership_pct": 9.8,
+    "projected_ownership_pct": 9.6,
     "smash_score": 0.0,
     "smash_alignment": 0,
     "signal_multipliers": {

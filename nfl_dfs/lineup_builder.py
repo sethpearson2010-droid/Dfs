@@ -171,12 +171,23 @@ class LineupBuilder:
         constraint. `max_salary_leftover` (default $2000) pushes the
         lineup to actually spend close to the cap rather than leaving
         money unused — see `_enforce_salary_floor`'s docstring for why
-        this is a best-effort greedy pass, not a hard guarantee."""
+        this is a best-effort greedy pass, not a hard guarantee.
+
+        Any player with `force_included=True` (set by
+        `--include-players`, see value.py) is LOCKED into a slot —
+        assigned first, before any noise/objective-driven selection
+        for the rest of the roster, and never touched by local search
+        or salary-floor enforcement afterward. This is a real fix, not
+        the original design: an earlier version only made a forced
+        player's projection nonzero without guaranteeing selection,
+        which meant they'd still lose out to a more competitive real
+        option and simply not appear — exactly the bug this was
+        reported against."""
         risk_level = max(0.0, min(1.0, risk_level))
         usable = [
             p
             for p in players
-            if p.name_match_quality != "unmatched"
+            if (p.name_match_quality != "unmatched" or p.force_included)
             and not p.is_stale
             and not p.is_out
             and not p.manually_excluded
@@ -185,14 +196,20 @@ class LineupBuilder:
             usable = [p for p in usable if p.salary <= max_player_salary]
         noise = player_noise or {}
 
-        lineup = self._greedy_fill(usable, risk_level, noise)
+        locked = [p for p in usable if p.force_included]
+
+        lineup, locked_slot_names = self._greedy_fill(usable, risk_level, noise, locked)
         if lineup is None:
             return None
 
-        lineup = self._local_search(lineup, usable, risk_level, noise, local_search_iterations)
+        lineup = self._local_search(
+            lineup, usable, risk_level, noise, local_search_iterations, locked_slot_names
+        )
 
         if max_salary_leftover is not None:
-            lineup = self._enforce_salary_floor(lineup, usable, risk_level, noise, max_salary_leftover)
+            lineup = self._enforce_salary_floor(
+                lineup, usable, risk_level, noise, max_salary_leftover, locked_slot_names
+            )
 
         return self._to_lineup_model(lineup, risk_level)
 
@@ -398,18 +415,56 @@ class LineupBuilder:
         return True
 
     def _greedy_fill(
-        self, players: list[PlayerValue], risk_level: float, noise: dict[str, float]
-    ) -> dict[str, PlayerValue] | None:
-        # fill tightest-constrained slots first (fewest eligible
-        # players) so scarce positions (QB, TE) aren't starved by FLEX
-        # grabbing a good RB/WR before its own slot is filled.
+        self,
+        players: list[PlayerValue],
+        risk_level: float,
+        noise: dict[str, float],
+        locked: list[PlayerValue] | None = None,
+    ) -> tuple[dict[str, PlayerValue] | None, set[str]]:
         remaining_budget = self._salary_cap
         assigned: dict[str, PlayerValue] = {}
         used_players: set[str] = set()
+        locked_slot_names: set[str] = set()
 
+        # lock assignment happens FIRST, before any noise/objective
+        # scoring touches the rest of the roster — a locked player is
+        # placed regardless of whether they're the "best" pick,
+        # because the whole point is guaranteeing they're in the
+        # lineup, not just making them eligible to compete. Slots are
+        # tried most-specific-first (single-position slots before
+        # FLEX) so a locked RB doesn't needlessly eat the FLEX slot
+        # another position might need. A locked player who can't fit
+        # anywhere (no open eligible slot left, or can't afford them
+        # alone) is skipped rather than failing the whole build — this
+        # can happen if you lock more players at one position than
+        # there are slots for it.
+        for locked_player in locked or []:
+            if locked_player.player_name in used_players:
+                continue
+            candidate_slots = sorted(
+                (
+                    (slot_name, eligible)
+                    for slot_name, eligible in ROSTER_SLOTS.items()
+                    if locked_player.position in eligible and slot_name not in assigned
+                ),
+                key=lambda item: len(item[1]),
+            )
+            if not candidate_slots or locked_player.salary > remaining_budget:
+                continue
+            slot_name, _ = candidate_slots[0]
+            assigned[slot_name] = locked_player
+            used_players.add(locked_player.player_name)
+            remaining_budget -= locked_player.salary
+            locked_slot_names.add(slot_name)
+
+        # fill tightest-constrained slots first (fewest eligible
+        # players) so scarce positions (QB, TE) aren't starved by FLEX
+        # grabbing a good RB/WR before its own slot is filled.
         slot_order = sorted(
-            ROSTER_SLOTS.items(),
-            key=lambda item: len([p for p in players if p.position in item[1]]),
+            (item for item in ROSTER_SLOTS.items() if item[0] not in assigned),
+            key=lambda item: len(
+                [p for p in players if p.position in item[1] and p.player_name not in used_players]
+            ),
         )
 
         for slot_name, eligible_positions in slot_order:
@@ -419,7 +474,7 @@ class LineupBuilder:
                 if p.position in eligible_positions and p.player_name not in used_players
             ]
             if not candidates:
-                return None  # position missing entirely from the pool — can't build a lineup
+                return None, locked_slot_names  # position missing entirely from the pool — can't build a lineup
 
             # reserve at least min-price-per-remaining-slot budget for
             # what's left, so an early greedy pick doesn't strand later
@@ -436,7 +491,7 @@ class LineupBuilder:
             used_players.add(best.player_name)
             remaining_budget -= best.salary
 
-        return assigned
+        return assigned, locked_slot_names
 
     def _cheapest_remaining_cost(self, players, slot_order, slots_left_after_this, used_players) -> int:
         if slots_left_after_this <= 0:
@@ -452,12 +507,18 @@ class LineupBuilder:
         risk_level: float,
         noise: dict[str, float],
         iterations: int,
+        locked_slot_names: set[str] | None = None,
     ) -> dict[str, PlayerValue]:
+        locked_slot_names = locked_slot_names or set()
         current = dict(assigned)
         current_score = self._total_objective(current, risk_level, noise)
 
+        swappable_slots = [s for s in current.keys() if s not in locked_slot_names]
+        if not swappable_slots:
+            return current  # everything locked — nothing left to optimize
+
         for _ in range(iterations):
-            slot_name = self._random.choice(list(current.keys()))
+            slot_name = self._random.choice(swappable_slots)
             eligible_positions = ROSTER_SLOTS[slot_name]
             used_players = {p.player_name for p in current.values()}
 
@@ -493,6 +554,7 @@ class LineupBuilder:
         risk_level: float,
         noise: dict[str, float],
         max_leftover: int,
+        locked_slot_names: set[str] | None = None,
         rng: random.Random | None = None,
     ) -> dict[str, PlayerValue]:
         """Upgrades players to more expensive same-slot alternatives
@@ -511,8 +573,10 @@ class LineupBuilder:
         the same lineup (verified: collapsed a 20-lineup request to 1
         unique lineup). Random tie-breaking lets this run for every
         candidate in a multi-lineup batch without that collapse, while
-        still reliably pushing spend toward the target."""
+        still reliably pushing spend toward the target. Locked slots
+        (from --include-players) are never touched here either."""
         rng = rng or self._random
+        locked_slot_names = locked_slot_names or set()
         target_min_salary = self._salary_cap - max_leftover
         current = dict(assigned)
 
@@ -521,6 +585,8 @@ class LineupBuilder:
             scored_options: list[tuple[float, str, PlayerValue]] = []
 
             for slot_name, incumbent in current.items():
+                if slot_name in locked_slot_names:
+                    continue
                 eligible_positions = ROSTER_SLOTS[slot_name]
                 candidates = [
                     p

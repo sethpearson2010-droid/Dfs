@@ -1,16 +1,12 @@
 {
   "season": 2025,
-  "risk_level": 0.556,
-  "risk_scale": 6,
-  "num_lineups": 5,
+  "risk_level": 0.444,
+  "risk_scale": 5,
+  "num_lineups": 1,
   "randomness": 1.0,
   "max_player_salary": null,
   "max_salary_leftover": 2000,
   "explore": false,
-  "exclude_players": [
-    "Kenny Gainwell"
-  ],
-  "include_players": [
-    "Jayden Daniels"
-  ]
+  "exclude_players": [],
+  "include_players": []
 }

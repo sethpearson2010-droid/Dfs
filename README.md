@@ -565,7 +565,7 @@ into the same unquoted `$ARGS` string used for every other input
 (which are all single tokens like numbers) — folding a multi-word
 value into that pattern would break bash's word-splitting.
 
-### Forcing a player back in (`--include-players`)
+### Forcing a player back in (`--include-players`) — a real lock, not just "made eligible"
 
 The flip side of exclusion: a backup who's about to start because the
 real starter got hurt elsewhere doesn't show up that way in past box
@@ -579,19 +579,50 @@ python -m nfl_dfs.main --season 2026 --salary-csv salaries.csv --include-players
 
 Same normalized, substring-tolerant matching as `--exclude-players`.
 If the player has real recent history, it's used normally once the
-exclusion is bypassed — verified: force-including a currently-stale
-player restored their real projection (14.71, using their actual
-recent games) instead of the hard 0 the staleness gate had set. If
-they have **no** matched historical data at all (a true unknown —
-someone who's barely played, suddenly thrust into a starting role),
-there's nothing real to fall back on, so `_league_avg_scoring_by_position`
-supplies a rough "typical player at this position" baseline instead of
-leaving them at a hard 0 — verified: a genuinely unmatched QB got a
-14.71 → 8.65-point baseline instead of 0. **This is explicitly not a
-real projection for that specific player** — it's the minimum needed
-to make them *viable* for the optimizer to consider, not a guarantee
-they'll actually get picked or a claim about their real expected
-output. Tagged `force_included: true` in the output for transparency.
+exclusion is bypassed. If they have **no** matched historical data at
+all (a true unknown — someone who's barely played, suddenly thrust
+into a starting role), there's nothing real to fall back on, so
+`_league_avg_scoring_by_position` supplies a rough "typical player at
+this position" baseline instead of leaving them at a hard 0 — verified:
+a genuinely unmatched QB got an 8.65-point baseline instead of 0. This
+baseline is explicitly not a real projection for that specific
+player — it's the minimum needed to make them a real candidate.
+
+**A real bug found and fixed getting this right**: the first version
+only bypassed the zero-out — it made a forced player's projection
+nonzero but left selection entirely up to the normal optimizer, same
+as everyone else. Reported back as "force included players not
+showing up in lineups", which was correct: if their now-real value
+still didn't compete with better options, they simply lost, same as
+any other player — not what "force include" should mean. Fixed with an
+actual **lock**: `_greedy_fill` now assigns every `force_included`
+player to a roster slot *first*, before any noise/objective-driven
+selection touches the rest of the roster, and `_local_search` /
+`_enforce_salary_floor` are told which slots are locked so they never
+touch them afterward. Verified: force-including Jayden Daniels across
+a 15-lineup batch put him in all 15, not just however many the
+optimizer happened to prefer him in — while the other 8 slots per
+lineup still showed real diversity (15 unique full compositions) and
+the salary cap held throughout.
+
+**A second bug found while testing that fix**: locking correctly
+worked for a player with real matched history, but a genuinely
+unmatched player (using the position-average fallback above) still
+got silently dropped — `lineup_builder.py`'s own eligibility filter
+independently excludes `unmatched` players, a check `value.py`'s
+`force_included` bypass never touched. Fixed by letting
+`force_included` clear that filter too. Verified: the previously-silent
+unmatched case now locks in correctly (10/10 lineups) same as the
+matched case.
+
+**A player who can't fit anywhere** (you locked more players at one
+position than there are eligible slots for it, or their salary alone
+exceeds the whole $60,000 cap) is skipped rather than failing the
+entire build — `_greedy_fill` tries the most position-specific slot
+first (e.g. a locked RB tries RB1/RB2 before FLEX, so it doesn't
+needlessly claim the FLEX slot another position might need), and
+silently moves on if nothing fits. `force_included: true` is tagged in
+the output regardless, so you can check whether a lock actually took.
 
 The GitHub Actions workflow exposes this as `include_players`, quoted
 separately from `$ARGS` for the same reason as `exclude_players`
