@@ -47,6 +47,7 @@ PACE_WEIGHT = 0.15
 # effectively unbounded above on a big game).
 FLOOR_STDEV_MULTIPLIER = 1.0
 CEILING_STDEV_MULTIPLIER = 1.5
+CEILING_TO_PROJECTION_CAP = 3.0  # ceiling can't exceed 3x the point projection, however wide the raw spread estimate
 RECENT_FORM_WINDOW = 5
 MAD_CONSISTENCY_CONSTANT = 1.4826
 
@@ -119,9 +120,12 @@ class ValueCalculator:
             self._build_league_avg_opportunity(weekly_stats)
         )
         self._recent_snap_pct_by_normalized_name = self._build_recent_snap_pcts(snap_counts or {})
+        self._league_avg_scoring_by_position = self._build_league_avg_scoring_by_position(weekly_stats)
+        self._force_include_normalized: set[str] = set()
         self._name_matcher = PlayerNameMatcher(known_names=list(self._recent_player_avg.keys()))
 
-    def build(self, salaries: list[SalaryEntry]) -> list[PlayerValue]:
+    def build(self, salaries: list[SalaryEntry], force_include: list[str] | None = None) -> list[PlayerValue]:
+        self._force_include_normalized = {normalize_name(name) for name in (force_include or []) if name.strip()}
         values = [self._value_one(entry) for entry in salaries]
         return sorted(values, key=lambda v: v.value_score, reverse=True)
 
@@ -132,7 +136,8 @@ class ValueCalculator:
             return self._value_dst(entry)
 
         is_out = entry.injury_status.upper() in OUT_INJURY_STATUSES
-        if is_out:
+        is_forced = normalize_name(entry.player_name) in self._force_include_normalized
+        if is_out and not is_forced:
             # FanDuel's own injury designation says this player isn't
             # realistically playing (Out, IR, suspended, etc.) — this
             # is a direct, authoritative signal, more reliable than the
@@ -157,6 +162,7 @@ class ValueCalculator:
                 injury_status=entry.injury_status,
                 injury_details=entry.injury_details,
                 is_out=True,
+                force_included=is_forced,
             )
 
         vuln = self._vulnerability.get((entry.opponent, entry.position))
@@ -168,7 +174,7 @@ class ValueCalculator:
         is_stale = self._is_stale(canonical_name) if canonical_name else False
         is_backup_qb = self._is_backup_qb(entry.position, canonical_name) if canonical_name else False
 
-        if is_stale:
+        if is_stale and not is_forced:
             # hasn't recorded a stat line recently enough to trust —
             # likely injured/inactive/benched. Zero everything out
             # rather than let old, no-longer-relevant numbers make
@@ -195,12 +201,24 @@ class ValueCalculator:
                 ceiling_projection=0.0,
                 is_stale=True,
                 is_backup_qb=is_backup_qb,
+                force_included=is_forced,
                 fanduel_id=entry.fanduel_id,
                 injury_status=entry.injury_status,
                 injury_details=entry.injury_details,
             )
 
         base_projection = self._recent_player_avg.get(canonical_name, 0.0) if canonical_name else 0.0
+        if is_forced and base_projection == 0.0:
+            # no real historical data for this player at all (a true
+            # rookie, someone who's barely played) — rather than leave
+            # them at a hard 0 (unselectable no matter how forced),
+            # fall back to a rough "typical player at this position"
+            # baseline. This is explicitly NOT a real projection for
+            # them specifically — just enough to make them viable for
+            # the optimizer to consider, which is the whole point of
+            # forcing them in when you know something the box scores
+            # don't (e.g. they're the new starter as of this week).
+            base_projection = self._league_avg_scoring_by_position.get(entry.position, 0.0)
         stdev = self._recent_player_stdev.get(canonical_name, 0.0) if canonical_name else 0.0
 
         player_id = self._name_to_id.get(canonical_name) if canonical_name else None
@@ -217,6 +235,16 @@ class ValueCalculator:
 
         floor_projection = max(0.0, projection - FLOOR_STDEV_MULTIPLIER * scaled_stdev)
         ceiling_projection = projection + CEILING_STDEV_MULTIPLIER * scaled_stdev
+        # sanity cap: with only 5 recent games, MAD-based spread can
+        # still overstate the ceiling for a player whose sample is
+        # genuinely volatile (a real committee-role boom/bust game
+        # log, not just one outlier MAD already resists) — one big
+        # game among 5 data points still swings MAD meaningfully. Cap
+        # ceiling at a generous but bounded multiple of the point
+        # projection itself, rather than letting an unstable
+        # small-sample spread estimate run unchecked.
+        if projection > 0:
+            ceiling_projection = min(ceiling_projection, projection * CEILING_TO_PROJECTION_CAP)
         ceiling_projection, opportunity_multiplier = self._apply_opportunity_ceiling(
             entry.position, ceiling_projection, advanced
         )
@@ -241,6 +269,7 @@ class ValueCalculator:
             pace_multiplier=round(pace_multiplier, 3),
             opportunity_multiplier=round(opportunity_multiplier, 3),
             is_backup_qb=is_backup_qb,
+            force_included=is_forced,
             fanduel_id=entry.fanduel_id,
             injury_status=entry.injury_status,
             injury_details=entry.injury_details,
@@ -352,6 +381,31 @@ class ValueCalculator:
         if last_played is None:
             return False  # no history at all — that's "unmatched", a separate/existing case
         return (self._max_week_overall - last_played) > STALE_WEEK_THRESHOLD
+
+    def _build_league_avg_scoring_by_position(self, weekly_stats: list[WeeklyStatLine]) -> dict[Position, float]:
+        """Average recent-form (median-based, via _recent_player_avg)
+        points by position — used as a rough fallback baseline for a
+        --include-players player who has no matched historical data at
+        all (e.g. someone who's barely played, now thrust into a
+        starting role by an injury). Not a real projection for that
+        specific player — just "a typical player at this position",
+        clearly better than a hard 0 that makes them entirely
+        unselectable regardless of the real-world situation."""
+        position_by_player: dict[str, Position] = {}
+        for line in weekly_stats:
+            position_by_player[line.player_name] = line.position
+
+        by_position: dict[Position, list[float]] = defaultdict(list)
+        for name, avg in self._recent_player_avg.items():
+            position = position_by_player.get(name)
+            if position is not None:
+                by_position[position].append(avg)
+
+        return {
+            position: round(sum(values) / len(values), 2)
+            for position, values in by_position.items()
+            if values
+        }
 
     def _build_recent_snap_pcts(
         self, snap_counts: dict[str, list[tuple[int, float]]]

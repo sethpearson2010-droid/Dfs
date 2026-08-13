@@ -179,6 +179,16 @@
     padding: 0 2px;
   }
   .exclude-btn:hover { color: #ef4444; }
+  .include-btn {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 12px;
+    margin-left: 2px;
+    padding: 0 2px;
+  }
+  .include-btn:hover { color: #22c55e; }
   .lineup-slot-row {
     display: grid;
     grid-template-columns: 50px 1fr 60px 80px 80px;
@@ -197,16 +207,19 @@
   <p class="sub">Sorted by value score (projection ÷ salary × 1000). Click column headers to re-sort.</p>
 
   <div class="rebuild-panel" id="rebuildPanel">
-    <h2>🚫 Exclude players &amp; rebuild</h2>
+    <h2>🚫✅ Exclude / force-include players &amp; rebuild</h2>
     <div class="rebuild-token-row">
       <input type="password" id="ghTokenInput" placeholder="GitHub token (saved only in this browser)">
       <button id="saveTokenBtn">Save</button>
       <button id="clearTokenBtn" style="display:none;">Clear</button>
     </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Excluded:</div>
     <div id="exclusionChips" class="exclusion-chips"></div>
-    <button id="triggerRebuildBtn" disabled>Rebuild without these players</button>
+    <div style="font-size:12px;color:var(--muted);margin:8px 0 4px;">Force-included (e.g. a backup starting for an injured player):</div>
+    <div id="inclusionChips" class="exclusion-chips"></div>
+    <button id="triggerRebuildBtn" disabled>Rebuild with these changes</button>
     <div class="rebuild-status" id="rebuildStatus">
-      Tap 🚫 next to any player below to queue them for exclusion, then rebuild.
+      Tap 🚫 to exclude or ✅ to force-include any player below, then rebuild.
       Needs a classic GitHub token (repo + workflow scopes) — see README for setup.
     </div>
   </div>
@@ -270,6 +283,7 @@ let regressionCandidates = [];
 let lineups = [];
 let runConfig = null;
 let pendingExclusions = JSON.parse(localStorage.getItem("dfs_pending_exclusions") || "[]");
+let pendingInclusions = JSON.parse(localStorage.getItem("dfs_pending_inclusions") || "[]");
 const GITHUB_OWNER = "sethpearson2010-droid";
 const GITHUB_REPO = "Dfs";
 const GITHUB_WORKFLOW_FILE = "run-and-deploy.yml";
@@ -374,17 +388,24 @@ function initRebuildPanel() {
     if (e.target.classList.contains("exclude-btn")) {
       addExclusion(e.target.dataset.player);
     }
+    if (e.target.classList.contains("include-btn")) {
+      addInclusion(e.target.dataset.player);
+    }
   });
 
   renderExclusionChips();
+  renderInclusionChips();
 }
 
 function addExclusion(playerName) {
+  pendingInclusions = pendingInclusions.filter(n => n !== playerName); // mutually exclusive with inclusion
+  localStorage.setItem("dfs_pending_inclusions", JSON.stringify(pendingInclusions));
   if (!pendingExclusions.includes(playerName)) {
     pendingExclusions.push(playerName);
     localStorage.setItem("dfs_pending_exclusions", JSON.stringify(pendingExclusions));
-    renderExclusionChips();
   }
+  renderExclusionChips();
+  renderInclusionChips();
 }
 
 function removeExclusion(playerName) {
@@ -393,9 +414,25 @@ function removeExclusion(playerName) {
   renderExclusionChips();
 }
 
+function addInclusion(playerName) {
+  pendingExclusions = pendingExclusions.filter(n => n !== playerName); // mutually exclusive with exclusion
+  localStorage.setItem("dfs_pending_exclusions", JSON.stringify(pendingExclusions));
+  if (!pendingInclusions.includes(playerName)) {
+    pendingInclusions.push(playerName);
+    localStorage.setItem("dfs_pending_inclusions", JSON.stringify(pendingInclusions));
+  }
+  renderExclusionChips();
+  renderInclusionChips();
+}
+
+function removeInclusion(playerName) {
+  pendingInclusions = pendingInclusions.filter(n => n !== playerName);
+  localStorage.setItem("dfs_pending_inclusions", JSON.stringify(pendingInclusions));
+  renderInclusionChips();
+}
+
 function renderExclusionChips() {
   const container = document.getElementById("exclusionChips");
-  const rebuildBtn = document.getElementById("triggerRebuildBtn");
   const alreadyExcluded = (runConfig && runConfig.exclude_players) || [];
 
   container.innerHTML = "";
@@ -414,7 +451,39 @@ function renderExclusionChips() {
     container.appendChild(chip);
   });
 
-  rebuildBtn.disabled = pendingExclusions.length === 0;
+  updateRebuildButtonState();
+}
+
+function renderInclusionChips() {
+  const container = document.getElementById("inclusionChips");
+  const alreadyIncluded = (runConfig && runConfig.include_players) || [];
+
+  container.innerHTML = "";
+  pendingInclusions.forEach(name => {
+    const chip = document.createElement("span");
+    chip.className = "exclusion-chip";
+    chip.style.background = "#22c55e22";
+    chip.style.color = "#22c55e";
+    chip.innerHTML = `${name} <button style="color:#22c55e;" title="Remove from queue">✕</button>`;
+    chip.querySelector("button").onclick = () => removeInclusion(name);
+    container.appendChild(chip);
+  });
+  alreadyIncluded.filter(n => !pendingInclusions.includes(n)).forEach(name => {
+    const chip = document.createElement("span");
+    chip.className = "exclusion-chip";
+    chip.style.background = "#22c55e22";
+    chip.style.color = "#22c55e";
+    chip.style.opacity = "0.6";
+    chip.innerHTML = `${name} (already included)`;
+    container.appendChild(chip);
+  });
+
+  updateRebuildButtonState();
+}
+
+function updateRebuildButtonState() {
+  const rebuildBtn = document.getElementById("triggerRebuildBtn");
+  rebuildBtn.disabled = pendingExclusions.length === 0 && pendingInclusions.length === 0;
 }
 
 function setRebuildStatus(message) {
@@ -434,6 +503,8 @@ async function triggerRebuild() {
 
   const alreadyExcluded = runConfig.exclude_players || [];
   const combinedExclusions = [...new Set([...alreadyExcluded, ...pendingExclusions])];
+  const alreadyIncluded = runConfig.include_players || [];
+  const combinedInclusions = [...new Set([...alreadyIncluded, ...pendingInclusions])];
 
   const inputs = {
     season: String(runConfig.season),
@@ -441,6 +512,7 @@ async function triggerRebuild() {
     num_lineups: String(runConfig.num_lineups),
     randomness: String(runConfig.randomness),
     exclude_players: combinedExclusions.join(", "),
+    include_players: combinedInclusions.join(", "),
     explore: runConfig.explore ? "true" : "false",
   };
   if (runConfig.max_player_salary) inputs.max_player_salary = String(runConfig.max_player_salary);
@@ -464,11 +536,15 @@ async function triggerRebuild() {
     );
 
     if (response.status === 204) {
-      // clear the queue now that it's been submitted — run_config.json
-      // will reflect the full excluded list once the new run finishes
+      // clear both queues now that they've been submitted —
+      // run_config.json will reflect the full lists once the new run
+      // finishes
       pendingExclusions = [];
+      pendingInclusions = [];
       localStorage.setItem("dfs_pending_exclusions", "[]");
+      localStorage.setItem("dfs_pending_inclusions", "[]");
       renderExclusionChips();
+      renderInclusionChips();
       setRebuildStatus("Rebuild triggered! This takes 1-3 minutes. Checking status...");
       pollRebuildStatus();
     } else if (response.status === 401 || response.status === 403) {
@@ -480,7 +556,7 @@ async function triggerRebuild() {
   } catch (e) {
     setRebuildStatus("Network error triggering the rebuild — check your connection and try again.");
   } finally {
-    document.getElementById("triggerRebuildBtn").disabled = pendingExclusions.length === 0;
+    updateRebuildButtonState();
   }
 }
 
@@ -751,7 +827,7 @@ function render() {
       : "";
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${p.player_name}<button class="exclude-btn" data-player="${p.player_name}" title="Queue for exclusion & rebuild">🚫</button>${nameWarning}${injuryBadge}${backupQbBadge}${staleBadge}${sleeperBadge}${regressionBadge}</td>
+      <td>${p.player_name}<button class="exclude-btn" data-player="${p.player_name}" title="Queue for exclusion & rebuild">🚫</button><button class="include-btn" data-player="${p.player_name}" title="Queue for forced inclusion & rebuild (e.g. filling in for an injured starter)">✅</button>${nameWarning}${injuryBadge}${backupQbBadge}${staleBadge}${sleeperBadge}${regressionBadge}</td>
       <td><span class="pos-badge">${p.position}</span></td>
       <td>${p.team}</td>
       <td>${p.opponent}</td>

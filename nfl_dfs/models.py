@@ -233,6 +233,7 @@ class PlayerValue:
     opportunity_multiplier: float = 1.0
     is_stale: bool = False  # hasn't recorded a stat line recently enough to trust — likely injured/inactive
     is_backup_qb: bool = False  # low snap share in most recent game — flagged, NOT auto-excluded (see value.py's _is_backup_qb docstring for why)
+    force_included: bool = False  # --include-players match — bypassed is_stale/is_out, may be using a position-average fallback projection
     injury_status: str = ""  # FanDuel's own designation (O/Q/D/IR/etc) — see salary.py's OUT_INJURY_STATUSES
     injury_details: str = ""
     is_out: bool = False  # injury_status is in OUT_INJURY_STATUSES — excluded from lineup building entirely

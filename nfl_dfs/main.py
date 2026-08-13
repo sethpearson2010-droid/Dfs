@@ -115,6 +115,17 @@ def main() -> None:
         "whether FanDuel's own injury designation has caught up yet. Matches on a normalized, "
         "substring-tolerant basis, so 'Trubisky' alone is enough.",
     )
+    parser.add_argument(
+        "--include-players",
+        default=None,
+        help="Comma-separated player names to force back into consideration even if the model "
+        "would otherwise zero them out (stale/is_out) — for a backup who's about to start due to "
+        "an injury elsewhere, where the box scores don't reflect that yet. If they have real "
+        "recent history it's used normally; if they have none at all, falls back to a rough "
+        "position-average baseline rather than a hard 0. This makes them VIABLE for the optimizer "
+        "to pick, not a guaranteed roster spot — same substring-tolerant matching as "
+        "--exclude-players.",
+    )
     args = parser.parse_args()
 
     if args.num_lineups > MAX_LINEUPS:
@@ -139,6 +150,11 @@ def main() -> None:
         exclude_players = [name.strip() for name in args.exclude_players.split(",") if name.strip()]
         print(f"Excluding: {', '.join(exclude_players)}")
 
+    include_players = None
+    if args.include_players:
+        include_players = [name.strip() for name in args.include_players.split(",") if name.strip()]
+        print(f"Force-including: {', '.join(include_players)}")
+
     pipeline.run(
         season=args.season,
         salary_csv_path=args.salary_csv,
@@ -152,6 +168,7 @@ def main() -> None:
         max_salary_leftover=args.max_salary_leftover,
         explore=args.explore,
         exclude_players=exclude_players,
+        include_players=include_players,
     )
 
     print(f"Done. Wrote player values to {args.output}")

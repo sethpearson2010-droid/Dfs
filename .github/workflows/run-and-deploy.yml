@@ -48,6 +48,10 @@ on:
         description: "Comma-separated player names to leave out entirely (late-breaking news, personal judgment call), e.g. 'Mitchell Trubisky, Christian McCaffrey'. Leave blank for none."
         required: false
         default: ""
+      include_players:
+        description: "Comma-separated player names to force back into consideration even if the model would otherwise zero them out (e.g. a backup about to start due to an injury elsewhere the box scores don't reflect yet). Leave blank for none."
+        required: false
+        default: ""
       skip_redzone:
         description: "Skip the play-by-play red-zone fetch for a faster run"
         type: boolean
@@ -104,13 +108,14 @@ jobs:
           if [ "${{ inputs.skip_redzone }}" = "true" ]; then
             ARGS="$ARGS --skip-redzone"
           fi
-          echo "Running: python -m nfl_dfs.main $ARGS --exclude-players '${{ inputs.exclude_players }}'"
-          # exclude_players is quoted separately (not folded into $ARGS)
-          # since it commonly contains spaces/commas — the rest of ARGS
-          # is safe to expand unquoted because every other value here is
-          # a single token (a number or flag), but doing that to a
-          # multi-word name list would break bash's word-splitting.
-          python -m nfl_dfs.main $ARGS --exclude-players "${{ inputs.exclude_players }}"
+          echo "Running: python -m nfl_dfs.main $ARGS --exclude-players '${{ inputs.exclude_players }}' --include-players '${{ inputs.include_players }}'"
+          # exclude_players/include_players are quoted separately (not
+          # folded into $ARGS) since they commonly contain spaces/commas
+          # — the rest of ARGS is safe to expand unquoted because every
+          # other value here is a single token (a number or flag), but
+          # doing that to a multi-word name list would break bash's
+          # word-splitting.
+          python -m nfl_dfs.main $ARGS --exclude-players "${{ inputs.exclude_players }}" --include-players "${{ inputs.include_players }}"
 
       - name: Assemble static site
         run: |

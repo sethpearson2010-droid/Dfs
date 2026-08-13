@@ -73,6 +73,7 @@ class DfsPipeline:
         max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
         explore: bool = False,
         exclude_players: list[str] | None = None,
+        include_players: list[str] | None = None,
     ) -> None:
         self._write_run_config(
             output_path,
@@ -84,6 +85,7 @@ class DfsPipeline:
             max_salary_leftover=max_salary_leftover,
             explore=explore,
             exclude_players=exclude_players or [],
+            include_players=include_players or [],
         )
 
         weekly_stats = self._data_source.fetch_weekly_stats(season)
@@ -114,7 +116,7 @@ class DfsPipeline:
         value_calc = ValueCalculator(
             vulnerability_scores, weekly_stats, game_contexts, pace_profiles, advanced_metrics, snap_counts
         )
-        player_values = value_calc.build(salaries)
+        player_values = value_calc.build(salaries, force_include=include_players)
 
         self._apply_manual_exclusions(player_values, exclude_players)
 
@@ -196,6 +198,7 @@ class DfsPipeline:
         max_salary_leftover: int | None,
         explore: bool,
         exclude_players: list[str],
+        include_players: list[str],
     ) -> None:
         """Records the actual parameters this run used, so the
         dashboard's rebuild-without-this-player feature (a browser-side
@@ -218,6 +221,7 @@ class DfsPipeline:
                     "max_salary_leftover": max_salary_leftover,
                     "explore": explore,
                     "exclude_players": exclude_players,
+                    "include_players": include_players,
                 },
                 indent=2,
             )
@@ -273,6 +277,7 @@ class DfsPipeline:
                 "name_match_quality": pv.name_match_quality,
                 "is_stale": pv.is_stale,
                 "is_backup_qb": pv.is_backup_qb,
+                "force_included": pv.force_included,
                 "injury_status": pv.injury_status,
                 "injury_details": pv.injury_details,
                 "is_out": pv.is_out,
@@ -449,6 +454,7 @@ class DfsPipeline:
                     "injury_status": s.player.injury_status,
                     "injury_details": s.player.injury_details,
                     "is_backup_qb": s.player.is_backup_qb,
+                    "force_included": s.player.force_included,
                     "fanduel_id": s.player.fanduel_id,
                 }
                 for s in lineup.slots

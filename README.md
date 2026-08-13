@@ -392,6 +392,23 @@ applied consistently to the spread as well as the center. Verified:
 the real case's ceiling dropped from 18.24 to 1.5, correctly
 unattractive across the entire risk spectrum, not just at cash.
 
+**A related but distinct case: genuinely volatile small-sample players
+(not a single-outlier artifact)**: a committee-role RB with a real
+boom/bust game log — e.g. 3.0/4.4/0.1/11.4/0.1/6.7 across 6 games —
+isn't the same problem as Trubisky's one-fluke-game case (MAD already
+handles that correctly), but with only 5 recent games, MAD is itself a
+somewhat unstable estimator, and one real boom game among a small
+sample can still push the ceiling to 3x+ the point projection. Added
+a straightforward sanity clamp: ceiling can't exceed
+`CEILING_TO_PROJECTION_CAP` (3.0x) times the point projection,
+regardless of the raw spread estimate. Modest by design (this isn't
+claiming the underlying volatility is fake, just bounding how far a
+noisy small-sample spread estimate can run) — verified reducing one
+real case from 16.57 to 15.66. For genuinely borderline picks like
+this where the model's call doesn't match your own read on a player,
+the manual exclude button (below) is the more reliable fix than
+chasing every individual edge case with a model tweak.
+
 **A season-ending injury not being reflected**: a player who got hurt
 in Week 10 and hasn't played since would still show a perfectly
 reasonable-looking average computed from Weeks 1-10, since there's no
@@ -547,6 +564,41 @@ to the pipeline as a separately-quoted argument rather than folded
 into the same unquoted `$ARGS` string used for every other input
 (which are all single tokens like numbers) — folding a multi-word
 value into that pattern would break bash's word-splitting.
+
+### Forcing a player back in (`--include-players`)
+
+The flip side of exclusion: a backup who's about to start because the
+real starter got hurt elsewhere doesn't show up that way in past box
+scores — the model would otherwise zero them out via the staleness
+gate (or `is_out`, if FanDuel's injury tag hasn't updated for the
+*starter* who's now hurt). `--include-players` overrides both:
+
+```bash
+python -m nfl_dfs.main --season 2026 --salary-csv salaries.csv --include-players "Jayden Daniels"
+```
+
+Same normalized, substring-tolerant matching as `--exclude-players`.
+If the player has real recent history, it's used normally once the
+exclusion is bypassed — verified: force-including a currently-stale
+player restored their real projection (14.71, using their actual
+recent games) instead of the hard 0 the staleness gate had set. If
+they have **no** matched historical data at all (a true unknown —
+someone who's barely played, suddenly thrust into a starting role),
+there's nothing real to fall back on, so `_league_avg_scoring_by_position`
+supplies a rough "typical player at this position" baseline instead of
+leaving them at a hard 0 — verified: a genuinely unmatched QB got a
+14.71 → 8.65-point baseline instead of 0. **This is explicitly not a
+real projection for that specific player** — it's the minimum needed
+to make them *viable* for the optimizer to consider, not a guarantee
+they'll actually get picked or a claim about their real expected
+output. Tagged `force_included: true` in the output for transparency.
+
+The GitHub Actions workflow exposes this as `include_players`, quoted
+separately from `$ARGS` for the same reason as `exclude_players`
+above. On the dashboard, every player row has a ✅ button alongside
+the 🚫 exclude button — tapping either queues that player and clears
+them from the other list (a player can't be both queued for exclusion
+and inclusion at once). The rebuild request sends both lists.
 
 ## Risk scale (1-10) and matchup-depth weighting
 
