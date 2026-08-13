@@ -16,15 +16,20 @@ on:
         required: true
         default: "2026"
       risk_scale:
-        description: "Cash-to-GPP scale: 1 = safest/cash (1 lineup), 10 = riskiest/max GPP (up to 50 lineups, deeper matchup-based picks weighted more heavily). Leave blank for the old 5-point exploration spread instead."
+        description: "1 = safest/cash, 10 = riskiest/max GPP. Every lineup this run builds uses EXACTLY this level — independent of num_lineups below, no auto-scaling."
         required: false
-        default: ""
-      risk_level:
-        description: "Advanced: raw 0.0-1.0 risk level instead of the 1-10 scale above. Ignored if risk_scale is set."
-        required: false
-        default: ""
+        default: "5"
       num_lineups:
-        description: "Override the lineup count risk_level would auto-derive (leave blank to let the slider decide)"
+        description: "How many lineups to build, all at risk_scale above (independent setting — e.g. risk_scale 5 + num_lineups 50 builds 50 lineups all at level 5)"
+        required: false
+        default: "1"
+      explore:
+        description: "Ignore risk_scale/num_lineups above and instead build one lineup at each of 5 preset risk levels (cash through max GPP)"
+        type: boolean
+        required: false
+        default: false
+      risk_level:
+        description: "Advanced: raw 0.0-1.0 risk level instead of risk_scale above. Ignored unless risk_scale is left blank."
         required: false
         default: ""
       randomness:
@@ -32,9 +37,9 @@ on:
         required: false
         default: "1.0"
       max_player_salary:
-        description: "Exclude any player priced above this from lineup consideration entirely (punt/no-studs build). Leave blank for no cap."
+        description: "Optional: exclude any player priced above this from consideration entirely (a punt/no-studs build). Leave blank for no cap — this is NOT the total lineup cap, which is always $60,000."
         required: false
-        default: "6000"
+        default: ""
       max_salary_leftover:
         description: "Push lineups to spend within this much of the $60,000 cap (default 2000). Best-effort — see README if combined with max_player_salary."
         required: false
@@ -76,16 +81,15 @@ jobs:
       - name: Run pipeline
         run: |
           ARGS="--season ${{ inputs.season }} --salary-csv inputs/salary.csv --output output/players.json"
-          if [ -n "${{ inputs.risk_scale }}" ]; then
-            ARGS="$ARGS --risk-scale ${{ inputs.risk_scale }} --randomness ${{ inputs.randomness }}"
-            if [ -n "${{ inputs.num_lineups }}" ]; then
-              ARGS="$ARGS --num-lineups ${{ inputs.num_lineups }}"
+          if [ "${{ inputs.explore }}" = "true" ]; then
+            ARGS="$ARGS --explore"
+          else
+            if [ -n "${{ inputs.risk_level }}" ]; then
+              ARGS="$ARGS --risk-level ${{ inputs.risk_level }}"
+            else
+              ARGS="$ARGS --risk-scale ${{ inputs.risk_scale }}"
             fi
-          elif [ -n "${{ inputs.risk_level }}" ]; then
-            ARGS="$ARGS --risk-level ${{ inputs.risk_level }} --randomness ${{ inputs.randomness }}"
-            if [ -n "${{ inputs.num_lineups }}" ]; then
-              ARGS="$ARGS --num-lineups ${{ inputs.num_lineups }}"
-            fi
+            ARGS="$ARGS --num-lineups ${{ inputs.num_lineups }} --randomness ${{ inputs.randomness }}"
           fi
           if [ -n "${{ inputs.max_player_salary }}" ]; then
             ARGS="$ARGS --max-player-salary ${{ inputs.max_player_salary }}"

@@ -158,37 +158,54 @@ prediction. Treat `projected_ownership_pct` as directional at best; it
 has no access to real public sentiment, beat-writer hype, or
 last-minute news.
 
-## Lineup builder (cash ↔ GPP risk slider, up to 50 lineups)
+## Lineup builder (risk level and lineup count are independent)
 
 `nfl_dfs.main` writes `output/lineups.json` in one of two modes:
 
-**Exploration mode** (default, no `--risk-level` passed): one legal
-lineup at each of 5 points on the risk slider — see table below. Good
-for a quick look at how the model's picks shift across the slider.
+**Normal mode** (default): pick a risk level (`--risk-scale`, 1-10,
+default 5) and a lineup count (`--num-lineups`, default 1) —
+**completely independent settings**. Every lineup in the batch is
+built at *exactly* the risk level you picked; the count has zero
+effect on risk, and the risk level has zero effect on count.
+`--risk-scale 5 --num-lineups 50` builds 50 lineups that are all at
+risk level 5 — not a spread across levels, not an auto-scaled count.
 
-**Slider-driven GPP mode** (`--risk-level X`, the main workflow): the
-slider now drives *both* risk and lineup count directly — `0.0` builds
-1 cash lineup, `1.0` builds up to `MAX_LINEUPS` (50) diverse GPP
-lineups, scaling linearly in between (`round(risk_level × 50)`).
-That's the entire point of the slider: drag it all the way right to
-build every lineup as pure GPP for mass multi-entry. Pass
-`--num-lineups N` to override the auto-derived count explicitly if you
-want a specific number instead.
+This used to work differently — a single "slider" input controlled
+both risk *and* lineup count together (dragging toward max GPP
+auto-built up to 50 lineups; dragging toward cash auto-built just 1),
+and leaving that input blank silently fell back to a 5-different-
+risk-levels exploration mode. That coupling caused real confusion (a
+"successful" run building far fewer lineups than expected because the
+risk value picked implied a smaller auto-derived count) and made the
+whole system harder to reason about. Risk level and count are now two
+plain, independent parameters, with no auto-derivation between them.
+
+**Explore mode** (`--explore`, explicit opt-in only): one legal
+lineup at each of 5 preset risk levels (cash through max GPP) — see
+table below. Good for a quick look at how the model's picks shift
+across the risk spectrum. This is no longer the default fallback;
+you have to ask for it.
 
 Diversity across a batch is enforced by rejecting any candidate that
 shares more than 6 of 9 players with an already-accepted lineup — if
 your player pool is thin (as in `test_data/full_slate.csv`'s 49
-players — a real slate has hundreds), you may get fewer than
-requested rather than near-duplicate lineups; the output is honest
-about the shortfall rather than padding it.
+players — a real slate has hundreds) or further constrained by
+`--max-player-salary`, you may get fewer than requested rather than
+near-duplicate lineups; the output is honest about the shortfall
+rather than padding it. Verified: without a salary cap, a real
+735-player slate reliably returns the full requested count (tested at
+50/50); with a tight `--max-player-salary 6000`, the same request
+returns fewer (11-13 typically) — a real diversity-vs.-constrained-pool
+limit, not a bug (see "Salary constraints" below for the full
+investigation).
 
-| risk_level | style | optimizes toward | lineups built (auto) |
-|---|---|---|---|
-| 0.0 | cash | each player's `floor_projection` | 1 |
-| 0.25 | safe GPP | mostly floor, some ceiling | ~13 |
-| 0.5 | balanced | even blend | ~25 |
-| 0.75 | risky GPP | mostly ceiling | ~38 |
-| 1.0 | max upside | each player's `ceiling_projection`, plus ownership leverage + stacking (below) | 50 |
+| risk_level | style | optimizes toward |
+|---|---|---|
+| 0.0 | cash | each player's `floor_projection` |
+| 0.25 | safe GPP | mostly floor, some ceiling |
+| 0.5 | balanced | even blend |
+| 0.75 | risky GPP | mostly ceiling |
+| 1.0 | max upside | each player's `ceiling_projection`, plus ownership leverage + stacking (below) |
 
 Floor/ceiling come from each player's own recent-game standard
 deviation (`value.py`), scaled by the same matchup/script/pace
@@ -439,11 +456,14 @@ Out) on one real slate.
 
 ## Risk scale (1-10) and matchup-depth weighting
 
-`--risk-scale` (1-10, 1=safest/cash, 10=riskiest/max GPP) is a
-friendlier alternative to the raw `--risk-level` (0.0-1.0) — converts
-internally via `risk_level = (scale-1)/9`. The GitHub Actions workflow
-now exposes `risk_scale` as the primary input, with the raw
-`risk_level` float kept available as an "advanced" fallback input.
+`--risk-scale` (1-10, 1=safest/cash, 10=riskiest/max GPP, default 5)
+is a friendlier alternative to the raw `--risk-level` (0.0-1.0) —
+converts internally via `risk_level = (scale-1)/9`. It is completely
+independent of `--num-lineups` (default 1) — see "Lineup builder"
+above for why that independence matters. The GitHub Actions workflow
+exposes `risk_scale` and `num_lineups` as two separate primary inputs,
+with the raw `risk_level` float kept available as an "advanced"
+fallback.
 
 **"Risky lineups draw from deeper picks based on matchups"**: added a
 new `MATCHUP_DEPTH_WEIGHT` term to the lineup-building objective,
@@ -457,56 +477,45 @@ other risk-scaled bonuses.
 
 ## Salary constraints
 
-Two more lineup-builder knobs, both in `lineup_builder.py`:
+**The salary cap is $60,000, always** (`SALARY_CAP` in
+`roster_rules.py`) — lineups now reach $54,800-$60,000 by default
+(verified on real data). If they were landing around $45,000-$50,000
+instead, that wasn't a wrong cap value — it was `--max-player-salary`
+being set to $6,000 by default in an earlier version, from a genuine
+miscommunication: a request for the standard "$60,000 salary cap" was
+initially misread as a *per-player* $6,000 price limit. That default
+has been removed — `--max-player-salary` is now unset (no per-player
+cap) unless you explicitly opt into one for a punt-style build.
 
-- **`--max-salary-leftover`** (default **$2000**): for a single lineup
-  (exploration mode, or `--num-lineups 1`), pushes it to actually
-  spend close to the $60,000 cap via `_enforce_salary_floor` — a
-  greedy pass that upgrades players to more expensive same-slot
-  alternatives (preferring whichever upgrade costs the least
-  objective, or gains the most) until the target is hit or no upgrade
-  is left that fits under the cap.
-- **`--max-player-salary`**: excludes any player priced above this
-  entirely (a punt/no-studs build constraint). Unset by default.
+`--max-salary-leftover` (default **$2000**) still applies by default:
+for a single lineup (`--num-lineups 1`), it actively pushes spend
+close to the $60,000 cap via `_enforce_salary_floor` — a greedy pass
+that upgrades players to more expensive same-slot alternatives
+(preferring whichever upgrade costs the least objective, or gains the
+most) until the target is hit or no upgrade is left that fits under
+the cap. For a batch (`--num-lineups` > 1), spend efficiency comes
+from a gentler always-on bias in `_objective()`
+(`SALARY_UTILIZATION_WEIGHT`) instead — see the note below for why.
 
-**A batch of lineups (`--num-lineups` > 1) handles spend differently
-on purpose — this took two attempts to get right**: applying
-`_enforce_salary_floor` to every candidate in a batch collapsed a
-20-lineup request under a tight `--max-player-salary` to **1** unique
-lineup. First fix attempt: made the enforcement pick randomly among
-near-tied upgrade options (using each candidate's own seeded
-randomness) instead of always the single deterministic best — this
-sounded like it should preserve diversity, but testing showed it
-*still* collapsed every candidate to the same final lineup. Root
-cause, confirmed by direct debugging: under a tight
-`--max-player-salary`, the pool of genuinely *good* expensive upgrade
-options is itself small enough that any sufficiently-thorough
-salary-maximizing search funnels toward the same few, regardless of
-starting point or tie-breaking randomness — a real structural tension
-between "spend near the cap" and "stay diverse" in a constrained pool,
-not a bug to keep coding around. Final fix: `build_many()` skips the
-deterministic pass entirely and instead relies on a stronger always-on
-salary-utilization term baked into `_objective()` itself
-(`SALARY_UTILIZATION_WEIGHT`, tuned up after the diversity fix) — this
-nudges the whole batch toward efficient spend without ever forcing
-convergence. Re-verified: a 20-lineup request under the $6,000 cap
-returned 20 genuinely unique lineups (salary $45,000-$50,300) — real
-diversity, spend pushed up meaningfully from where the weaker version
-of this bias left it, but honestly still short of the $2,000-leftover
-target under this tight a constraint (that gap is the price of
-diversity, not a bug).
-
-**`--max-player-salary` and `--max-salary-leftover` can also
-mathematically conflict for single-lineup builds**: with 9 required
-roster spots, a `--max-player-salary` of $6,000 caps the theoretical
-maximum lineup total at $54,000 — nowhere near close enough to a
-$60,000 cap to also hit a $2,000-leftover target (minimum possible
-leftover in that case is $6,000). The tool is honest about this rather
-than pretending otherwise: verified with both set together,
-`_enforce_salary_floor` correctly spent as much as the pool allowed
-and stopped rather than exceeding the cap or hanging — the real
-leftover is reported plainly, not silently rounded down to fake
-hitting the target.
+**If you do use `--max-player-salary`** (e.g. for a deliberate
+punt/no-studs build), worth knowing what was found investigating it
+under a tight value like $6,000 — this doesn't apply at all with no
+cap set, which is the default: applying strict `--max-salary-leftover`
+enforcement to every candidate in a multi-lineup batch collapsed a
+20-lineup request under `--max-player-salary 6000` to **1** unique
+lineup — confirmed by direct debugging that under a tight cap, the
+pool of genuinely *good* expensive upgrade options is itself small
+enough that any thorough salary-maximizing search funnels toward the
+same few, regardless of starting point or tie-breaking randomness. A
+real structural tension between "spend near the cap" and "stay
+diverse" in a constrained pool, not a bug. Fixed by having
+`build_many()` skip the strict pass for batches and rely on the softer
+always-on bias instead — real diversity preserved (20/20 unique
+lineups), at the cost of leftover being looser than the $2,000 target
+when a tight `--max-player-salary` is also in play. With no
+`--max-player-salary` set (the default), this tension doesn't arise —
+verified: a 50-lineup batch at a fixed risk level reliably returns all
+50, with salaries reaching the full $54,800-$60,000 range.
 
 ## Exporting lineups
 

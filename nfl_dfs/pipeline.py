@@ -64,12 +64,13 @@ class DfsPipeline:
         salary_csv_path: str | Path,
         output_path: str | Path,
         risk_levels: dict[float, str] | None = None,
-        single_risk_level: float | None = None,
-        num_lineups: int | None = None,
+        single_risk_level: float = 0.5,
+        num_lineups: int = 1,
         randomness: float = 1.0,
         skip_redzone: bool = False,
         max_player_salary: int | None = None,
         max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
+        explore: bool = False,
     ) -> None:
         weekly_stats = self._data_source.fetch_weekly_stats(season)
 
@@ -108,32 +109,14 @@ class DfsPipeline:
         self._write_sleepers(sleeper_picks, output_path)
         self._write_regression_candidates(regression_candidates, output_path)
 
-        if single_risk_level is not None:
-            # the slider drives lineup count directly when num_lineups
-            # isn't explicitly overridden: 0.0 (cash) still builds just
-            # 1 lineup, 1.0 (max GPP) builds the full MAX_LINEUPS batch,
-            # scaling linearly in between — "all the way right builds
-            # every lineup GPP" is the whole point of this slider now.
-            effective_count = num_lineups if num_lineups is not None else max(1, round(single_risk_level * MAX_LINEUPS))
-            if effective_count > 1:
-                lineups = self._lineup_builder.build_many(
-                    player_values,
-                    single_risk_level,
-                    effective_count,
-                    randomness=randomness,
-                    max_player_salary=max_player_salary,
-                    max_salary_leftover=max_salary_leftover,
-                )
-                self._write_lineup_set(lineups, single_risk_level, output_path, sleeper_keys)
-            else:
-                lineup = self._lineup_builder.build(
-                    player_values,
-                    single_risk_level,
-                    max_player_salary=max_player_salary,
-                    max_salary_leftover=max_salary_leftover,
-                )
-                self._write_lineup_set([lineup] if lineup else [], single_risk_level, output_path, sleeper_keys)
-        else:
+        if explore:
+            # explicit opt-in only now — one lineup at each of 5 preset
+            # risk levels, for a quick look across the spectrum. This
+            # used to be the silent DEFAULT whenever risk wasn't set,
+            # which meant a blank/misconfigured risk input silently
+            # produced 5 lineups spanning different risk levels instead
+            # of the batch the user actually asked for — confusing and
+            # exactly the "slider" behavior that's been removed.
             self._write_lineups(
                 player_values,
                 output_path,
@@ -142,6 +125,32 @@ class DfsPipeline:
                 max_player_salary,
                 max_salary_leftover,
             )
+            return
+
+        # risk level and lineup count are independent, always-literal
+        # inputs now — no auto-derived count, no blending across risk
+        # levels. Pick risk 0.5 (or risk-scale 5) and ask for 50
+        # lineups: all 50 are built at exactly risk_level=0.5, only the
+        # specific players/combinations vary for diversity.
+        num_lineups = max(1, min(num_lineups, MAX_LINEUPS))
+        if num_lineups > 1:
+            lineups = self._lineup_builder.build_many(
+                player_values,
+                single_risk_level,
+                num_lineups,
+                randomness=randomness,
+                max_player_salary=max_player_salary,
+                max_salary_leftover=max_salary_leftover,
+            )
+            self._write_lineup_set(lineups, single_risk_level, output_path, sleeper_keys)
+        else:
+            lineup = self._lineup_builder.build(
+                player_values,
+                single_risk_level,
+                max_player_salary=max_player_salary,
+                max_salary_leftover=max_salary_leftover,
+            )
+            self._write_lineup_set([lineup] if lineup else [], single_risk_level, output_path, sleeper_keys)
 
     # ------------------------------------------------------------------
 

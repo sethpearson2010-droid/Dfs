@@ -2,16 +2,18 @@
 CLI entry point.
 
 Usage:
-    # 5-point cash-to-GPP exploration (default) — one lineup at each preset level
-    python -m nfl_dfs.main --season 2026 --salary-csv path/to/fanduel.csv --output output/players.json
+    # the normal way to run this: pick a risk level (1-10, 1=safest,
+    # 10=riskiest) and a lineup count — every lineup in the batch is
+    # built at EXACTLY that one risk level, no blending, no
+    # auto-derived count. Risk level and count are fully independent.
+    python -m nfl_dfs.main --season 2026 --salary-csv fanduel.csv --risk-scale 5 --num-lineups 50
 
-    # the slider now drives BOTH risk and lineup count: 0.0 builds 1
-    # cash lineup, 1.0 builds the full 50-lineup GPP batch, scaling
-    # in between. This is the main GPP workflow.
-    python -m nfl_dfs.main --season 2026 --salary-csv fanduel.csv --risk-level 1.0
+    # single lineup (num-lineups defaults to 1)
+    python -m nfl_dfs.main --season 2026 --salary-csv fanduel.csv --risk-scale 8
 
-    # override the auto-derived count explicitly if you want a specific number
-    python -m nfl_dfs.main --season 2026 --salary-csv fanduel.csv --risk-level 0.75 --num-lineups 10
+    # explicit opt-in only: one lineup at each of 5 preset risk levels,
+    # for a quick look across the cash-to-GPP spectrum
+    python -m nfl_dfs.main --season 2026 --salary-csv fanduel.csv --explore
 
 The --salary-csv step is the one manual part of the pipeline (FanDuel
 has no public salary API) — everything else (nflverse stats,
@@ -38,34 +40,41 @@ def main() -> None:
         help="Optional local cache dir for downloaded nflverse CSVs (speeds up repeated local runs)",
     )
     parser.add_argument(
-        "--risk-levels",
-        default=None,
-        help="Comma-separated risk levels 0.0-1.0, one lineup each, e.g. '0,0.5,1'. "
-        "Defaults to a 5-point cash-to-GPP spread. Ignored if --risk-level is set.",
+        "--risk-scale",
+        type=int,
+        default=5,
+        choices=range(1, 11),
+        metavar="1-10",
+        help="1=safest/cash, 10=riskiest/max GPP (default 5). Every lineup built this run uses "
+        "EXACTLY this risk level — no blending across levels, no effect on lineup count. "
+        "Converts internally to risk_level=(scale-1)/9. Ignored if --explore is set.",
     )
     parser.add_argument(
         "--risk-level",
         type=float,
         default=None,
-        help="A single point on the cash-to-GPP slider (0.0=cash, 1.0=max GPP). This now also "
-        f"drives lineup count directly: 0.0 builds 1 lineup, 1.0 builds {MAX_LINEUPS} (scaling "
-        "linearly between), unless --num-lineups explicitly overrides it. Ignored if --risk-scale is set.",
-    )
-    parser.add_argument(
-        "--risk-scale",
-        type=int,
-        default=None,
-        choices=range(1, 11),
-        metavar="1-10",
-        help="A friendlier version of --risk-level: 1=safest/cash, 10=riskiest/max GPP. "
-        "Converts internally to risk_level=(scale-1)/9. Takes priority over --risk-level if both are set.",
+        help="Advanced: raw 0.0-1.0 risk level instead of --risk-scale. Takes priority over "
+        "--risk-scale if both are set.",
     )
     parser.add_argument(
         "--num-lineups",
         type=int,
+        default=1,
+        help=f"How many lineups to build, all at --risk-scale (default 1). Capped at {MAX_LINEUPS}. "
+        "This is completely independent of the risk level — e.g. --risk-scale 5 --num-lineups 50 "
+        "builds 50 lineups that are ALL at risk level 5, not a spread across levels.",
+    )
+    parser.add_argument(
+        "--explore",
+        action="store_true",
+        help="Explicit opt-in: build one lineup at each of 5 preset risk levels (cash through max "
+        "GPP) instead of a batch at a single level. Ignores --risk-scale/--risk-level/--num-lineups.",
+    )
+    parser.add_argument(
+        "--risk-levels",
         default=None,
-        help=f"Explicit override for how many lineups to build at --risk-level. Capped at {MAX_LINEUPS}. "
-        "Leave unset to let the risk-level slider determine the count automatically.",
+        help="Advanced, only used with --explore: comma-separated risk levels 0.0-1.0 instead of "
+        "the default 5-point spread, e.g. '0,0.5,1'.",
     )
     parser.add_argument(
         "--randomness",
@@ -99,29 +108,20 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    if args.risk_scale is not None:
-        args.risk_level = (args.risk_scale - 1) / 9.0
-        print(f"--risk-scale {args.risk_scale} -> risk_level={args.risk_level:.3f}")
-
-    if args.num_lineups is not None and args.num_lineups > MAX_LINEUPS:
+    if args.num_lineups > MAX_LINEUPS:
         print(f"--num-lineups capped at {MAX_LINEUPS} (requested {args.num_lineups})")
+        args.num_lineups = MAX_LINEUPS
 
-    if args.risk_level is not None and args.num_lineups is not None:
-        auto_derived = max(1, round(args.risk_level * MAX_LINEUPS))
-        if args.num_lineups < auto_derived / 2:
-            print(
-                f"::warning::--num-lineups is explicitly set to {args.num_lineups}, but "
-                f"--risk-level {args.risk_level} alone would build ~{auto_derived}. If you didn't "
-                f"mean to override it this low, check the num_lineups field — GitHub's workflow "
-                f"form remembers the last value you typed there across separate runs, it does NOT "
-                f"reset to blank automatically."
-            )
+    risk_level = args.risk_level if args.risk_level is not None else (args.risk_scale - 1) / 9.0
+    if args.risk_level is None:
+        print(f"--risk-scale {args.risk_scale} -> risk_level={risk_level:.3f}")
+    print(f"Building {args.num_lineups} lineup(s), all at risk_level={risk_level:.3f}")
 
     data_source = NflverseDataSource(cache_dir=args.cache_dir)
     pipeline = DfsPipeline(data_source)
 
     risk_levels = None
-    if args.risk_levels and args.risk_level is None:
+    if args.explore and args.risk_levels:
         levels = [float(x.strip()) for x in args.risk_levels.split(",")]
         risk_levels = {lvl: label_for_risk(lvl) for lvl in levels}
 
@@ -130,12 +130,13 @@ def main() -> None:
         salary_csv_path=args.salary_csv,
         output_path=args.output,
         risk_levels=risk_levels,
-        single_risk_level=args.risk_level,
+        single_risk_level=risk_level,
         num_lineups=args.num_lineups,
         randomness=args.randomness,
         skip_redzone=args.skip_redzone,
         max_player_salary=args.max_player_salary,
         max_salary_leftover=args.max_salary_leftover,
+        explore=args.explore,
     )
 
     print(f"Done. Wrote player values to {args.output}")
