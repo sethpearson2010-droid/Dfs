@@ -8,6 +8,8 @@ Actions workflow only need to call one method.
 from __future__ import annotations
 
 import json
+from collections import defaultdict
+from dataclasses import replace
 from pathlib import Path
 
 from nfl_dfs.advanced_stats import AdvancedMetricsCalculator
@@ -20,7 +22,7 @@ from nfl_dfs.pace import PaceCalculator
 from nfl_dfs.regression import RegressionCalculator
 from nfl_dfs.salary import FanDuelSalaryImporter
 from nfl_dfs.sleepers import SleeperCalculator
-from nfl_dfs.value import ValueCalculator
+from nfl_dfs.value import RECENT_FORM_WINDOW, ValueCalculator
 from nfl_dfs.vulnerability import VulnerabilityCalculator
 
 # the risk slider isn't infinitely continuous in the output — these
@@ -74,6 +76,7 @@ class DfsPipeline:
         explore: bool = False,
         exclude_players: list[str] | None = None,
         include_players: list[str] | None = None,
+        lock_target_counts: dict[str, int] | None = None,
     ) -> None:
         self._write_run_config(
             output_path,
@@ -88,28 +91,54 @@ class DfsPipeline:
             include_players=include_players or [],
         )
 
-        weekly_stats = self._data_source.fetch_weekly_stats(season)
+        weekly_stats = self._fetch_weekly_stats_with_carryover(season)
 
-        vulnerability_calc = VulnerabilityCalculator(self._data_source)
-        vulnerability_scores = vulnerability_calc.compute(season)
+        # vulnerability, pace, red-zone, and snap-count data are all
+        # scoped to the CURRENT season only (see
+        # _fetch_weekly_stats_with_carryover's docstring for why they
+        # don't get the cross-season carryover player-level stats do)
+        # — for a season with zero games played, each of these fetches
+        # 404s the same way the player-stats fetch does, and each
+        # gracefully degrades to an empty/uninformative result instead
+        # of crashing the whole run. This is an honest gap, not a
+        # workaround: there's no substitute for real current-season
+        # matchup and usage data, so nothing here tries to fake one.
+        try:
+            vulnerability_calc = VulnerabilityCalculator(self._data_source)
+            vulnerability_scores = vulnerability_calc.compute(season)
+        except RuntimeError as error:
+            print(f"{error} Vulnerability scoring will be empty until season {season} has games.")
+            vulnerability_scores = {}
 
-        game_contexts = self._data_source.fetch_game_context(season)
+        game_contexts = self._data_source.fetch_game_context(season)  # games.csv spans all seasons in one file, doesn't 404
 
-        pace_calc = PaceCalculator(self._data_source)
-        pace_profiles = pace_calc.compute(season)
+        try:
+            pace_calc = PaceCalculator(self._data_source)
+            pace_profiles = pace_calc.compute(season)
+        except RuntimeError as error:
+            print(f"{error} Pace scoring will be empty until season {season} has games.")
+            pace_profiles = {}
 
         # red zone data requires downloading play-by-play (~19MB
         # compressed) — skip_redzone lets a quick test run bypass that
         if skip_redzone:
             advanced_metrics = {}
         else:
-            redzone_data = self._data_source.fetch_redzone_data(season)
-            advanced_metrics = self._advanced_calc.compute(weekly_stats, redzone_data)
+            try:
+                redzone_data = self._data_source.fetch_redzone_data(season)
+                advanced_metrics = self._advanced_calc.compute(weekly_stats, redzone_data)
+            except RuntimeError as error:
+                print(f"{error} Advanced usage metrics (WOPR, red zone) will be empty until season {season} has games.")
+                advanced_metrics = {}
 
         # snap counts is a small, fast fetch (unlike pbp) — always
         # fetched regardless of skip_redzone, since it's what catches
         # the "technically played, but actually a backup now" case
-        snap_counts = self._data_source.fetch_snap_counts(season)
+        try:
+            snap_counts = self._data_source.fetch_snap_counts(season)
+        except RuntimeError as error:
+            print(f"{error} Backup-QB snap-share detection will be skipped until season {season} has games.")
+            snap_counts = {}
 
         salaries = self._salary_importer.load(salary_csv_path)
 
@@ -174,6 +203,7 @@ class DfsPipeline:
                 randomness=randomness,
                 max_player_salary=max_player_salary,
                 max_salary_leftover=max_salary_leftover,
+                lock_target_counts=lock_target_counts,
             )
             self._write_lineup_set(lineups, single_risk_level, output_path)
         else:
@@ -227,6 +257,83 @@ class DfsPipeline:
             )
         )
 
+    def _fetch_weekly_stats_with_carryover(self, season: int):
+        """Answers 'how does Week 1 of a new season get decided when
+        there's no current-season data yet?' — it doesn't, not on its
+        own. This project's whole projection model is built on recent
+        game history, so with zero games played in `season`, every
+        player's recent-form average, floor, and ceiling would compute
+        from an empty list — a hard 0 across the board, indistinguishable
+        from every player being "unmatched".
+
+        Fixed by carrying over the tail of the PREVIOUS season's data
+        when the current season doesn't have a full recent-form window
+        yet: each player's last `RECENT_FORM_WINDOW` games from last
+        season are pulled in with NEGATIVE week numbers, so they sort
+        strictly before this season's real games. Because
+        `_build_player_averages` etc. always take the last
+        `RECENT_FORM_WINDOW` entries chronologically, this means: Week
+        0/before-season-starts uses last season's final games outright,
+        Week 1 blends in 1 real current game once it exists, and by
+        Week 5+ the window is entirely real current-season data with no
+        special-casing needed anywhere else in the codebase.
+
+        Deliberately scoped to PLAYER-level projections only (this
+        method's output feeds ValueCalculator). Defense vulnerability
+        and team pace do NOT get this carryover — they're computed by
+        VulnerabilityCalculator/PaceCalculator, which fetch the current
+        season directly from the data source themselves, independent of
+        this method. That's intentional: roster turnover and scheme
+        changes between seasons make cross-season defense/pace
+        carryover a much shakier assumption than an individual skill
+        player's own recent form. The honest tradeoff: vulnerability
+        and pace scores will be genuinely uninformative (empty or
+        near-empty) in the first few weeks of a season — there's no
+        good substitute for real current-season matchup data, so this
+        doesn't try to fake one."""
+        try:
+            current_stats = self._data_source.fetch_weekly_stats(season)
+        except RuntimeError as error:
+            # season hasn't started at all yet (0 games, not just "fewer
+            # than RECENT_FORM_WINDOW") — nflverse doesn't publish a
+            # file until there's at least one game to put in it, so this
+            # isn't "fewer weeks than we'd like", it's "no file exists".
+            # Full carryover from the previous season is the only
+            # option; if that's unavailable too, there's genuinely
+            # nothing to build a projection from.
+            print(f"{error} Falling back to full carryover from season {season - 1}.")
+            current_stats = []
+
+        current_max_week = max((line.week for line in current_stats), default=0)
+
+        if current_max_week >= RECENT_FORM_WINDOW:
+            return current_stats  # enough real current-season data — no carryover needed
+
+        try:
+            previous_stats = self._data_source.fetch_weekly_stats(season - 1)
+        except RuntimeError:
+            print(f"No carryover data available from season {season - 1} either — proceeding with season {season} alone.")
+            return current_stats
+
+        by_player: dict[str, list] = defaultdict(list)
+        for line in previous_stats:
+            by_player[line.player_name].append(line)
+
+        carryover_lines = []
+        for lines in by_player.values():
+            lines.sort(key=lambda line: line.week)
+            tail = lines[-RECENT_FORM_WINDOW:]
+            for i, line in enumerate(tail):
+                offset = len(tail) - i  # 1-indexed distance from the end of last season
+                carryover_lines.append(replace(line, season=season, week=-offset))
+
+        print(
+            f"Season {season} has only {current_max_week} week(s) of data so far — "
+            f"carrying over each player's last {RECENT_FORM_WINDOW} games from season {season - 1} "
+            f"for player-level projections (defense vulnerability/pace still use season {season} only)."
+        )
+        return carryover_lines + current_stats
+
     def _apply_manual_exclusions(self, player_values, exclude_players: list[str] | None) -> None:
         """Zeroes out and flags any player matching a name in
         exclude_players — an easy override for late-breaking news or a
@@ -242,6 +349,7 @@ class DfsPipeline:
         if not normalized_excludes:
             return
 
+        matched_names = []
         for pv in player_values:
             normalized_player = normalize_name(pv.player_name)
             if any(exc in normalized_player or normalized_player in exc for exc in normalized_excludes):
@@ -249,6 +357,14 @@ class DfsPipeline:
                 pv.floor_projection = 0.0
                 pv.ceiling_projection = 0.0
                 pv.manually_excluded = True
+                matched_names.append(pv.player_name)
+
+        # requested-vs-matched can differ legitimately (e.g. "Chris"
+        # matching several players) or point to a real name mismatch —
+        # either way, printing both makes that visible rather than
+        # silent, since a request that matches 0 real players looks
+        # identical to "exclusion did nothing" from the outside.
+        print(f"--exclude-players requested {exclude_players}, matched: {matched_names or '(none)'}")
 
     def _write_output(
         self,

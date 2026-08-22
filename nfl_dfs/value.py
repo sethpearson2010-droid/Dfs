@@ -127,6 +127,9 @@ class ValueCalculator:
     def build(self, salaries: list[SalaryEntry], force_include: list[str] | None = None) -> list[PlayerValue]:
         self._force_include_normalized = {normalize_name(name) for name in (force_include or []) if name.strip()}
         values = [self._value_one(entry) for entry in salaries]
+        if force_include:
+            matched = [v.player_name for v in values if v.force_included]
+            print(f"--include-players requested {force_include}, matched: {matched or '(none)'}")
         return sorted(values, key=lambda v: v.value_score, reverse=True)
 
     # ------------------------------------------------------------------

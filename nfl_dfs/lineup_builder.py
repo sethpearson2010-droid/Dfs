@@ -48,6 +48,7 @@ from __future__ import annotations
 import random
 
 from nfl_dfs.models import Lineup, LineupSlot, PlayerValue, Position
+from nfl_dfs.name_matching import normalize_name
 from nfl_dfs.roster_rules import ROSTER_SLOTS, SALARY_CAP
 
 LOCAL_SEARCH_ITERATIONS = 3000
@@ -161,6 +162,7 @@ class LineupBuilder:
         local_search_iterations: int = LOCAL_SEARCH_ITERATIONS,
         max_player_salary: int | None = None,
         max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
+        locked_override: list[PlayerValue] | None = None,
     ) -> Lineup | None:
         """Returns None if no legal lineup can be built from the pool
         (e.g. missing a required position entirely, or the cheapest
@@ -182,7 +184,14 @@ class LineupBuilder:
         player's projection nonzero without guaranteeing selection,
         which meant they'd still lose out to a more competitive real
         option and simply not appear — exactly the bug this was
-        reported against."""
+        reported against.
+
+        `locked_override`, if given, replaces the default "lock every
+        force_included player" behavior — used by `build_many()` to
+        control, per candidate lineup, how many of a batch a given
+        locked player actually appears in (see `LOCK_ALL` and
+        `build_many`'s `lock_target_counts` parameter). Pass an empty
+        list to lock nobody even if some players are force_included."""
         risk_level = max(0.0, min(1.0, risk_level))
         usable = [
             p
@@ -196,7 +205,7 @@ class LineupBuilder:
             usable = [p for p in usable if p.salary <= max_player_salary]
         noise = player_noise or {}
 
-        locked = [p for p in usable if p.force_included]
+        locked = locked_override if locked_override is not None else [p for p in usable if p.force_included]
 
         lineup, locked_slot_names = self._greedy_fill(usable, risk_level, noise, locked)
         if lineup is None:
@@ -224,6 +233,7 @@ class LineupBuilder:
         max_position_overlap: int = DEFAULT_MAX_POSITION_OVERLAP,
         max_player_salary: int | None = None,
         max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
+        lock_target_counts: dict[str, int] | None = None,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
@@ -259,7 +269,20 @@ class LineupBuilder:
         every candidate to the same final lineup regardless of
         starting point. That's a real structural tension between
         spending near the cap and staying diverse when the pool this
-        constrained — not a bug to code around further."""
+        constrained — not a bug to code around further.
+
+        `lock_target_counts`, keyed by normalized player name (see
+        `nfl_dfs.name_matching.normalize_name`), caps how many of this
+        batch's lineups a `force_included` player is actually LOCKED
+        into — e.g. `{"jayden daniels": 20}` locks them into 20 of a
+        50-lineup batch, not all 50, so a forced player doesn't
+        structurally eat one roster slot across the entire batch when
+        you only wanted a partial guarantee. A force_included player
+        not present in this dict defaults to locked in ALL lineups
+        (the original behavior). Once a player hits their target count,
+        remaining lineups treat them as a normal (still viable, since
+        force_included already gave them a real or fallback
+        projection) player rather than a guaranteed one."""
         count = max(1, min(count, MAX_LINEUPS))
         accepted: list[Lineup] = []
         usage_count: dict[str, int] = {}
@@ -293,6 +316,10 @@ class LineupBuilder:
         consecutive_rejections = 0
         RELAX_AFTER_REJECTIONS = 75
 
+        lock_target_counts = lock_target_counts or {}
+        force_included_players = [p for p in players if p.force_included]
+        lock_usage_count: dict[str, int] = {}
+
         while len(accepted) < count and attempts < max_attempts:
             attempts += 1
             seed_counter += 1
@@ -302,6 +329,19 @@ class LineupBuilder:
             for p in players:
                 if usage_count.get(p.player_name, 0) >= max_uses_per_player:
                     noise[p.player_name] = noise.get(p.player_name, 1.0) * EXPOSURE_PENALTY_FACTOR
+
+            # a force_included player is locked into THIS candidate
+            # only if they haven't already hit their target count —
+            # once they have, they revert to a normal (still viable,
+            # just no longer guaranteed) player for the rest of the
+            # batch. Defaults to "lock into every lineup" if no target
+            # count was specified for them.
+            current_locked = [
+                p
+                for p in force_included_players
+                if lock_usage_count.get(p.player_name, 0)
+                < lock_target_counts.get(normalize_name(p.player_name), count)
+            ]
 
             self._random = random.Random(seed_counter)
             candidate = self.build(
@@ -322,6 +362,7 @@ class LineupBuilder:
                 # stronger always-on SALARY_UTILIZATION_WEIGHT below
                 # pushes spend up without that collapse.
                 max_salary_leftover=None,
+                locked_override=current_locked,
             )
             if candidate is None:
                 continue
@@ -330,8 +371,14 @@ class LineupBuilder:
                 accepted.append(candidate)
                 consecutive_rejections = 0
                 current_position_overlap = max_position_overlap  # reset to the strict default for the next lineup
+                candidate_names = {slot.player.player_name for slot in candidate.slots}
                 for slot in candidate.slots:
                     usage_count[slot.player.player_name] = usage_count.get(slot.player.player_name, 0) + 1
+                for locked_player in current_locked:
+                    if locked_player.player_name in candidate_names:
+                        lock_usage_count[locked_player.player_name] = (
+                            lock_usage_count.get(locked_player.player_name, 0) + 1
+                        )
             else:
                 consecutive_rejections += 1
                 if (

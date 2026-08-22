@@ -26,7 +26,34 @@ import argparse
 
 from nfl_dfs.data.nflverse import NflverseDataSource
 from nfl_dfs.lineup_builder import DEFAULT_MAX_SALARY_LEFTOVER, MAX_LINEUPS
+from nfl_dfs.name_matching import normalize_name
 from nfl_dfs.pipeline import DfsPipeline, label_for_risk
+
+
+def _parse_include_players(raw: str) -> tuple[list[str], dict[str, int]]:
+    """'Jayden Daniels:20, Fernando Mendoza' -> (['Jayden Daniels',
+    'Fernando Mendoza'], {'jayden daniels': 20}). The ':N' suffix is
+    optional per-player — only used for --num-lineups > 1, to lock a
+    forced player into N of the batch's lineups instead of all of
+    them. A malformed suffix (non-numeric) is treated as part of the
+    name rather than silently dropped."""
+    names: list[str] = []
+    counts: dict[str, int] = {}
+    for entry in raw.split(","):
+        entry = entry.strip()
+        if not entry:
+            continue
+        if ":" in entry:
+            name_part, _, count_part = entry.rpartition(":")
+            name_part = name_part.strip()
+            try:
+                counts[normalize_name(name_part)] = int(count_part.strip())
+                names.append(name_part)
+                continue
+            except ValueError:
+                pass  # not a valid "Name:Count" — fall through and treat the whole entry as a plain name
+        names.append(entry)
+    return names, counts
 
 
 def main() -> None:
@@ -118,15 +145,19 @@ def main() -> None:
     parser.add_argument(
         "--include-players",
         default=None,
-        help="Comma-separated player names to force back into consideration even if the model "
-        "would otherwise zero them out (stale/is_out) — for a backup who's about to start due to "
-        "an injury elsewhere, where the box scores don't reflect that yet. If they have real "
-        "recent history it's used normally; if they have none at all, falls back to a rough "
-        "position-average baseline rather than a hard 0. This makes them VIABLE for the optimizer "
-        "to pick, not a guaranteed roster spot — same substring-tolerant matching as "
-        "--exclude-players.",
+        help="Comma-separated player names to LOCK into every lineup, even if the model would "
+        "otherwise zero them out (stale/is_out) — for a backup who's about to start due to an "
+        "injury elsewhere, where the box scores don't reflect that yet. If they have real recent "
+        "history it's used normally; if they have none at all, falls back to a rough "
+        "position-average baseline rather than a hard 0. This is a real guarantee (assigned before "
+        "any other selection happens), not just eligibility. For --num-lineups > 1, optionally "
+        "append ':N' to a name (e.g. 'Jayden Daniels:20') to lock them into only N of the batch "
+        "instead of all of it — omit the suffix to lock into every lineup. Same substring-tolerant "
+        "matching as --exclude-players.",
     )
     args = parser.parse_args()
+    print(f"DEBUG received --exclude-players = [{args.exclude_players}]")
+    print(f"DEBUG received --include-players = [{args.include_players}]")
 
     if args.num_lineups > MAX_LINEUPS:
         print(f"--num-lineups capped at {MAX_LINEUPS} (requested {args.num_lineups})")
@@ -151,9 +182,14 @@ def main() -> None:
         print(f"Excluding: {', '.join(exclude_players)}")
 
     include_players = None
+    lock_target_counts = None
     if args.include_players:
-        include_players = [name.strip() for name in args.include_players.split(",") if name.strip()]
-        print(f"Force-including: {', '.join(include_players)}")
+        include_players, lock_target_counts = _parse_include_players(args.include_players)
+        if lock_target_counts:
+            counts_desc = ", ".join(f"{name} x{count}" for name, count in lock_target_counts.items())
+            print(f"Force-including: {', '.join(include_players)} (partial lock counts: {counts_desc})")
+        else:
+            print(f"Force-including: {', '.join(include_players)}")
 
     pipeline.run(
         season=args.season,
@@ -169,6 +205,7 @@ def main() -> None:
         explore=args.explore,
         exclude_players=exclude_players,
         include_players=include_players,
+        lock_target_counts=lock_target_counts,
     )
 
     print(f"Done. Wrote player values to {args.output}")

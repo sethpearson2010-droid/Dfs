@@ -217,6 +217,10 @@
     <div id="exclusionChips" class="exclusion-chips"></div>
     <div style="font-size:12px;color:var(--muted);margin:8px 0 4px;">Force-included (e.g. a backup starting for an injured player):</div>
     <div id="inclusionChips" class="exclusion-chips"></div>
+    <div class="rebuild-token-row" style="margin-top:6px;">
+      <label style="font-size:12px;color:var(--muted);white-space:nowrap;">Lock into how many lineups?</label>
+      <input type="number" id="lockCountInput" min="1" placeholder="all" style="width:70px;flex:none;background:#0f1115;border:1px solid var(--border);color:var(--text);padding:6px 8px;border-radius:6px;font-size:13px;">
+    </div>
     <button id="triggerRebuildBtn" disabled>Rebuild with these changes</button>
     <div class="rebuild-status" id="rebuildStatus">
       Tap 🚫 to exclude or ✅ to force-include any player below, then rebuild.
@@ -504,7 +508,17 @@ async function triggerRebuild() {
   const alreadyExcluded = runConfig.exclude_players || [];
   const combinedExclusions = [...new Set([...alreadyExcluded, ...pendingExclusions])];
   const alreadyIncluded = runConfig.include_players || [];
-  const combinedInclusions = [...new Set([...alreadyIncluded, ...pendingInclusions])];
+  const lockCount = document.getElementById("lockCountInput").value.trim();
+  // the lock-count suffix only applies to inclusions queued THIS
+  // rebuild — run_config.json only stores plain names (not counts) for
+  // players already included from a prior run, so a previous partial
+  // lock count doesn't round-trip across rebuilds. Carrying those
+  // forward as "lock all" is a reasonable fallback; re-specify the
+  // count each time you want a partial lock to persist.
+  const newInclusionsWithCount = lockCount
+    ? pendingInclusions.map(name => `${name}:${lockCount}`)
+    : pendingInclusions;
+  const combinedInclusions = [...new Set([...alreadyIncluded, ...newInclusionsWithCount])];
 
   const inputs = {
     season: String(runConfig.season),

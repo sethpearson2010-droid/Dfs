@@ -504,6 +504,45 @@ all 50, with WR variety still strong (14 unique WRs used, average
 overlap of 1.24 between consecutive lineups — the strict cap of 2
 held for the large majority of the batch).
 
+## What happens in Week 1 of a new season
+
+The entire projection model is built on recent game history — with
+zero games played yet in a season, every player's recent-form average
+would compute from an empty list, a hard 0 across the board.
+Confirmed directly: `--season 2026` currently 404s on every nflverse
+endpoint (player stats, vulnerability, pace, red zone, snap counts),
+since nflverse doesn't publish a season's file until there's at least
+one game to put in it.
+
+**Fixed for player-level projections specifically**: when the current
+season has fewer than `RECENT_FORM_WINDOW` (5) weeks of data,
+`pipeline.py`'s `_fetch_weekly_stats_with_carryover` pulls in each
+player's last 5 games from the *previous* season, tagged with negative
+week numbers so they sort strictly before the new season's real games.
+Because the recent-form calculations always take the last 5 entries
+chronologically, this phases out naturally as real games accumulate —
+Week 0 (before the season starts) uses last season's tail outright,
+Week 1 blends in 1 real game, and by Week 5+ it's entirely real
+current-season data with no special-casing needed anywhere else.
+Verified against the actual live 2026 season (genuinely zero games
+played): projections came back sensible and correctly ranked (Bijan
+Robinson, Ja'Marr Chase, Josh Allen at the top) instead of every
+player showing 0.
+
+**Deliberately NOT extended to vulnerability, pace, red zone, or
+snap-share data** — those still use the current season only, and
+gracefully degrade to empty (rather than crashing, which an earlier
+version of this fix did) when it has no games yet. Roster turnover and
+scheme changes between seasons make cross-season defense/pace
+carryover a much shakier assumption than an individual player's own
+recent scoring — there's no good substitute for real current-season
+matchup and usage data, so this doesn't try to fake one. The honest
+consequence: matchup-based signals (vulnerability multiplier, pace,
+WOPR/red-zone opportunity, backup-QB snap-share detection) are
+genuinely uninformative for the first few weeks of a season, and
+lineups built then will be more dependent on last season's raw scoring
+than an established roster would be later in the year.
+
 ## Injury flagging (real data, not just heuristics)
 
 FanDuel's salary CSV already includes real `Injury Indicator` /
@@ -623,6 +662,28 @@ first (e.g. a locked RB tries RB1/RB2 before FLEX, so it doesn't
 needlessly claim the FLEX slot another position might need), and
 silently moves on if nothing fits. `force_included: true` is tagged in
 the output regardless, so you can check whether a lock actually took.
+
+**Partial lock counts for batches** (`--num-lineups` > 1): append
+`:N` to a name — `--include-players "Jayden Daniels:20"` locks them
+into 20 of a 50-lineup batch, not all 50, so a forced player doesn't
+structurally occupy one roster slot across the *entire* batch when
+you only wanted a partial guarantee. Omit the suffix to lock into
+every lineup (the default). Once a player hits their target count,
+the remaining lineups in the batch treat them as a normal — still
+viable, just no longer guaranteed — player. On the dashboard, this is
+a "Lock into how many lineups?" field next to the force-include
+chips; leave it blank to lock into all. Verified: `Jayden Daniels:8`
+on a 20-lineup batch put him in exactly 8, not 20.
+
+**Debugging note**: both this and `--exclude-players` now print
+exactly what was requested vs. what was actually matched to a real
+player (`--include-players requested [...], matched: [...]`) — a
+request that matches 0 real players looks identical to "did nothing"
+from the outside otherwise. The GitHub Actions workflow also passes
+both through environment variables (`EXCLUDE_PLAYERS`/`INCLUDE_PLAYERS`)
+rather than interpolating `${{ }}` directly into the shell script —
+GitHub's own recommended pattern for free-text inputs, safer around
+quoting than the direct-interpolation form used originally.
 
 The GitHub Actions workflow exposes this as `include_players`, quoted
 separately from `$ARGS` for the same reason as `exclude_players`
