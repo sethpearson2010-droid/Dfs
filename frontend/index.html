@@ -189,6 +189,28 @@
     padding: 0 2px;
   }
   .include-btn:hover { color: #22c55e; }
+  .info-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 4px;
+    padding: 0 2px;
+    opacity: 0.7;
+  }
+  .info-btn:hover { opacity: 1; }
+  .player-detail-cell {
+    background: #0f1115;
+    font-size: 12px;
+    color: var(--muted);
+    padding: 10px 14px !important;
+    line-height: 1.5;
+  }
+  .player-detail-log {
+    margin-top: 6px;
+    color: #888;
+    font-size: 11px;
+  }
   .lineup-slot-row {
     display: grid;
     grid-template-columns: 50px 1fr 60px 80px 80px;
@@ -200,16 +222,6 @@
   }
   .lineup-slot-row:last-child { border-bottom: none; }
   .lineup-slot-label { color: var(--muted); font-weight: 600; }
-  .lineup-slot-block { border-bottom: 1px solid var(--border); }
-  .lineup-slot-block .lineup-slot-row { border-bottom: none; }
-  .lineup-slot-block:last-child { border-bottom: none; }
-  .lineup-explanation {
-    font-size: 11px;
-    color: var(--muted);
-    padding: 0 0 8px 58px;
-    line-height: 1.4;
-  }
-  .lineup-explanation .game-log { color: #666; }
 </style>
 </head>
 <body>
@@ -404,6 +416,15 @@ function initRebuildPanel() {
     }
     if (e.target.classList.contains("include-btn")) {
       addInclusion(e.target.dataset.player);
+    }
+    if (e.target.classList.contains("info-btn")) {
+      const idx = e.target.dataset.playerIdx;
+      const detailRow = document.querySelector(`.player-detail-row[data-player-idx="${idx}"]`);
+      if (detailRow) {
+        const isHidden = detailRow.style.display === "none";
+        detailRow.style.display = isHidden ? "table-row" : "none";
+        e.target.style.opacity = isHidden ? "1" : "0.7";
+      }
     }
   });
 
@@ -717,8 +738,6 @@ function renderSelectedLineup(index) {
   slotOrder.forEach(slotName => {
     const s = bySlot[slotName];
     if (!s) return;
-    const block = document.createElement("div");
-    block.className = "lineup-slot-block";
     const row = document.createElement("div");
     row.className = "lineup-slot-row";
     const sleeperTag = s.is_sleeper ? " 💤" : "";
@@ -737,17 +756,7 @@ function renderSelectedLineup(index) {
       <span style="color:var(--muted);">floor ${s.floor_projection}</span>
       <span style="color:var(--accent);">ceil ${s.ceiling_projection}</span>
     `;
-    block.appendChild(row);
-
-    if (s.explanation || s.recent_game_log) {
-      const explanationEl = document.createElement("div");
-      explanationEl.className = "lineup-explanation";
-      const logPart = s.recent_game_log ? ` <span class="game-log">(${s.recent_game_log})</span>` : "";
-      explanationEl.innerHTML = `${s.explanation || ""}${logPart}`;
-      block.appendChild(explanationEl);
-    }
-
-    slotsEl.appendChild(block);
+    slotsEl.appendChild(row);
   });
 }
 
@@ -828,7 +837,7 @@ function render() {
 
   const tbody = document.getElementById("tableBody");
   tbody.innerHTML = "";
-  rows.forEach(p => {
+  rows.forEach((p, idx) => {
     const vuln = p.matchup_vulnerability
       ? `${p.matchup_vulnerability.recent_avg_allowed} pts/gm`
       : "—";
@@ -863,7 +872,7 @@ function render() {
       : "";
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><span title="${p.recent_game_log || 'No recent game log'}" style="border-bottom:1px dotted var(--muted);cursor:help;">${p.player_name}</span><button class="exclude-btn" data-player="${p.player_name}" title="Queue for exclusion & rebuild">🚫</button><button class="include-btn" data-player="${p.player_name}" title="Queue for forced inclusion & rebuild (e.g. filling in for an injured starter)">✅</button>${nameWarning}${injuryBadge}${backupQbBadge}${staleBadge}${sleeperBadge}${regressionBadge}</td>
+      <td><button class="info-btn" data-player-idx="${idx}" title="Show why this player is valued, and their recent game log">ℹ️</button>${p.player_name}<button class="exclude-btn" data-player="${p.player_name}" title="Queue for exclusion & rebuild">🚫</button><button class="include-btn" data-player="${p.player_name}" title="Queue for forced inclusion & rebuild (e.g. filling in for an injured starter)">✅</button>${nameWarning}${injuryBadge}${backupQbBadge}${staleBadge}${sleeperBadge}${regressionBadge}</td>
       <td><span class="pos-badge">${p.position}</span></td>
       <td>${p.team}</td>
       <td>${p.opponent}</td>
@@ -877,6 +886,16 @@ function render() {
       <td title="Ceiling per $1000 salary, plus how many of the 4 matchup signals are pointing up">${smashDisplay}</td>
     `;
     tbody.appendChild(tr);
+
+    const detailRow = document.createElement("tr");
+    detailRow.className = "player-detail-row";
+    detailRow.style.display = "none";
+    detailRow.dataset.playerIdx = idx;
+    const gameLogHtml = p.recent_game_log
+      ? `<div class="player-detail-log">${p.recent_game_log}</div>`
+      : `<div class="player-detail-log" style="opacity:0.6;">No current-season games yet</div>`;
+    detailRow.innerHTML = `<td colspan="12" class="player-detail-cell">${p.explanation || ""}${gameLogHtml}</td>`;
+    tbody.appendChild(detailRow);
   });
 }
 

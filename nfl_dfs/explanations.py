@@ -87,16 +87,21 @@ def explain_player(player: PlayerValue, stack_partner: str = "", is_bring_back: 
 
 def format_game_log(recent_game_log: list) -> str:
     """[(18, 2.64), (12, 14.52), ...] (already sorted ascending by
-    value.py) -> 'Wk12: 14.5, Wk18: 2.6' for display. Negative week
-    numbers are carried-over games from the previous season (see
-    pipeline.py's _fetch_weekly_stats_with_carryover) — that negative
-    number is only an internal sort key (distance from the season
-    boundary), not the real week they were played, so it's labeled
-    generically as "LastYr" rather than fabricating a specific week."""
-    if not recent_game_log:
+    value.py) -> 'Wk12: 14.5, Wk18: 2.6' for display.
+
+    Only real current-season games are shown — carried-over
+    previous-season games (see pipeline.py's
+    _fetch_weekly_stats_with_carryover) are tagged with negative week
+    numbers internally for projection purposes, but that negative
+    number is only a sort key (distance from the season boundary), not
+    a real week anyone played, so there's no honest week label to show
+    for them. Filtered out here rather than shown as a vague "LastYr"
+    entry for every game — a season that's mostly or entirely
+    carryover (e.g. Week 1, before any real games) will show an empty
+    log, which is the honest state: there ISN'T a current-season log
+    yet, rather than a log padded with entries that don't have real
+    week numbers."""
+    real_games = [(week, points) for week, points in recent_game_log if week > 0]
+    if not real_games:
         return ""
-    parts = []
-    for week, points in recent_game_log:
-        label = "LastYr" if week <= 0 else f"Wk{week}"
-        parts.append(f"{label}: {points:.1f}")
-    return ", ".join(parts)
+    return ", ".join(f"Wk{week}: {points:.1f}" for week, points in real_games)

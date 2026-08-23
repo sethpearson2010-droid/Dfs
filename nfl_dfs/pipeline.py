@@ -396,6 +396,7 @@ class DfsPipeline:
                 "is_backup_qb": pv.is_backup_qb,
                 "force_included": pv.force_included,
                 "recent_game_log": format_game_log(pv.recent_game_log),
+                "explanation": explain_player(pv),
                 "injury_status": pv.injury_status,
                 "injury_details": pv.injury_details,
                 "is_out": pv.is_out,

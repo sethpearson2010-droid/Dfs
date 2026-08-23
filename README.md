@@ -816,11 +816,14 @@ doesn't cover.
 
 ## Why each player was picked, and their recent game log
 
-Every player in a built lineup (and in the main player table) now
-carries a short, plain-language explanation and a recent game log,
-both baked into the JSON at build time — `explanations.py` generates
-these once during the Python run, since the dashboard is a static
-site with no backend to compose them dynamically.
+Every player in the main player list carries a short, plain-language
+explanation and a recent game log, both baked into the JSON at build
+time — `explanations.py` generates these once during the Python run,
+since the dashboard is a static site with no backend to compose them
+dynamically. Tap the ℹ️ button next to a player's name to expand a
+detail row showing both; this lives in the player list specifically
+(not the lineup panel above it) so the lineup view stays compact and
+scannable, with the deeper detail one tap away when you want it.
 
 **The explanation is deliberately rule-based, not a model call**:
 every reason it states traces to a specific field already computed
@@ -832,17 +835,26 @@ play") rather than reaching for a reason that isn't really there.
 Example: *"Selected for a favorable matchup (this defense has given
 up extra fantasy points to the position recently), and real target
 share / red-zone opportunity beyond his raw scoring average.
-Projected range: 10.7 (floor) to 31.4 (ceiling)."* Stacked players
-get an explicit mention of who they're stacked with.
+Projected range: 10.7 (floor) to 31.4 (ceiling)."* Stack context
+(who a player is stacked with) only applies within the lineup panel,
+where the pairing is meaningful — the player list's explanation
+omits it since a player isn't part of any particular lineup's stack
+in that general view.
 
-**The game log** is each player's last `RECENT_FORM_WINDOW` (5) games
-(`value.py`'s `_build_recent_game_logs`, alongside the median/MAD it
-computes from the same games) — shown in the lineup panel under each
-player, and as a hover tooltip on their name in the main table.
-Carried-over games from the previous season (see the Week 1 section
-above) are labeled `LastYr` rather than a fabricated week number,
-since the negative week value used internally for sorting is only a
-sort key, not the real week they were played.
+**The game log shows real current-season games only** — a first
+version showed every recent game including carried-over ones from the
+previous season (see "What happens in Week 1" above), labeled
+generically as `LastYr` since the negative week value used internally
+for sorting isn't a real week number. In practice this meant early in
+a season (when most or all of the recent-form window is still
+carryover data), the log was mostly or entirely `LastYr` entries —
+cluttered and not the current season's story. Fixed: `format_game_log`
+now filters to `week > 0` only, so the display shows either real
+current-season weeks (`Wk14: 21.3, Wk15: 18.1, ...`) or, honestly, no
+log at all yet if the season hasn't produced enough real games —
+never a log padded with entries that don't have a real week to show.
+The underlying projection calculation is unaffected either way; only
+the display was filtered.
 
 ## Exporting lineups
 
