@@ -200,6 +200,16 @@
   }
   .lineup-slot-row:last-child { border-bottom: none; }
   .lineup-slot-label { color: var(--muted); font-weight: 600; }
+  .lineup-slot-block { border-bottom: 1px solid var(--border); }
+  .lineup-slot-block .lineup-slot-row { border-bottom: none; }
+  .lineup-slot-block:last-child { border-bottom: none; }
+  .lineup-explanation {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 0 0 8px 58px;
+    line-height: 1.4;
+  }
+  .lineup-explanation .game-log { color: #666; }
 </style>
 </head>
 <body>
@@ -707,6 +717,8 @@ function renderSelectedLineup(index) {
   slotOrder.forEach(slotName => {
     const s = bySlot[slotName];
     if (!s) return;
+    const block = document.createElement("div");
+    block.className = "lineup-slot-block";
     const row = document.createElement("div");
     row.className = "lineup-slot-row";
     const sleeperTag = s.is_sleeper ? " 💤" : "";
@@ -725,7 +737,17 @@ function renderSelectedLineup(index) {
       <span style="color:var(--muted);">floor ${s.floor_projection}</span>
       <span style="color:var(--accent);">ceil ${s.ceiling_projection}</span>
     `;
-    slotsEl.appendChild(row);
+    block.appendChild(row);
+
+    if (s.explanation || s.recent_game_log) {
+      const explanationEl = document.createElement("div");
+      explanationEl.className = "lineup-explanation";
+      const logPart = s.recent_game_log ? ` <span class="game-log">(${s.recent_game_log})</span>` : "";
+      explanationEl.innerHTML = `${s.explanation || ""}${logPart}`;
+      block.appendChild(explanationEl);
+    }
+
+    slotsEl.appendChild(block);
   });
 }
 
@@ -841,7 +863,7 @@ function render() {
       : "";
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${p.player_name}<button class="exclude-btn" data-player="${p.player_name}" title="Queue for exclusion & rebuild">🚫</button><button class="include-btn" data-player="${p.player_name}" title="Queue for forced inclusion & rebuild (e.g. filling in for an injured starter)">✅</button>${nameWarning}${injuryBadge}${backupQbBadge}${staleBadge}${sleeperBadge}${regressionBadge}</td>
+      <td><span title="${p.recent_game_log || 'No recent game log'}" style="border-bottom:1px dotted var(--muted);cursor:help;">${p.player_name}</span><button class="exclude-btn" data-player="${p.player_name}" title="Queue for exclusion & rebuild">🚫</button><button class="include-btn" data-player="${p.player_name}" title="Queue for forced inclusion & rebuild (e.g. filling in for an injured starter)">✅</button>${nameWarning}${injuryBadge}${backupQbBadge}${staleBadge}${sleeperBadge}${regressionBadge}</td>
       <td><span class="pos-badge">${p.position}</span></td>
       <td>${p.team}</td>
       <td>${p.opponent}</td>

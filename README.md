@@ -814,6 +814,36 @@ still seem to not be taking effect after a rebuild, a hard refresh
 (clear browser cache) rules out any remaining caching layer this
 doesn't cover.
 
+## Why each player was picked, and their recent game log
+
+Every player in a built lineup (and in the main player table) now
+carries a short, plain-language explanation and a recent game log,
+both baked into the JSON at build time — `explanations.py` generates
+these once during the Python run, since the dashboard is a static
+site with no backend to compose them dynamically.
+
+**The explanation is deliberately rule-based, not a model call**:
+every reason it states traces to a specific field already computed
+elsewhere in the pipeline (a matchup multiplier, a sleeper/regression
+flag, a stack, low projected ownership) — it can't claim something
+the rest of the output doesn't also support. If nothing stands out,
+it says so plainly ("no single standout signal, just a solid baseline
+play") rather than reaching for a reason that isn't really there.
+Example: *"Selected for a favorable matchup (this defense has given
+up extra fantasy points to the position recently), and real target
+share / red-zone opportunity beyond his raw scoring average.
+Projected range: 10.7 (floor) to 31.4 (ceiling)."* Stacked players
+get an explicit mention of who they're stacked with.
+
+**The game log** is each player's last `RECENT_FORM_WINDOW` (5) games
+(`value.py`'s `_build_recent_game_logs`, alongside the median/MAD it
+computes from the same games) — shown in the lineup panel under each
+player, and as a hover tooltip on their name in the main table.
+Carried-over games from the previous season (see the Week 1 section
+above) are labeled `LastYr` rather than a fabricated week number,
+since the negative week value used internally for sorting is only a
+sort key, not the real week they were played.
+
 ## Exporting lineups
 
 The lineup panel has two export buttons, both producing a CSV in

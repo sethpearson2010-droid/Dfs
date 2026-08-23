@@ -14,6 +14,7 @@ from pathlib import Path
 
 from nfl_dfs.advanced_stats import AdvancedMetricsCalculator
 from nfl_dfs.data.base import StatDataSource
+from nfl_dfs.explanations import explain_player, format_game_log
 from nfl_dfs.lineup_builder import DEFAULT_MAX_SALARY_LEFTOVER, LineupBuilder, MAX_LINEUPS
 from nfl_dfs.models import Lineup
 from nfl_dfs.name_matching import normalize_name
@@ -394,6 +395,7 @@ class DfsPipeline:
                 "is_stale": pv.is_stale,
                 "is_backup_qb": pv.is_backup_qb,
                 "force_included": pv.force_included,
+                "recent_game_log": format_game_log(pv.recent_game_log),
                 "injury_status": pv.injury_status,
                 "injury_details": pv.injury_details,
                 "is_out": pv.is_out,
@@ -542,6 +544,33 @@ class DfsPipeline:
         lineup_number: int,
         total: int,
     ) -> dict:
+        qb_name = next((s.player.player_name for s in lineup.slots if s.player.position.value == "QB"), "")
+
+        def _slot_dict(s):
+            is_stacked = s.player.player_name in lineup.stack_players
+            is_bring_back = s.player.player_name in lineup.bring_back_players
+            stack_partner = qb_name if (is_stacked or is_bring_back) and qb_name else ""
+            return {
+                "slot": s.slot,
+                "player_name": s.player.player_name,
+                "position": s.player.position.value,
+                "team": s.player.team,
+                "opponent": s.player.opponent,
+                "salary": s.player.salary,
+                "floor_projection": s.player.floor_projection,
+                "ceiling_projection": s.player.ceiling_projection,
+                "projected_ownership_pct": s.player.projected_ownership_pct,
+                "is_sleeper": s.player.is_sleeper,
+                "is_regression_candidate": s.player.is_regression_candidate,
+                "injury_status": s.player.injury_status,
+                "injury_details": s.player.injury_details,
+                "is_backup_qb": s.player.is_backup_qb,
+                "force_included": s.player.force_included,
+                "fanduel_id": s.player.fanduel_id,
+                "explanation": explain_player(s.player, stack_partner=stack_partner, is_bring_back=is_bring_back),
+                "recent_game_log": format_game_log(s.player.recent_game_log),
+            }
+
         return {
             "risk_level": lineup.risk_level,
             "label": label,
@@ -554,25 +583,5 @@ class DfsPipeline:
             "ceiling_points": lineup.ceiling_points,
             "stack_players": lineup.stack_players,
             "bring_back_players": lineup.bring_back_players,
-            "slots": [
-                {
-                    "slot": s.slot,
-                    "player_name": s.player.player_name,
-                    "position": s.player.position.value,
-                    "team": s.player.team,
-                    "opponent": s.player.opponent,
-                    "salary": s.player.salary,
-                    "floor_projection": s.player.floor_projection,
-                    "ceiling_projection": s.player.ceiling_projection,
-                    "projected_ownership_pct": s.player.projected_ownership_pct,
-                    "is_sleeper": s.player.is_sleeper,
-                    "is_regression_candidate": s.player.is_regression_candidate,
-                    "injury_status": s.player.injury_status,
-                    "injury_details": s.player.injury_details,
-                    "is_backup_qb": s.player.is_backup_qb,
-                    "force_included": s.player.force_included,
-                    "fanduel_id": s.player.fanduel_id,
-                }
-                for s in lineup.slots
-            ],
+            "slots": [_slot_dict(s) for s in lineup.slots],
         }

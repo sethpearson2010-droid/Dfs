@@ -110,6 +110,7 @@ class ValueCalculator:
         self._pace_profiles = pace_profiles or {}
         self._advanced_metrics = advanced_metrics or {}
         self._recent_player_avg = self._build_player_averages(weekly_stats)
+        self._recent_game_log = self._build_recent_game_logs(weekly_stats)
         self._recent_player_stdev = self._build_player_stdevs(weekly_stats)
         self._last_played_week = self._build_last_played_week(weekly_stats)
         self._max_week_overall = max((line.week for line in weekly_stats), default=0)
@@ -208,6 +209,7 @@ class ValueCalculator:
                 fanduel_id=entry.fanduel_id,
                 injury_status=entry.injury_status,
                 injury_details=entry.injury_details,
+                recent_game_log=self._recent_game_log.get(canonical_name, []) if canonical_name else [],
             )
 
         base_projection = self._recent_player_avg.get(canonical_name, 0.0) if canonical_name else 0.0
@@ -276,6 +278,7 @@ class ValueCalculator:
             fanduel_id=entry.fanduel_id,
             injury_status=entry.injury_status,
             injury_details=entry.injury_details,
+            recent_game_log=self._recent_game_log.get(canonical_name, []) if canonical_name else [],
         )
 
     def _apply_opportunity_ceiling(
@@ -462,6 +465,23 @@ class ValueCalculator:
         if recent_pct is None:
             return False  # no snap data for them — don't penalize on missing data
         return recent_pct < STARTER_SNAP_THRESHOLD
+
+    def _build_recent_game_logs(self, weekly_stats: list[WeeklyStatLine]) -> dict[str, list[tuple[int, float]]]:
+        """Raw per-week (week, points) for the same recent-form window
+        used everywhere else — unlike _build_player_averages, this
+        keeps every individual game rather than collapsing to one
+        median number, so the dashboard can show the actual week-by-week
+        log a projection is based on (e.g. so a user can see for
+        themselves that a big number came from one outlier game the
+        median already discounted, rather than a real trend)."""
+        by_player: dict[str, list[tuple[int, float]]] = defaultdict(list)
+        for line in weekly_stats:
+            by_player[line.player_name].append((line.week, line.fantasy_points_ppr))
+
+        return {
+            name: sorted(games, key=lambda pair: pair[0])[-RECENT_FORM_WINDOW:]
+            for name, games in by_player.items()
+        }
 
     def _build_player_averages(self, weekly_stats: list[WeeklyStatLine]) -> dict[str, float]:
         by_player: dict[str, list[float]] = defaultdict(list)
