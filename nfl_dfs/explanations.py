@@ -81,6 +81,8 @@ def explain_player(player: PlayerValue, stack_partner: str = "", is_bring_back: 
         selection_sentence = "Selected on median projected value at this salary — no single standout signal, just a solid baseline play."
 
     outcome_sentence = f"Projected range: {player.floor_projection:.1f} (floor) to {player.ceiling_projection:.1f} (ceiling)."
+    if player.volatility_label:
+        outcome_sentence += f" {player.volatility_label} week-to-week."
 
     return f"{selection_sentence} {outcome_sentence}"
 

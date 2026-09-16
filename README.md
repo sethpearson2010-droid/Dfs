@@ -889,6 +889,45 @@ never a log padded with entries that don't have a real week to show.
 The underlying projection calculation is unaffected either way; only
 the display was filtered.
 
+## Probability-flavored consistency rating
+
+A request to "fine-tune based on probability" is a real, substantial
+ask — but the existing floor/ceiling/projection model has been
+through many carefully-verified fixes in this project (the median vs.
+mean fix, the MAD-based spread fix, the ceiling cap, each validated
+against specific real cases like a backup QB's outlier game or a
+committee RB's genuine week-to-week swings). A wholesale replacement
+of that model risked reintroducing bugs in all of those without time
+to re-verify each one properly, so this starts with something purely
+additive instead: `volatility_label` ("Consistent" / "Moderate
+volatility" / "Boom/bust"), based on the coefficient of variation
+(scaled spread ÷ point projection) — normalized so a $4,000 player and
+a $9,000 player are compared on *relative* volatility, not raw point
+range, and doesn't touch any existing floor/ceiling/projection number.
+Shown as part of each player's explanation (tap the ℹ️ in the player
+list) — e.g. *"...Projected range: 2.3 (floor) to 35.2 (ceiling).
+Boom/bust week-to-week."*
+
+This is a first step, not the full answer to "predict based on
+probability." Worth discussing directly since the real options differ
+a lot in scope and risk:
+- **Empirical percentiles**: replace the MAD-multiplier floor/ceiling
+  with actual 25th/75th/90th percentiles computed from each player's
+  real recent games (already collected in `recent_game_log`) — more
+  genuinely "probability-based" since it's real observed outcomes
+  rather than a formula-derived spread, but touches the core numbers
+  every other fix in this project has been built around, so it needs
+  real time to re-verify against the known edge cases before shipping.
+- **Explicit "probability of X+ points"** for a couple of useful
+  thresholds (e.g. "68% chance of 15+"), fitted from the recent game
+  log — additive like the volatility label, doesn't touch existing
+  numbers, more work than the label but a natural next step from it.
+- **Simulation-based lineup construction**: build lineups by sampling
+  many possible outcomes (accounting for the correlation a stack is
+  supposed to capture) rather than a single floor/ceiling blend — the
+  most rigorous option, and also the biggest rewrite of the lineup
+  builder's core logic.
+
 ## Exporting lineups
 
 The lineup panel has two export buttons, both producing a CSV in

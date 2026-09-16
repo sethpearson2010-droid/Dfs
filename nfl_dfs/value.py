@@ -46,6 +46,16 @@ PACE_WEIGHT = 0.15
 # loses — DFS upside is asymmetric (points are bounded at 0 below but
 # effectively unbounded above on a big game).
 FLOOR_STDEV_MULTIPLIER = 1.0
+
+# coefficient of variation (scaled MAD / point projection) thresholds
+# for a plain-language consistency label — normalized so a $4,000
+# player and a $9,000 player are compared on relative volatility, not
+# raw point range. This is additive, not a replacement for the
+# floor/ceiling numbers: it doesn't change any existing projection,
+# just adds an explicit probability-flavored read on how much trust
+# to put in the point estimate for THIS player specifically.
+CONSISTENT_CV_THRESHOLD = 0.35
+BOOM_BUST_CV_THRESHOLD = 0.70
 CEILING_STDEV_MULTIPLIER = 1.5
 CEILING_TO_PROJECTION_CAP = 3.0  # ceiling can't exceed 3x the point projection, however wide the raw spread estimate
 RECENT_FORM_WINDOW = 5
@@ -254,6 +264,19 @@ class ValueCalculator:
             entry.position, ceiling_projection, advanced
         )
 
+        # coefficient of variation: scaled spread relative to the point
+        # projection, so a $4,000 player and a $9,000 player are judged
+        # on relative volatility rather than raw point range. Purely
+        # additive — doesn't touch floor/ceiling/projection, just adds
+        # an explicit label for how much to trust the point estimate.
+        coefficient_of_variation = (scaled_stdev / projection) if projection > 0 else 0.0
+        if coefficient_of_variation >= BOOM_BUST_CV_THRESHOLD:
+            volatility_label = "Boom/bust"
+        elif coefficient_of_variation >= CONSISTENT_CV_THRESHOLD:
+            volatility_label = "Moderate volatility"
+        else:
+            volatility_label = "Consistent"
+
         return PlayerValue(
             player_name=entry.player_name,
             position=entry.position,
@@ -279,6 +302,7 @@ class ValueCalculator:
             injury_status=entry.injury_status,
             injury_details=entry.injury_details,
             recent_game_log=self._recent_game_log.get(canonical_name, []) if canonical_name else [],
+            volatility_label=volatility_label,
         )
 
     def _apply_opportunity_ceiling(

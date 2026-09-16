@@ -235,6 +235,7 @@ class PlayerValue:
     is_backup_qb: bool = False  # low snap share in most recent game — flagged, NOT auto-excluded (see value.py's _is_backup_qb docstring for why)
     force_included: bool = False  # --include-players match — bypassed is_stale/is_out, may be using a position-average fallback projection
     recent_game_log: list = field(default_factory=list)  # [(week, fantasy_points_ppr), ...] most recent RECENT_FORM_WINDOW games; negative weeks are carried-over prior-season games
+    volatility_label: str = ""  # "Consistent" / "Moderate volatility" / "Boom/bust" - coefficient of variation, doesn't change the projection itself
     injury_status: str = ""  # FanDuel's own designation (O/Q/D/IR/etc) — see salary.py's OUT_INJURY_STATUSES
     injury_details: str = ""
     is_out: bool = False  # injury_status is in OUT_INJURY_STATUSES — excluded from lineup building entirely
