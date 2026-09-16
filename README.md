@@ -347,9 +347,22 @@ relative gaps, as expected from a smaller, noisier sample.
 
 Player rows in `players.json` carry an `is_regression_candidate`
 boolean, and the dashboard shows a dedicated panel plus a 📈 badge.
-Like sleeper picks (below), this now also feeds an 8% boost into
-lineup construction itself — see "Sleeper picks" for the full
-explanation of how that bonus works and what it doesn't guarantee.
+
+**Feeds into lineup construction, scaled by risk level — a flat bonus
+here was verified to be too weak to matter.** Positive TD regression
+is fundamentally a mean-reversion/variance bet (betting a player's TD
+rate normalizes upward), which is exactly the kind of correlated
+volatility a GPP lineup wants and a cash lineup doesn't — so unlike
+the sleeper bonus (see "Sleeper picks" below, which stays flat since
+sleeper value is genuinely cash-relevant too), this one scales with
+`risk_level`: a no-op at cash, reaching `REGRESSION_BONUS_WEIGHT_AT_MAX_GPP`
+(45%) only at risk_level=1.0 (risk scale 10). A first version used the
+same flat 8% as the sleeper bonus and was confirmed too weak to ever
+change a selection — 9 real regression candidates identified, 0
+appearances across a 20-lineup max-GPP batch. Re-verified after
+switching to the risk-scaled version: 7 of 20 lineups in the same
+scenario, and correctly back to 0 at cash (risk scale 1), where the
+bonus is a deliberate no-op.
 
 ## What's automated vs. manual
 

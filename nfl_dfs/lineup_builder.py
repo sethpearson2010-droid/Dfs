@@ -66,13 +66,26 @@ LEVERAGE_WEIGHT = 0.15
 # itself: this specifically rewards matchup quality.
 MATCHUP_DEPTH_WEIGHT = 0.20
 
-# flat, not risk-scaled bonuses for players already flagged by
-# sleepers.py / regression.py — see their own modules for the
-# threshold logic that decides who qualifies. Kept modest so these
-# nudge selection toward already-good options rather than overriding
-# real projection differences.
+# flat, not risk-scaled bonus for players flagged by sleepers.py — see
+# that module for the threshold logic deciding who qualifies. Kept
+# modest so this nudges selection toward an already-good option rather
+# than overriding real projection differences. Genuine cash-relevant
+# value (cheap + real role + good matchup), unlike regression below,
+# so it isn't tied to risk level the way that is.
 SLEEPER_BONUS_WEIGHT = 0.08
-REGRESSION_BONUS_WEIGHT = 0.08
+
+# regression.py's positive-TD-regression signal is fundamentally a
+# variance/mean-reversion bet — betting a player's TD rate normalizes
+# upward, which is exactly the kind of correlated-with-real-signal
+# volatility a GPP lineup wants and a cash lineup doesn't. A flat 8%
+# bonus (this used to be REGRESSION_BONUS_WEIGHT, same value as the
+# sleeper bonus) was too weak to ever actually change a selection —
+# verified directly: 9 real regression candidates identified, 0
+# appearances across a 20-lineup max-GPP batch. Scaled by risk_level
+# instead, so it's a no-op at cash (where you don't want the extra
+# variance) and reaches its full strength only at risk_level=1.0 (risk
+# scale 10) — the max-GPP case this was specifically asked for.
+REGRESSION_BONUS_WEIGHT_AT_MAX_GPP = 0.45
 
 # a gentle, always-on nudge (not risk-scaled, unlike leverage/stack)
 # toward spending more of the salary cap — small enough that real
@@ -448,7 +461,7 @@ class LineupBuilder:
         if player.is_sleeper:
             base *= 1 + SLEEPER_BONUS_WEIGHT
         if player.is_regression_candidate:
-            base *= 1 + REGRESSION_BONUS_WEIGHT
+            base *= 1 + REGRESSION_BONUS_WEIGHT_AT_MAX_GPP * risk_level
 
         # a small, uniform (not risk-scaled) nudge toward higher-salary
         # players, so lineups lean toward spending closer to the cap
