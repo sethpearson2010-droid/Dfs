@@ -1,31 +1,30 @@
 [
   {
-    "player_name": "Michael Carter",
-    "position": "RB",
-    "team": "TEN",
-    "opponent": "NYJ",
-    "salary": 4200,
-    "base_projection": 6.5,
-    "adjusted_projection": 7.66,
-    "boost_pct": 0.178,
+    "player_name": "Kevin Austin Jr.",
+    "position": "WR",
+    "team": "NO",
+    "opponent": "BAL",
+    "salary": 4000,
+    "base_projection": 6.3,
+    "adjusted_projection": 6.89,
+    "boost_pct": 0.094,
     "reasons": [
-      "opponent allows 35.64 pts/gm to RB recently",
-      "team averaging 61.6 plays/gm recently"
+      "opponent allows 37.98 pts/gm to WR recently",
+      "team averaging 62.6 plays/gm recently"
     ]
   },
   {
     "player_name": "Shane Zylstra",
     "position": "TE",
-    "team": "BUF",
-    "opponent": "HOU",
+    "team": "NE",
+    "opponent": "PIT",
     "salary": 4000,
     "base_projection": 5.0,
-    "adjusted_projection": 5.59,
-    "boost_pct": 0.118,
+    "adjusted_projection": 5.58,
+    "boost_pct": 0.116,
     "reasons": [
-      "opponent allows 18.04 pts/gm to TE recently",
-      "team implied for 24.5 pts",
-      "team averaging 64.4 plays/gm recently"
+      "opponent allows 18.52 pts/gm to TE recently",
+      "team averaging 60.6 plays/gm recently"
     ]
   }
 ]

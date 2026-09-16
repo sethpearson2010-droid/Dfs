@@ -220,6 +220,32 @@ class LineupBuilder:
                 lineup, usable, risk_level, noise, max_salary_leftover, locked_slot_names
             )
 
+        # hard safety net: every path above (greedy fill, local search,
+        # salary-floor enforcement, locking) already has its own cap
+        # checks, but this is the single choke point they all pass
+        # through before a lineup is ever returned — so a bug in any
+        # ONE of those paths still can't result in an illegal lineup
+        # actually being served. Fails gracefully (None, same as
+        # "couldn't build a legal lineup" elsewhere) rather than
+        # crashing a whole batch over one bad candidate, but logs
+        # loudly since this should be structurally impossible.
+        total_salary_check = self._total_salary(lineup)
+        player_names_used = [p.player_name for p in lineup.values()]
+        if total_salary_check > self._salary_cap:
+            print(
+                f"::error::Internal error — built a lineup at ${total_salary_check} over the "
+                f"${self._salary_cap} cap: {[(s, p.player_name, p.salary) for s, p in lineup.items()]}. "
+                "Discarding this candidate. Please report this."
+            )
+            return None
+        if len(lineup) != len(ROSTER_SLOTS) or len(player_names_used) != len(set(player_names_used)):
+            print(
+                f"::error::Internal error — built an invalid lineup (wrong slot count or duplicate "
+                f"player): {[(s, p.player_name) for s, p in lineup.items()]}. Discarding this candidate. "
+                "Please report this."
+            )
+            return None
+
         return self._to_lineup_model(lineup, risk_level)
 
     def build_many(
@@ -531,7 +557,23 @@ class LineupBuilder:
 
             affordable = [p for p in candidates if p.salary <= remaining_budget - min_reserve]
             if not affordable:
-                affordable = candidates  # fall back rather than fail outright; local search may still recover
+                # the reserve-padded threshold couldn't be met — relax
+                # the safety margin for future slots, but NEVER the
+                # actual cap itself. The previous version of this
+                # fallback ("affordable = candidates", ignoring
+                # affordability altogether) was a real bug: with a pool
+                # heavy on expensive proven studs (exactly what a
+                # floor-optimized cash build gravitates toward), this
+                # could pick a player that pushed the lineup over the
+                # true $60,000 cap outright, and nothing downstream
+                # (local search only chases a higher objective, salary
+                # floor enforcement only pushes spend UP) ever corrects
+                # an over-cap lineup once it happens here. Verified:
+                # this produced a real $62,000 lineup on real data,
+                # confirmed by a live screenshot, not a hypothetical.
+                affordable = [p for p in candidates if p.salary <= remaining_budget]
+            if not affordable:
+                return None, locked_slot_names  # genuinely can't afford anyone for this slot — infeasible, not "pick something over budget"
 
             best = max(affordable, key=lambda p: self._objective(p, risk_level, noise) / max(p.salary, 1))
             assigned[slot_name] = best

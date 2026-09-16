@@ -715,6 +715,39 @@ other risk-scaled bonuses.
 
 ## Salary constraints
 
+**A real, serious bug found and fixed: lineups could actually exceed
+the $60,000 cap.** Confirmed with a live screenshot showing a "Cash"
+lineup at $62,000 (-$2,000 "left"). Root cause: in `_greedy_fill`,
+when no candidate for a slot fit within the reserve-padded budget
+(the safety margin held back for filling future slots), the fallback
+was `affordable = candidates` — considering every remaining candidate
+regardless of whether it fit the *actual* remaining budget at all,
+not just the reserve margin. With a pool heavy on expensive proven
+stars (exactly what a floor-optimized cash build gravitates toward),
+this could pick a player that pushed the total over the real cap
+outright — and nothing downstream ever corrected it, since local
+search only chases a higher objective score and salary-floor
+enforcement only pushes spend *up*, never down. Fixed: the fallback
+now relaxes only the future-slots safety margin, never the actual
+cap (`affordable = [p for p in candidates if p.salary <=
+remaining_budget]`), and if truly nothing fits even that, the
+candidate fails outright (returns `None`, the same "couldn't build a
+legal lineup" signal used elsewhere) rather than picking something
+over budget. Verified: 162 lineups built across 5 risk levels (50
+each) with zero cap violations, versus a confirmed real violation
+before the fix.
+
+**A second, independent safety net was also added**: every lineup
+now passes through a hard validation right before being returned —
+total salary, exactly 9 slots filled, no duplicate player — regardless
+of which code path built it. If it ever fails, that specific candidate
+is discarded (with a loud `::error::` log) rather than served, so a
+bug in any *other* untested path still can't result in an illegal
+lineup reaching the dashboard. Confirmed this net never actually
+fires post-fix (0 triggers across the same 162-lineup stress test) —
+meaning the real fix works on its own; the net is insurance, not a
+patch over an unfixed root cause.
+
 **The salary cap is $60,000, always** (`SALARY_CAP` in
 `roster_rules.py`) — lineups now reach $54,800-$60,000 by default
 (verified on real data). If they were landing around $45,000-$50,000

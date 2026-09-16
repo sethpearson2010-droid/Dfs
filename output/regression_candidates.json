@@ -1,92 +1,92 @@
 [
   {
-    "player_name": "Ty Chandler",
-    "position": "RB",
-    "team": "NO",
-    "opponent": "DET",
-    "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 3.0,
-    "expected_touchdowns_per_game": 0.38,
-    "regression_gap": 0.38
-  },
-  {
     "player_name": "Kene Nwangwu",
     "position": "RB",
     "team": "NYJ",
-    "opponent": "TEN",
+    "opponent": "GB",
     "recent_avg_touchdowns": 0.0,
     "recent_redzone_touches": 3.0,
-    "expected_touchdowns_per_game": 0.38,
-    "regression_gap": 0.38
+    "expected_touchdowns_per_game": 0.39,
+    "regression_gap": 0.39
   },
   {
-    "player_name": "Isiah Pacheco",
+    "player_name": "Jawhar Jordan",
     "position": "RB",
-    "team": "DET",
-    "opponent": "NO",
+    "team": "HOU",
+    "opponent": "CIN",
     "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 2.6,
+    "recent_redzone_touches": 2.5,
     "expected_touchdowns_per_game": 0.33,
     "regression_gap": 0.33
+  },
+  {
+    "player_name": "Woody Marks",
+    "position": "RB",
+    "team": "HOU",
+    "opponent": "CIN",
+    "recent_avg_touchdowns": 0.2,
+    "recent_redzone_touches": 4.0,
+    "expected_touchdowns_per_game": 0.52,
+    "regression_gap": 0.32
   },
   {
     "player_name": "Tez Johnson",
     "position": "WR",
     "team": "TB",
-    "opponent": "CIN",
+    "opponent": "CLE",
     "recent_avg_touchdowns": 0.0,
     "recent_redzone_touches": 2.25,
-    "expected_touchdowns_per_game": 0.36,
-    "regression_gap": 0.36
+    "expected_touchdowns_per_game": 0.38,
+    "regression_gap": 0.38
   },
   {
     "player_name": "Michael Pittman Jr.",
     "position": "WR",
     "team": "PIT",
-    "opponent": "ATL",
+    "opponent": "NE",
     "recent_avg_touchdowns": 0.0,
     "recent_redzone_touches": 2.0,
-    "expected_touchdowns_per_game": 0.32,
-    "regression_gap": 0.32
+    "expected_touchdowns_per_game": 0.34,
+    "regression_gap": 0.34
   },
   {
     "player_name": "Justin Jefferson",
     "position": "WR",
     "team": "MIN",
-    "opponent": "GB",
+    "opponent": "CHI",
     "recent_avg_touchdowns": 0.0,
     "recent_redzone_touches": 2.0,
-    "expected_touchdowns_per_game": 0.32,
-    "regression_gap": 0.32
+    "expected_touchdowns_per_game": 0.34,
+    "regression_gap": 0.34
   },
   {
     "player_name": "Cade Stover",
     "position": "TE",
     "team": "HOU",
-    "opponent": "BUF",
+    "opponent": "CIN",
     "recent_avg_touchdowns": 0.0,
     "recent_redzone_touches": 3.0,
-    "expected_touchdowns_per_game": 0.41,
-    "regression_gap": 0.41
-  },
-  {
-    "player_name": "Tyler Warren",
-    "position": "TE",
-    "team": "IND",
-    "opponent": "BAL",
-    "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 2.2,
-    "expected_touchdowns_per_game": 0.3,
-    "regression_gap": 0.3
+    "expected_touchdowns_per_game": 0.43,
+    "regression_gap": 0.43
   },
   {
     "player_name": "Darnell Washington",
     "position": "TE",
     "team": "PIT",
-    "opponent": "ATL",
+    "opponent": "NE",
     "recent_avg_touchdowns": 0.0,
     "recent_redzone_touches": 1.8,
-    "expected_touchdowns_per_game": 0.24,
-    "regression_gap": 0.24
+    "expected_touchdowns_per_game": 0.26,
+    "regression_gap": 0.26
+  },
+  {
+    "player_name": "Pat Freiermuth",
+    "position": "TE",
+    "team": "PIT",
+    "opponent": "NE",
+    "recent_avg_touchdowns": 0.0,
+    "recent_redzone_touches": 1.6,
+    "expected_touchdowns_per_game": 0.23,
+    "regression_gap": 0.23
   }
 ]
