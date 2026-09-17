@@ -556,6 +556,39 @@ genuinely uninformative for the first few weeks of a season, and
 lineups built then will be more dependent on last season's raw scoring
 than an established roster would be later in the year.
 
+**Two real, serious bugs found once this actually got used on a real
+Week 2 slate**, both reported as "GPP lineups still including
+non-starter QB and FLEX players":
+
+1. **A sentinel-value collision silently broke staleness detection
+   for exactly the players it exists to catch.** `_build_last_played_week`
+   tracked each player's most recent week using a default/sentinel
+   value of `-1` for "no data yet" — which collides with carryover's
+   own use of negative week numbers. A player whose *entire* history
+   is carryover (weeks -5 through -1) would never register in the
+   dict at all: every comparison against the -1 sentinel fails, even
+   for their most recent game at week -1, since -1 is not greater than
+   -1. Confirmed directly: Marcus Mariota, J.J. McCarthy, and other
+   players with **zero real 2026 games** were passing the staleness
+   check and getting selected into GPP lineups. Fixed by using
+   negative infinity as the sentinel instead, so any real or
+   carryover week number correctly registers.
+2. **A related boundary bug**: even with the sentinel fixed, a player
+   whose own most recent data point is a carryover game (week ≤ 0)
+   while *other* players already have real current-season games
+   could still narrowly escape the generic gap-threshold check —
+   e.g. `max_week_overall=1` (from other players' real Week 1) minus
+   `last_played=-1` (this player's own carryover) computes a gap of
+   exactly 2, not *greater than* 2, so it doesn't trigger. Fixed with
+   an explicit rule: once real current-season games exist anywhere in
+   the pool, a player with zero real appearances of their own is
+   always stale, regardless of the exact gap size — "the season has
+   started and this player has never shown up in it" is a stronger
+   signal than the generic threshold captures. Verified: both fixes
+   together correctly excluded every zero-real-data player tested
+   (Mariota, McCarthy, and others) while leaving genuine Week 1
+   starters (Burrow, Wentz, Caleb Williams) completely unaffected.
+
 ## Injury flagging (real data, not just heuristics)
 
 FanDuel's salary CSV already includes real `Injury Indicator` /

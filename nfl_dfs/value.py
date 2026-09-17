@@ -124,6 +124,7 @@ class ValueCalculator:
         self._recent_player_stdev = self._build_player_stdevs(weekly_stats)
         self._last_played_week = self._build_last_played_week(weekly_stats)
         self._max_week_overall = max((line.week for line in weekly_stats), default=0)
+        self._real_season_has_started = any(line.week > 0 for line in weekly_stats)
         self._league_avg_by_position = self._build_league_averages()
         self._league_avg_plays = self._build_league_avg_plays()
         self._name_to_id = self._build_name_to_id(weekly_stats)
@@ -402,7 +403,17 @@ class ValueCalculator:
     def _build_last_played_week(self, weekly_stats: list[WeeklyStatLine]) -> dict[str, int]:
         last_played: dict[str, int] = {}
         for line in weekly_stats:
-            if line.week > last_played.get(line.player_name, -1):
+            # sentinel must be lower than ANY possible week number,
+            # including carryover's negative weeks — a -1 sentinel
+            # (the original value here) collides with carryover data:
+            # a player whose entire history is carried-over games
+            # (weeks -5 through -1) would never register at all, since
+            # every comparison against the -1 default fails (-1 > -1
+            # is False). Confirmed this was silently erasing
+            # last-played data for exactly the players staleness
+            # detection is supposed to catch once a season is new
+            # enough that carryover is active.
+            if line.week > last_played.get(line.player_name, float("-inf")):
                 last_played[line.player_name] = line.week
         return last_played
 
@@ -410,6 +421,23 @@ class ValueCalculator:
         last_played = self._last_played_week.get(canonical_name)
         if last_played is None:
             return False  # no history at all — that's "unmatched", a separate/existing case
+
+        # a player whose OWN most recent data point is still a
+        # carried-over prior-season game (week <= 0 — see
+        # pipeline.py's _fetch_weekly_stats_with_carryover) while the
+        # real current season has already produced games for OTHER
+        # players is a much stronger staleness signal than the generic
+        # gap check below captures on its own. Confirmed a real
+        # boundary bug here: once max_week_overall becomes a small
+        # positive number (1, from other players' real Week 1 games),
+        # a player with zero real current-season games but a carryover
+        # game at week -1 computes a gap of exactly 2 — not > 2, so it
+        # narrowly failed to trigger the threshold check, even though
+        # "zero real appearances after the season has started" is
+        # exactly the case staleness detection exists to catch.
+        if self._real_season_has_started and last_played <= 0:
+            return True
+
         return (self._max_week_overall - last_played) > STALE_WEEK_THRESHOLD
 
     def _build_league_avg_scoring_by_position(self, weekly_stats: list[WeeklyStatLine]) -> dict[Position, float]:
