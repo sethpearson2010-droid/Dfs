@@ -16,12 +16,12 @@ from nfl_dfs.advanced_stats import AdvancedMetricsCalculator
 from nfl_dfs.data.base import StatDataSource
 from nfl_dfs.explanations import explain_player, format_game_log
 from nfl_dfs.lineup_builder import DEFAULT_MAX_SALARY_LEFTOVER, LineupBuilder, MAX_LINEUPS
-from nfl_dfs.models import Lineup
+from nfl_dfs.models import Lineup, PlayerValue, Position
 from nfl_dfs.name_matching import normalize_name
 from nfl_dfs.ownership import OwnershipEstimator
 from nfl_dfs.pace import PaceCalculator
 from nfl_dfs.regression import RegressionCalculator
-from nfl_dfs.salary import FanDuelSalaryImporter
+from nfl_dfs.salary import OUT_INJURY_STATUSES, FanDuelSalaryImporter
 from nfl_dfs.sleepers import SleeperCalculator
 from nfl_dfs.value import RECENT_FORM_WINDOW, ValueCalculator
 from nfl_dfs.vulnerability import VulnerabilityCalculator
@@ -50,6 +50,21 @@ def label_for_risk(risk_level: float) -> str:
     if risk_level <= 0.85:
         return "risky GPP"
     return "max upside (ceiling-optimized)"
+
+
+# how much to boost the likely beneficiary's floor/ceiling/projection
+# when a same-team, same-position starter is marked Out/IR — see
+# DfsPipeline._apply_injury_replacement_boosts. RB gets the largest
+# boost since a backup RB's role typically jumps the most of any
+# position when the lead back is out (workload is heavily
+# concentrated on one player); WR/TE targets are usually already
+# spread across more players, so the redistribution to any one
+# teammate is more modest.
+INJURY_REPLACEMENT_BOOST_BY_POSITION = {
+    Position.RB: 0.25,
+    Position.WR: 0.15,
+    Position.TE: 0.12,
+}
 
 
 class DfsPipeline:
@@ -143,12 +158,17 @@ class DfsPipeline:
 
         salaries = self._salary_importer.load(salary_csv_path)
 
+        auto_replacement_qbs = self._detect_injury_replacement_qbs(salaries)
+        combined_include_players = list(dict.fromkeys((include_players or []) + auto_replacement_qbs))
+
         value_calc = ValueCalculator(
             vulnerability_scores, weekly_stats, game_contexts, pace_profiles, advanced_metrics, snap_counts
         )
-        player_values = value_calc.build(salaries, force_include=include_players)
+        player_values = value_calc.build(salaries, force_include=combined_include_players)
 
         self._apply_manual_exclusions(player_values, exclude_players)
+
+        self._apply_injury_replacement_boosts(player_values)
 
         self._ownership_estimator.assign(player_values)
 
@@ -335,6 +355,92 @@ class DfsPipeline:
         )
         return carryover_lines + current_stats
 
+    def _detect_injury_replacement_qbs(self, salaries) -> list[str]:
+        """Auto-detects a team's backup QB when their presumptive
+        starter (the team's highest-salaried QB — FanDuel's own
+        pricing is a reasonable proxy for role) is marked Out/IR in
+        the real FanDuel injury data, and force-includes that backup
+        the same way --include-players would — reusing the same "make
+        viable even with a thin track record" machinery, just
+        triggered automatically by real injury news instead of
+        needing you to type a name in each week. Only acts when the
+        presumptive starter is actually marked out; a backup who's
+        merely questionable or a committee situation isn't touched."""
+        by_team: dict[str, list] = defaultdict(list)
+        for entry in salaries:
+            if entry.position == Position.QB:
+                by_team[entry.team].append(entry)
+
+        auto_included = []
+        for team, qbs in by_team.items():
+            if len(qbs) < 2:
+                continue
+            qbs_sorted = sorted(qbs, key=lambda e: -e.salary)
+            starter = qbs_sorted[0]
+            if starter.injury_status.upper() not in OUT_INJURY_STATUSES:
+                continue
+            backups = [e for e in qbs_sorted[1:] if e.injury_status.upper() not in OUT_INJURY_STATUSES]
+            if not backups:
+                continue
+            backup = backups[0]
+            auto_included.append(backup.player_name)
+            print(
+                f"Auto-detected injury replacement: {backup.player_name} (QB, {team}) starting "
+                f"in place of {starter.player_name} ({starter.injury_status})"
+            )
+        return auto_included
+
+    def _apply_injury_replacement_boosts(self, player_values: list[PlayerValue]) -> None:
+        """When a team's presumptive starter (highest-salaried player,
+        same reasoning as the QB detection above) at RB/WR/TE is
+        marked Out/IR, the next-highest-salaried HEALTHY teammate at
+        that position is the most likely direct beneficiary of the
+        vacated touches/targets — a well-known real DFS pattern
+        (a backup RB's role often jumps the most of any position when
+        the lead back is out). Boosts floor/ceiling/projection by a
+        modest, position-tuned percentage to reflect the expected
+        volume increase.
+
+        This is a salary-as-proxy-for-role heuristic, not a real
+        depth-chart or target-share redistribution model — it can be
+        wrong (a committee situation with no clear single beneficiary,
+        or a package player rather than the top backup stepping up).
+        Tagged `injury_replacement_for` on the output so it's visible
+        and distinguishable from an organically-earned projection,
+        and surfaced in the explanation text rather than hidden."""
+        by_team_position: dict[tuple[str, Position], list[PlayerValue]] = defaultdict(list)
+        for pv in player_values:
+            if pv.position in (Position.RB, Position.WR, Position.TE):
+                by_team_position[(pv.team, pv.position)].append(pv)
+
+        for (team, position), players in by_team_position.items():
+            sorted_players = sorted(players, key=lambda p: -p.salary)
+            out_starters = [p for p in sorted_players if p.is_out]
+            if not out_starters:
+                continue
+            vacated = out_starters[0]
+            beneficiaries = [
+                p
+                for p in sorted_players
+                if not p.is_out
+                and not p.is_stale
+                and p.name_match_quality != "unmatched"
+                and p.salary < vacated.salary
+                and p.projection > 0
+            ]
+            if not beneficiaries:
+                continue
+            beneficiary = beneficiaries[0]
+            boost = INJURY_REPLACEMENT_BOOST_BY_POSITION.get(position, 0.15)
+            beneficiary.projection = round(beneficiary.projection * (1 + boost), 2)
+            beneficiary.floor_projection = round(beneficiary.floor_projection * (1 + boost * 0.5), 2)
+            beneficiary.ceiling_projection = round(beneficiary.ceiling_projection * (1 + boost), 2)
+            beneficiary.injury_replacement_for = vacated.player_name
+            print(
+                f"Injury replacement boost: {beneficiary.player_name} (+{int(boost * 100)}%) filling in "
+                f"for {vacated.player_name} ({team} {position.value})"
+            )
+
     def _apply_manual_exclusions(self, player_values, exclude_players: list[str] | None) -> None:
         """Zeroes out and flags any player matching a name in
         exclude_players — an easy override for late-breaking news or a
@@ -398,6 +504,7 @@ class DfsPipeline:
                 "recent_game_log": format_game_log(pv.recent_game_log),
                 "explanation": explain_player(pv),
                 "volatility_label": pv.volatility_label,
+                "injury_replacement_for": pv.injury_replacement_for,
                 "injury_status": pv.injury_status,
                 "injury_details": pv.injury_details,
                 "is_out": pv.is_out,
@@ -567,6 +674,7 @@ class DfsPipeline:
                 "injury_status": s.player.injury_status,
                 "injury_details": s.player.injury_details,
                 "is_backup_qb": s.player.is_backup_qb,
+                "injury_replacement_for": s.player.injury_replacement_for,
                 "force_included": s.player.force_included,
                 "fanduel_id": s.player.fanduel_id,
                 "explanation": explain_player(s.player, stack_partner=stack_partner, is_bring_back=is_bring_back),

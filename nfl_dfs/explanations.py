@@ -41,6 +41,9 @@ def explain_player(player: PlayerValue, stack_partner: str = "", is_bring_back: 
     if player.force_included:
         reasons.append("manually force-included — likely stepping into a larger role than the box scores reflect yet")
 
+    if player.injury_replacement_for:
+        reasons.append(f"expected to see an expanded role with {player.injury_replacement_for} out")
+
     if player.vulnerability_multiplier and player.vulnerability_multiplier >= SIGNAL_THRESHOLD:
         reasons.append("a favorable matchup (this defense has given up extra fantasy points to the position recently)")
 

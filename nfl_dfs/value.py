@@ -264,6 +264,14 @@ class ValueCalculator:
         ceiling_projection, opportunity_multiplier = self._apply_opportunity_ceiling(
             entry.position, ceiling_projection, advanced
         )
+        # sanity clamp: found this as a real edge case while testing an
+        # unrelated feature — for very low-projection players, the
+        # opportunity multiplier and/or the ceiling cap above can
+        # combine to produce a ceiling that's actually LOWER than the
+        # floor (a real example: proj=1.3, floor=1.33, ceiling=1.12,
+        # before this clamp). Nonsensical regardless of root cause, so
+        # ceiling is never allowed below floor here.
+        ceiling_projection = max(ceiling_projection, floor_projection)
 
         # coefficient of variation: scaled spread relative to the point
         # projection, so a $4,000 player and a $9,000 player are judged

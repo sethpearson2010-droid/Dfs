@@ -610,6 +610,50 @@ FanDuel's own injury designation reflects this week's actual status.
 Verified against real data: 17 players correctly excluded (IR,
 Out) on one real slate.
 
+### Automatic injury-replacement detection
+
+Beyond excluding the injured player themselves, `pipeline.py` now
+uses the same real injury data to automatically identify who benefits
+from their absence — no need to manually `--include-players` a
+backup every week the news breaks:
+
+- **QB**: if a team's highest-salaried QB (FanDuel's own pricing is a
+  reasonable proxy for "the starter") is marked Out/IR, the team's
+  other rostered QB is automatically force-included — the same real
+  lock mechanism `--include-players` uses, just triggered by real
+  injury data instead of a manual name. Verified: correctly finds
+  nothing when the only QBs on IR in a real slate are clear
+  3rd-stringers, not presumptive starters — it only acts when the
+  *actual* starter is out.
+- **RB/WR/TE**: if a team's highest-salaried player at that position
+  is marked Out/IR, the next-highest-salaried *healthy* teammate at
+  the same position gets a floor/ceiling/projection boost
+  (`INJURY_REPLACEMENT_BOOST_BY_POSITION` — 25% for RB, since a
+  backup RB's role typically jumps the most of any position when the
+  lead back is out; 15% WR, 12% TE, since those targets are usually
+  already spread across more players). This is a salary-as-proxy-for-
+  role heuristic, not a real depth-chart model — it can be wrong (a
+  true committee with no single clear beneficiary), so it's a modest
+  *boost* like the sleeper/regression bonuses, not a guarantee of
+  selection, and tagged `injury_replacement_for` on the output so
+  it's visible and distinguishable from an organically-earned
+  projection. Verified against a real slate: correctly identified and
+  boosted two real cases (a Saints and a Browns RB, each filling in
+  for an Out teammate) with sensible, real player names — but neither
+  ended up in an actual GPP lineup in that specific test, since their
+  underlying baseline opportunity was still fairly low even boosted,
+  same honest limitation the sleeper bonus has.
+
+**A separate, pre-existing bug found while testing this**: one
+boosted player showed floor (1.5) *higher* than ceiling (1.4) — traced
+back to the player's numbers *before* any boost was even applied
+(floor=1.33, ceiling=1.12 pre-boost), a real edge case for very
+low-projection players where the opportunity multiplier and/or the
+ceiling cap can combine to push ceiling below floor. Fixed with a
+straightforward clamp in `value.py` (`ceiling_projection = max(ceiling_projection, floor_projection)`)
+applied to every player, not just injury-boosted ones — verified zero
+inversions across a full real player pool after the fix.
+
 `injury_status`/`injury_details` are also included on every lineup
 slot in `lineups.json` now, not just the main player table — a
 Questionable/Doubtful player who made it into a built lineup shows a
