@@ -16,7 +16,7 @@ from nfl_dfs.advanced_stats import AdvancedMetricsCalculator
 from nfl_dfs.data.base import StatDataSource
 from nfl_dfs.explanations import explain_player, format_game_log
 from nfl_dfs.lineup_builder import DEFAULT_MAX_SALARY_LEFTOVER, LineupBuilder, MAX_LINEUPS
-from nfl_dfs.models import Lineup, PlayerValue, Position
+from nfl_dfs.models import Lineup, PlayerValue, Position, RedZoneWeekly
 from nfl_dfs.name_matching import normalize_name
 from nfl_dfs.ownership import OwnershipEstimator
 from nfl_dfs.pace import PaceCalculator
@@ -146,7 +146,7 @@ class DfsPipeline:
             advanced_metrics = {}
         else:
             try:
-                redzone_data = self._data_source.fetch_redzone_data(season)
+                redzone_data = self._fetch_redzone_data_with_carryover(season)
                 advanced_metrics = self._advanced_calc.compute(weekly_stats, redzone_data)
             except RuntimeError as error:
                 print(f"{error} Advanced usage metrics (WOPR, red zone) will be empty until season {season} has games.")
@@ -352,6 +352,7 @@ class DfsPipeline:
             current_stats = []
 
         current_max_week = max((line.week for line in current_stats), default=0)
+        self._last_real_season_max_week = current_max_week  # shared with _fetch_redzone_data_with_carryover below
 
         if current_max_week >= RECENT_FORM_WINDOW:
             return current_stats  # enough real current-season data — no carryover needed
@@ -380,6 +381,48 @@ class DfsPipeline:
             f"for player-level projections (defense vulnerability/pace still use season {season} only)."
         )
         return carryover_lines + current_stats
+
+    def _fetch_redzone_data_with_carryover(self, season: int) -> RedZoneWeekly:
+        """Red-zone touches specifically come from separate
+        play-by-play data (fetch_redzone_data), NOT from the
+        weekly_stats this pipeline already carries over above — a real
+        gap reported as "red zone targets appear to be season, not
+        last week": target_share/WOPR (sourced from weekly_stats) were
+        already getting carryover correctly, but red-zone touches
+        weren't, so early in a season (when the carryover window
+        matters most) they only reflected however many real games had
+        been played so far — indistinguishable from "the whole season"
+        precisely when the season is only 1-2 weeks old, which is
+        exactly what got reported. Mirrors the weekly-stats carryover
+        above: each player's/team's last RECENT_FORM_WINDOW real weeks
+        from the previous season, renumbered with negative weeks so
+        they sort before the current season and phase out naturally as
+        real games accumulate."""
+        current = self._data_source.fetch_redzone_data(season)
+        current_max_week = getattr(self, "_last_real_season_max_week", RECENT_FORM_WINDOW)
+
+        if current_max_week >= RECENT_FORM_WINDOW:
+            return current
+
+        try:
+            previous = self._data_source.fetch_redzone_data(season - 1)
+        except RuntimeError:
+            print(f"No red-zone carryover data available from season {season - 1} either.")
+            return current
+
+        def merge(current_dict, previous_dict):
+            merged: dict[str, list[tuple[int, int]]] = {}
+            for key, weeks in previous_dict.items():
+                tail = sorted(weeks, key=lambda pair: pair[0])[-RECENT_FORM_WINDOW:]
+                merged[key] = [(-(len(tail) - i), count) for i, (_week, count) in enumerate(tail)]
+            for key, weeks in current_dict.items():
+                merged[key] = merged.get(key, []) + list(weeks)
+            return merged
+
+        return RedZoneWeekly(
+            player_redzone_touches=merge(current.player_redzone_touches, previous.player_redzone_touches),
+            team_redzone_plays=merge(current.team_redzone_plays, previous.team_redzone_plays),
+        )
 
     def _detect_injury_replacement_qbs(self, salaries) -> list[str]:
         """Auto-detects a team's backup QB when their presumptive

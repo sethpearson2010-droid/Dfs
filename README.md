@@ -556,6 +556,30 @@ genuinely uninformative for the first few weeks of a season, and
 lineups built then will be more dependent on last season's raw scoring
 than an established roster would be later in the year.
 
+**A real gap in that "deliberately not extended" list, reported as
+"red zone targets appear to be season, not last week"**: target
+share and WOPR (sourced from `weekly_stats`, which already gets
+carryover) were correctly blending in prior-season data, but red-zone
+touches specifically come from a separate play-by-play fetch
+(`fetch_redzone_data`) that wasn't getting the same treatment. Early
+in a season, "last `RECENT_FORM_WINDOW` real games" for red-zone
+touches was just "however many real games have been played so far" —
+indistinguishable from the season total precisely when the season is
+young enough for that distinction to matter. Unlike defense
+vulnerability and pace (genuinely excluded on purpose — team scheme
+and roster turnover make cross-season carryover shakier for those),
+red-zone touches are a property of the *individual player's own
+role*, exactly like their scoring average — the same justification
+for carrying that over applies here too. Fixed with
+`_fetch_redzone_data_with_carryover`, mirroring the existing
+weekly-stats carryover pattern (negative week numbers, phases out
+naturally as real games accumulate). Verified directly: a player with
+zero red-zone touches in the 2026 games so far but real 2025 usage
+went from showing nothing to correctly reflecting last season's tail;
+a player with data in both seasons showed a correctly blended,
+properly-ordered sequence (prior-season games at negative weeks,
+current-season games following).
+
 **Two real, serious bugs found once this actually got used on a real
 Week 2 slate**, both reported as "GPP lineups still including
 non-starter QB and FLEX players":
