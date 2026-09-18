@@ -352,6 +352,20 @@ class LineupBuilder:
         # the constraint itself being the bottleneck.
         current_position_overlap = max_position_overlap
         stall_ceiling = max_position_overlap + 7
+        # total-overlap relaxation, added alongside the position-overlap
+        # one above: strengthening the matchup-quality weights (a
+        # deliberate change — matchups should matter more than raw
+        # recent scoring) made the objectively-best players converge
+        # more strongly across noise-randomized candidates, which can
+        # make the TOTAL overlap check (not just per-position) the
+        # binding constraint even once position overlap has relaxed —
+        # confirmed directly: 0% of candidates failed as infeasible,
+        # but a batch topped out well short of the requested count
+        # purely on diversity rejections. Without this, honoring the
+        # "weight matchups more" request would silently cost batch
+        # diversity with no way to recover it.
+        current_max_overlap = max_overlap
+        overlap_stall_ceiling = max_overlap + 3
         consecutive_rejections = 0
         RELAX_AFTER_REJECTIONS = 75
 
@@ -406,10 +420,11 @@ class LineupBuilder:
             if candidate is None:
                 continue
 
-            if self._is_diverse_enough(candidate, accepted, max_overlap, current_position_overlap):
+            if self._is_diverse_enough(candidate, accepted, current_max_overlap, current_position_overlap):
                 accepted.append(candidate)
                 consecutive_rejections = 0
                 current_position_overlap = max_position_overlap  # reset to the strict default for the next lineup
+                current_max_overlap = max_overlap
                 candidate_names = {slot.player.player_name for slot in candidate.slots}
                 for slot in candidate.slots:
                     usage_count[slot.player.player_name] = usage_count.get(slot.player.player_name, 0) + 1
@@ -420,12 +435,16 @@ class LineupBuilder:
                         )
             else:
                 consecutive_rejections += 1
-                if (
-                    consecutive_rejections >= RELAX_AFTER_REJECTIONS
-                    and current_position_overlap < stall_ceiling
-                ):
-                    current_position_overlap += 1
-                    consecutive_rejections = 0
+                if consecutive_rejections >= RELAX_AFTER_REJECTIONS:
+                    relaxed_anything = False
+                    if current_position_overlap < stall_ceiling:
+                        current_position_overlap += 1
+                        relaxed_anything = True
+                    if current_max_overlap < overlap_stall_ceiling:
+                        current_max_overlap += 1
+                        relaxed_anything = True
+                    if relaxed_anything:
+                        consecutive_rejections = 0
 
         return accepted
 

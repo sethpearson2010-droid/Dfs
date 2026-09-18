@@ -589,6 +589,67 @@ non-starter QB and FLEX players":
    (Mariota, McCarthy, and others) while leaving genuine Week 1
    starters (Burrow, Wentz, Caleb Williams) completely unaffected.
 
+## Weighting matchups and regression over raw recent scoring
+
+A stated preference: don't just chase what a player scored last
+week — weight matchup quality (vulnerability/game script/pace) and
+positive-regression probability more heavily instead. Two real
+changes, plus two follow-on issues found and fixed while verifying
+them:
+
+**1. Matchup multiplier weights raised** (`value.py`):
+`VULNERABILITY_WEIGHT` 0.35→0.50, `GAME_SCRIPT_WEIGHT` 0.25→0.35,
+`PACE_WEIGHT` 0.15→0.22 — these were originally kept deliberately
+modest specifically so recent-form scoring stayed dominant, which is
+exactly the opposite of what's wanted here. A first attempt roughly
+doubled these and produced an unrealistic 57-point ceiling for a
+TE — the SAME combined multiplier that scales the point estimate also
+scales the MAD-based floor/ceiling spread (see `scale` in
+`_value_one`), so a larger multiplier compounds on the spread as well
+as the projection, not just the projection alone. Settled on a more
+measured ~1.4x increase instead of ~2x.
+
+**2. Positive TD regression now moves the actual projection, not just
+lineup selection**: previously `is_regression_candidate` only fed a
+selection-time objective bonus in `lineup_builder.py` — real signal,
+but invisible in the projection numbers themselves. Now
+`pipeline.py` converts `regression_gap` (expected minus actual TDs
+per game, already computed by `regression.py`) directly into points
+using `REGRESSION_TD_POINT_VALUE` (6.0 — the real FanDuel value of a
+rushing/receiving TD, correct here since regression.py scopes to
+RB/WR/TE only) and adds it to projection/floor/ceiling. A player whose
+recent scoring looks low only because their TDs haven't hit yet,
+despite real volume that supports more, now shows a projection that
+reflects the expected regression rather than their currently-unlucky
+recent total.
+
+**Follow-on issue found while re-verifying the known edge cases**:
+the McBride case above, while not literally a bug (traced back to his
+own real regression gap and genuine game-log volatility, not the
+weight change itself — confirmed by the number barely moving between
+two different weight settings), was still worth a second look;
+decided the underlying volatility was real enough not to chase
+further with another model change, especially having already tuned
+`CEILING_TO_PROJECTION_CAP` carefully against other specific cases in
+earlier sessions.
+
+**Follow-on bug actually found and fixed**: stronger matchup weights
+made objectively-best-matchup players converge more consistently
+across noise-randomized candidates in a batch — confirmed directly
+with instrumentation that 0% of attempts were failing as infeasible
+(so the earlier `_cheapest_remaining_cost` fix held), but batches were
+still topping out well short of the requested count purely on
+diversity rejections (e.g. 7 of 20 at risk-scale 5). Root cause: the
+existing stuck-batch relaxation only loosened the *per-position*
+overlap cap, never the *total*-overlap cap, so total overlap became
+the binding constraint once matchup convergence got strong enough.
+Fixed by relaxing both together when a batch is stuck. Re-verified
+across risk scales 1/3/5/7/10 and both seasons: every one now returns
+the full requested count (20/20) with genuine full diversity (20/20
+unique compositions each) — actually an improvement over the
+pre-existing baseline, since risk scales 1 and 3 previously topped out
+below 20 even before this session's changes.
+
 ## Injury flagging (real data, not just heuristics)
 
 FanDuel's salary CSV already includes real `Injury Indicator` /

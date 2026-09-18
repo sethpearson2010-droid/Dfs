@@ -60,6 +60,11 @@ def label_for_risk(risk_level: float) -> str:
 # concentrated on one player); WR/TE targets are usually already
 # spread across more players, so the redistribution to any one
 # teammate is more modest.
+# FanDuel's real point value for a rushing/receiving TD — regression.py
+# scopes to RB/WR/TE only, so this is the correct constant regardless
+# of position (no passing TDs, which are worth less, ever apply here).
+REGRESSION_TD_POINT_VALUE = 6.0
+
 INJURY_REPLACEMENT_BOOST_BY_POSITION = {
     Position.RB: 0.25,
     Position.WR: 0.15,
@@ -177,6 +182,7 @@ class DfsPipeline:
 
         regression_candidates = self._regression_calc.identify(player_values)
         regression_keys = {(rc.player_name, rc.team) for rc in regression_candidates}
+        regression_gap_by_key = {(rc.player_name, rc.team): rc.regression_gap for rc in regression_candidates}
 
         # set directly on the objects (not just tracked via the key
         # sets above) so lineup_builder can read is_sleeper /
@@ -188,6 +194,26 @@ class DfsPipeline:
                 pv.is_sleeper = True
             if (pv.player_name, pv.team) in regression_keys:
                 pv.is_regression_candidate = True
+                # a real points adjustment, not just a selection-time
+                # objective nudge: regression_gap is already "expected
+                # TDs per game minus actual TDs per game" from real
+                # red-zone volume — worth REGRESSION_TD_POINT_VALUE (6,
+                # the real FanDuel value of a rushing/receiving TD,
+                # which is what regression.py scopes to) points each.
+                # This directly counters "chasing previous week high
+                # scorers": a player whose recent scoring looks low
+                # because their TDs haven't hit yet, despite real
+                # volume that supports more, now shows a projection
+                # that reflects the expected regression, not just their
+                # (currently unlucky) recent point total.
+                gap = max(0.0, regression_gap_by_key.get((pv.player_name, pv.team), 0.0))
+                points_adjustment = round(gap * REGRESSION_TD_POINT_VALUE, 2)
+                pv.projection = round(pv.projection + points_adjustment, 2)
+                pv.floor_projection = round(pv.floor_projection + points_adjustment * 0.5, 2)
+                pv.ceiling_projection = round(pv.ceiling_projection + points_adjustment, 2)
+                # defensive: same clamp as value.py's, in case a
+                # degenerate small-number edge case ever inverts these
+                pv.ceiling_projection = max(pv.ceiling_projection, pv.floor_projection)
 
         self._write_output(player_values, output_path, sleeper_keys, regression_keys)
         self._write_sleepers(sleeper_picks, output_path)

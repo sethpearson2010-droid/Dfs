@@ -40,20 +40,20 @@
     "regression_gap": 0.38
   },
   {
-    "player_name": "Michael Pittman Jr.",
+    "player_name": "Justin Jefferson",
     "position": "WR",
-    "team": "PIT",
-    "opponent": "NE",
+    "team": "MIN",
+    "opponent": "CHI",
     "recent_avg_touchdowns": 0.0,
     "recent_redzone_touches": 2.0,
     "expected_touchdowns_per_game": 0.34,
     "regression_gap": 0.34
   },
   {
-    "player_name": "Justin Jefferson",
+    "player_name": "Michael Pittman Jr.",
     "position": "WR",
-    "team": "MIN",
-    "opponent": "CHI",
+    "team": "PIT",
+    "opponent": "NE",
     "recent_avg_touchdowns": 0.0,
     "recent_redzone_touches": 2.0,
     "expected_touchdowns_per_game": 0.34,

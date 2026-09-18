@@ -30,16 +30,27 @@ from nfl_dfs.salary import OUT_INJURY_STATUSES
 
 # how much the opponent's vulnerability shifts the projection, as a
 # fraction of the league-average points allowed at that position.
-VULNERABILITY_WEIGHT = 0.35
+# Raised from 0.35: a stated preference to weight matchup quality and
+# positive-regression probability more heavily than raw recent scoring
+# ("don't chase previous week high scorers") — these weights were
+# originally kept modest specifically so recent-form stayed dominant,
+# which is exactly the opposite of what's wanted here. A first attempt
+# nearly doubled these and produced unrealistic ceilings (57 points
+# for a TE) — the SAME combined multiplier that scales the point
+# estimate also scales the MAD-based spread (see `scale` in
+# `_value_one`), so a larger multiplier compounds on both floor/ceiling
+# at once, not just the projection. Settled on a more measured ~1.4x
+# increase instead.
+VULNERABILITY_WEIGHT = 0.50
 
 # how much a team's implied total (vs. league-average implied total)
 # shifts the projection.
-GAME_SCRIPT_WEIGHT = 0.25
+GAME_SCRIPT_WEIGHT = 0.35
 LEAGUE_AVG_IMPLIED_TOTAL = 22.0  # rough long-run NFL team scoring average
 
 # how much a team's play volume (vs. league-average plays/game) shifts
 # the projection — the "pace" signal, distinct from game script.
-PACE_WEIGHT = 0.15
+PACE_WEIGHT = 0.22
 
 # floor/ceiling are built from each player's own recent game-to-game
 # standard deviation. Ceiling gets a bigger multiplier than floor
