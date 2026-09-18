@@ -838,6 +838,30 @@ fires post-fix (0 triggers across the same 162-lineup stress test) —
 meaning the real fix works on its own; the net is insurance, not a
 patch over an unfixed root cause.
 
+**That fix had a real, serious side effect of its own, reported as
+"risk 5 only generating 3 lineups" and "not seeing a lot of
+variations"**: correctly refusing to overspend meant `_greedy_fill`
+started returning "infeasible" (`None`) far more often than it should
+have — confirmed directly with instrumentation: 1960 of 2000 attempts
+(98%) were failing this way on a healthy, non-thin real pool (310
+usable players, 69 RBs, 120 WRs — nowhere near a legitimate
+"the pool is just this thin" case). Root cause: `_cheapest_remaining_cost`
+(the reserve-budget estimate for slots not yet filled) summed the N
+*cheapest players overall*, without checking whether those cheap
+players were actually eligible for the *specific positions* the
+remaining slots need. If cheap WRs dominate the "N cheapest" list
+while a remaining slot actually needs a QB or DST (both of which
+typically have a higher minimum salary than the cheapest skill-position
+options), that generic estimate understates the true reserve needed —
+letting greedy fill overspend on earlier slots, then run out of
+affordable options once it reaches the position that actually needed
+more room held back. Fixed by computing the cheapest *eligible* player
+for each specific remaining slot instead of a generic N-cheapest
+estimate. Verified: the exact reported case (risk scale 5, 20
+lineups) went from 3 built (98% of attempts failing as infeasible) to
+20/20 (0% failing as infeasible, all genuinely unique) — confirmed
+with the same direct instrumentation before and after.
+
 **The salary cap is $60,000, always** (`SALARY_CAP` in
 `roster_rules.py`) — lineups now reach $54,800-$60,000 by default
 (verified on real data). If they were landing around $45,000-$50,000

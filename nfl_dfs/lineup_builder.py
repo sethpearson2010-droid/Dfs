@@ -565,8 +565,8 @@ class LineupBuilder:
             # reserve at least min-price-per-remaining-slot budget for
             # what's left, so an early greedy pick doesn't strand later
             # slots with no affordable options
-            slots_left_after_this = len(slot_order) - (slot_order.index((slot_name, eligible_positions)) + 1)
-            min_reserve = self._cheapest_remaining_cost(players, slot_order, slots_left_after_this, used_players)
+            remaining_slot_order = slot_order[slot_order.index((slot_name, eligible_positions)) + 1 :]
+            min_reserve = self._cheapest_remaining_cost(players, remaining_slot_order, used_players)
 
             affordable = [p for p in candidates if p.salary <= remaining_budget - min_reserve]
             if not affordable:
@@ -595,12 +595,40 @@ class LineupBuilder:
 
         return assigned, locked_slot_names
 
-    def _cheapest_remaining_cost(self, players, slot_order, slots_left_after_this, used_players) -> int:
-        if slots_left_after_this <= 0:
+    def _cheapest_remaining_cost(self, players, remaining_slot_order, used_players) -> int:
+        """Sum of the cheapest ELIGIBLE player for each specific
+        remaining slot — not just the N cheapest players overall,
+        which was a real bug: if cheap WRs dominate the "N cheapest"
+        list while a remaining slot actually needs a QB or DST (both
+        of which typically have a higher minimum salary than the
+        cheapest skill-position players), that generic estimate
+        underestimates the true reserve needed, letting greedy fill
+        overspend on earlier slots and then run out of affordable
+        options once it reaches the position that actually needed more
+        room. Confirmed directly: this was causing 98% of build_many's
+        attempts to come back infeasible (None) on a healthy, non-thin
+        real player pool (310 usable players) — nowhere near a
+        legitimate "the pool is just this thin" case."""
+        if not remaining_slot_order:
             return 0
-        # rough lower bound: cheapest available salary times slots left
-        salaries = sorted(p.salary for p in players if p.player_name not in used_players)
-        return sum(salaries[:slots_left_after_this]) if salaries else 0
+        total = 0
+        reserved_players: set[str] = set()
+        for slot_name, eligible_positions in remaining_slot_order:
+            cheapest = min(
+                (
+                    p
+                    for p in players
+                    if p.position in eligible_positions
+                    and p.player_name not in used_players
+                    and p.player_name not in reserved_players
+                ),
+                key=lambda p: p.salary,
+                default=None,
+            )
+            if cheapest is not None:
+                total += cheapest.salary
+                reserved_players.add(cheapest.player_name)  # don't let two different slots reserve the same cheapest player
+        return total
 
     def _local_search(
         self,
