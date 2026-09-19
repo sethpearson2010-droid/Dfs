@@ -25,6 +25,7 @@ class AdvancedMetricsCalculator:
         team_by_player_id = self._team_by_player_id(weekly_stats)
         recent_team_plays = self._recent_avg_by_team(redzone_data.team_redzone_plays)
         recent_player_touches = self._recent_avg_by_key(redzone_data.player_redzone_touches)
+        real_games_by_player = self._real_games_in_window_by_key(redzone_data.player_redzone_touches)
 
         all_player_ids = set(target_share_by_player) | set(recent_player_touches)
         metrics: dict[str, AdvancedMetrics] = {}
@@ -41,6 +42,7 @@ class AdvancedMetricsCalculator:
                 recent_redzone_touches=touches,
                 recent_redzone_share=redzone_share,
                 recent_touchdowns_per_game=touchdowns_by_player.get(player_id, 0.0),
+                real_games_in_touches_sample=real_games_by_player.get(player_id, 0),
             )
         return metrics
 
@@ -73,6 +75,19 @@ class AdvancedMetricsCalculator:
     def _recent_avg_by_key(self, weekly_counts: dict[str, list[tuple[int, int]]]) -> dict[str, float]:
         return {
             key: self._avg([count for _week, count in weeks[-RECENT_FORM_WINDOW:]])
+            for key, weeks in weekly_counts.items()
+        }
+
+    def _real_games_in_window_by_key(self, weekly_counts: dict[str, list[tuple[int, int]]]) -> dict[str, int]:
+        # week <= 0 means a carried-over prior-season game (see
+        # pipeline.py's _fetch_redzone_data_with_carryover) — this
+        # counts only the REAL current-season games within the same
+        # up-to-5-game window recent_redzone_touches averages over, so
+        # a player's touches/game figure can be understood as "how
+        # much of this is this season vs last" rather than mistaken
+        # for a single recent game's count.
+        return {
+            key: sum(1 for week, _count in weeks[-RECENT_FORM_WINDOW:] if week > 0)
             for key, weeks in weekly_counts.items()
         }
 

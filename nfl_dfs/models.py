@@ -76,6 +76,7 @@ class AdvancedMetrics:
     recent_redzone_touches: float  # per game
     recent_redzone_share: float  # this player's share of their team's red-zone plays
     recent_touchdowns_per_game: float = 0.0  # for the positive-regression signal
+    real_games_in_touches_sample: int = 0  # of the up-to-5 games behind recent_redzone_touches, how many are REAL current-season games vs prior-season carryover — see advanced_stats.py
 
 
 @dataclass(frozen=True)

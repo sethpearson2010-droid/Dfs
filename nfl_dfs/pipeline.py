@@ -616,6 +616,7 @@ class DfsPipeline:
                     "wopr": pv.advanced_metrics.recent_wopr,
                     "redzone_touches_per_game": pv.advanced_metrics.recent_redzone_touches,
                     "redzone_share": pv.advanced_metrics.recent_redzone_share,
+                    "real_games_in_sample": pv.advanced_metrics.real_games_in_touches_sample,
                 }
             serializable.append(row)
 

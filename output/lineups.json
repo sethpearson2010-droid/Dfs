@@ -4,16 +4,17 @@
     "label": "balanced",
     "lineup_number": 1,
     "total_lineups": 1,
-    "total_salary": 59800,
-    "salary_remaining": 200,
-    "projected_points": 204.44,
-    "floor_points": 105.05,
-    "ceiling_points": 328.68,
+    "total_salary": 59700,
+    "salary_remaining": 300,
+    "projected_points": 205.98,
+    "floor_points": 114.67,
+    "ceiling_points": 320.12,
     "stack_players": [
-      "Chris Olave",
-      "Travis Etienne Jr."
+      "Chris Olave"
     ],
-    "bring_back_players": [],
+    "bring_back_players": [
+      "Zay Flowers"
+    ],
     "slots": [
       {
         "slot": "D",
@@ -164,35 +165,35 @@
       },
       {
         "slot": "WR3",
-        "player_name": "Parker Washington",
+        "player_name": "Zay Flowers",
         "position": "WR",
-        "team": "JAC",
-        "opponent": "DEN",
-        "salary": 6600,
-        "floor_projection": 7.48,
-        "ceiling_projection": 39.3,
+        "team": "BAL",
+        "opponent": "NO",
+        "salary": 7600,
+        "floor_projection": 12.33,
+        "ceiling_projection": 31.82,
         "projected_ownership_pct": 37.9,
         "is_sleeper": false,
         "is_regression_candidate": false,
-        "injury_status": "",
-        "injury_details": "",
+        "injury_status": "Q",
+        "injury_details": "Hamstring",
         "is_backup_qb": false,
         "injury_replacement_for": "",
         "force_included": false,
-        "fanduel_id": "134251-137516",
-        "explanation": "Selected for real target share / red-zone opportunity beyond his raw scoring average. Projected range: 7.5 (floor) to 39.3 (ceiling). Moderate volatility week-to-week.",
-        "recent_game_log": "Wk13: 3.6, Wk15: 8.3, Wk16: 26.5, Wk17: 19.0, Wk18: 19.7"
+        "fanduel_id": "134251-112295",
+        "explanation": "Selected for real target share / red-zone opportunity beyond his raw scoring average, and part of the bring-back Tyler Shough for correlated upside. Projected range: 12.3 (floor) to 31.8 (ceiling). Consistent week-to-week.",
+        "recent_game_log": "Wk14: 20.6, Wk15: 15.8, Wk16: 21.2, Wk17: 13.0, Wk18: 29.8"
       },
       {
         "slot": "FLEX",
-        "player_name": "Travis Etienne Jr.",
+        "player_name": "RJ Harvey",
         "position": "RB",
-        "team": "NO",
-        "opponent": "BAL",
-        "salary": 6900,
-        "floor_projection": 8.86,
-        "ceiling_projection": 33.26,
-        "projected_ownership_pct": 36.1,
+        "team": "DEN",
+        "opponent": "JAC",
+        "salary": 5800,
+        "floor_projection": 13.63,
+        "ceiling_projection": 32.18,
+        "projected_ownership_pct": 37.8,
         "is_sleeper": false,
         "is_regression_candidate": false,
         "injury_status": "",
@@ -200,9 +201,9 @@
         "is_backup_qb": false,
         "injury_replacement_for": "",
         "force_included": false,
-        "fanduel_id": "134251-89956",
-        "explanation": "Selected for real target share / red-zone opportunity beyond his raw scoring average, and stacked with Tyler Shough for correlated upside. Projected range: 8.9 (floor) to 33.3 (ceiling). Moderate volatility week-to-week.",
-        "recent_game_log": "Wk14: 21.2, Wk15: 31.5, Wk16: 16.6, Wk17: 11.2, Wk18: 4.8"
+        "fanduel_id": "134251-110484",
+        "explanation": "Selected for real target share / red-zone opportunity beyond his raw scoring average. Projected range: 13.6 (floor) to 32.2 (ceiling). Consistent week-to-week.",
+        "recent_game_log": "Wk14: 22.0, Wk15: 10.5, Wk16: 22.1, Wk17: 18.6, Wk18: 4.3"
       }
     ]
   }

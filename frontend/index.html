@@ -843,6 +843,9 @@ function render() {
       : "—";
     const impliedTotal = p.game_context ? p.game_context.implied_team_total : "—";
     const ownership = p.projected_ownership_pct ? `${p.projected_ownership_pct}%` : "—";
+    const advancedTooltip = p.advanced_metrics
+      ? `WOPR (target share + air yards share) / red zone touch share. Red-zone touches/game is a recent-form average over up to 5 games — ${p.advanced_metrics.real_games_in_sample} of those are real current-season games, the rest carried over from last season (see README).`
+      : "WOPR (target share + air yards share) / red zone touch share — see README for how these are used";
     const advanced = p.advanced_metrics
       ? `${p.advanced_metrics.wopr} / ${Math.round(p.advanced_metrics.redzone_share * 100)}%`
       : "—";
@@ -882,7 +885,7 @@ function render() {
       <td>${vuln}</td>
       <td>${impliedTotal}</td>
       <td>${ownership}</td>
-      <td title="WOPR (target share + air yards share) / red zone touch share — see README for how these are used">${advanced}</td>
+      <td title="${advancedTooltip}">${advanced}</td>
       <td title="Ceiling per $1000 salary, plus how many of the 4 matchup signals are pointing up">${smashDisplay}</td>
     `;
     tbody.appendChild(tr);

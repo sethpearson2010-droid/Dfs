@@ -580,6 +580,20 @@ a player with data in both seasons showed a correctly blended,
 properly-ordered sequence (prior-season games at negative weeks,
 current-season games following).
 
+**A real follow-on clarity gap, reported as "Tez Johnson showing 2
+red zone targets but only had 1 target"**: the math itself checks out
+(his `redzone_touches_per_game` of 2.0 is the correct average of his
+5-game window — `[1, 3, 2, 3, 1]`), but nothing indicated that 4 of
+those 5 games were carried over from *last* season, not this one — so
+comparing "2.0 average" against "1 target this specific week" looked
+like a discrepancy when it's actually just an average blending in
+better prior games, working as designed. Fixed by adding
+`real_games_in_touches_sample` to `AdvancedMetrics` (how many of the
+up-to-5 games behind the average are real current-season games vs.
+carryover) and surfacing it in the dashboard's tooltip for that
+column, so this kind of comparison is clear rather than looking like
+a bug.
+
 **Two real, serious bugs found once this actually got used on a real
 Week 2 slate**, both reported as "GPP lineups still including
 non-starter QB and FLEX players":
