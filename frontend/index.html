@@ -260,6 +260,11 @@
     <div id="regressionList"></div>
   </div>
 
+  <div class="sleepers-panel" id="flyersPanel" style="display:none; border-color:#a78bfa44;">
+    <h2 style="color:#a78bfa;">🚀 Minimum-Salary Flyers</h2>
+    <div id="flyersList"></div>
+  </div>
+
   <div class="lineups-panel" id="lineupsPanel" style="display:none;">
     <h2>Lineup Builder — Cash to GPP</h2>
     <div class="risk-slider-row">
@@ -306,6 +311,7 @@
 let allPlayers = [];
 let sleepers = [];
 let regressionCandidates = [];
+let flyers = [];
 let lineups = [];
 let runConfig = null;
 let pendingExclusions = JSON.parse(localStorage.getItem("dfs_pending_exclusions") || "[]");
@@ -354,6 +360,13 @@ async function loadData() {
   }
 
   try {
+    const flyersRes = await freshFetch("../output/flyers.json");
+    if (flyersRes.ok) flyers = await flyersRes.json();
+  } catch (e) {
+    flyers = [];
+  }
+
+  try {
     const lineupRes = await freshFetch("../output/lineups.json");
     if (lineupRes.ok) lineups = await lineupRes.json();
   } catch (e) {
@@ -370,6 +383,7 @@ async function loadData() {
   buildFilters();
   renderSleepers();
   renderRegressionCandidates();
+  renderFlyers();
   renderLineups();
   initRebuildPanel();
   render();
@@ -806,6 +820,29 @@ function renderRegressionCandidates() {
   });
 }
 
+function renderFlyers() {
+  const panel = document.getElementById("flyersPanel");
+  const list = document.getElementById("flyersList");
+  if (!flyers.length) {
+    panel.style.display = "none";
+    return;
+  }
+  panel.style.display = "block";
+  list.innerHTML = "";
+  flyers.forEach(fc => {
+    const card = document.createElement("div");
+    card.className = "sleeper-card";
+    card.innerHTML = `
+      <div>
+        <div class="sleeper-name">${fc.player_name} <span class="pos-badge">${fc.position}</span> — ${fc.team} vs ${fc.opponent} · $${fc.salary.toLocaleString()}</div>
+        <div class="sleeper-reasons">Target share ${Math.round(fc.target_share*100)}% · WOPR ${fc.wopr} · RZ share ${Math.round(fc.redzone_share*100)}%</div>
+      </div>
+      <div class="sleeper-boost" style="color:#a78bfa;">🚀</div>
+    `;
+    list.appendChild(card);
+  });
+}
+
 function buildFilters() {
   const positions = [...new Set(allPlayers.map(p => p.position))].sort();
   const container = document.getElementById("positionFilters");
@@ -862,6 +899,9 @@ function render() {
     const regressionBadge = p.is_regression_candidate
       ? `<span class="warn-badge" style="background:#38bdf822;color:#38bdf8;" title="Red-zone volume implies more TDs than recently scored — positive regression candidate">📈 buy low</span>`
       : "";
+    const flyerBadge = p.is_flyer
+      ? `<span class="warn-badge" style="background:#a78bfa22;color:#a78bfa;" title="Genuine minimum-salary flyer — real underlying opportunity (target share/WOPR/red-zone share) that clears a real bar, not just the cheapest available scrub">🚀 flyer</span>`
+      : "";
     const staleBadge = p.is_stale
       ? `<span class="warn-badge unmatched" title="Hasn't recorded a stat line recently enough to trust — likely injured/inactive/benched">⚠️ inactive?</span>`
       : "";
@@ -875,7 +915,7 @@ function render() {
       : "";
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><button class="info-btn" data-player-idx="${idx}" title="Show why this player is valued, and their recent game log">ℹ️</button>${p.player_name}<button class="exclude-btn" data-player="${p.player_name}" title="Queue for exclusion & rebuild">🚫</button><button class="include-btn" data-player="${p.player_name}" title="Queue for forced inclusion & rebuild (e.g. filling in for an injured starter)">✅</button>${nameWarning}${injuryBadge}${backupQbBadge}${staleBadge}${sleeperBadge}${regressionBadge}</td>
+      <td><button class="info-btn" data-player-idx="${idx}" title="Show why this player is valued, and their recent game log">ℹ️</button>${p.player_name}<button class="exclude-btn" data-player="${p.player_name}" title="Queue for exclusion & rebuild">🚫</button><button class="include-btn" data-player="${p.player_name}" title="Queue for forced inclusion & rebuild (e.g. filling in for an injured starter)">✅</button>${nameWarning}${injuryBadge}${backupQbBadge}${staleBadge}${sleeperBadge}${regressionBadge}${flyerBadge}</td>
       <td><span class="pos-badge">${p.position}</span></td>
       <td>${p.team}</td>
       <td>${p.opponent}</td>

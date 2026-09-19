@@ -364,6 +364,49 @@ switching to the risk-scaled version: 7 of 20 lineups in the same
 scenario, and correctly back to 0 at cash (risk scale 1), where the
 bonus is a deliberate no-op.
 
+## Minimum-salary flyers (distinguishing a real dart throw from a scrub)
+
+Real case that motivated this: a $4,000 WR (Darius Cooper) got
+selected with **zero signal on every metric** — `smash_alignment` 0/4
+(every matchup multiplier at or below neutral), zero red-zone
+involvement, a literal 0-point real game, and his own auto-generated
+explanation said outright "no single standout signal, just a solid
+baseline play." He wasn't a deliberate pick — the optimizer needed
+*something* cheap to make the salary math work, and an
+undifferentiated bottom of the salary barrel gave it nothing to
+prefer one totally unremarkable option over another.
+
+`flyers.py` fixes this by flagging genuinely cheap players
+(`MAX_SALARY_FOR_FLYER`, $5,000) whose underlying opportunity — target
+share, WOPR, red-zone share — clears a real, **absolute** minimum bar
+(`MIN_TARGET_SHARE` 0.12, `MIN_WOPR` 0.18, `MIN_REDZONE_SHARE` 0.15;
+any one clearing qualifies), same conservative philosophy as
+`regression.py`: not just "relatively better than other equally-thin
+cheap players," since if the whole bottom of the barrel has equally
+thin usage, nobody there deserves the label just for being the
+least-bad of a bad bunch. Verified against the real case: Darius
+Cooper correctly does **not** qualify, while real candidates in the
+same pool — Denzel Boston (WOPR 0.623, real target share), Elic
+Ayomanor (WOPR 0.511) — were correctly identified.
+
+The reasoning this targets specifically: recent-scoring-based
+projections structurally can't detect an about-to-break-out player —
+a rookie stepping into a bigger role, a practice-squad promotion,
+someone getting real targets the ball hasn't bounced their way on
+yet. Their recent POINTS won't show it, since points are downstream of
+opportunity that hasn't converted into production. Opportunity metrics
+(already computed in `advanced_stats.py` for other purposes) are a
+leading indicator that doesn't have that lag — which is why a flagged
+flyer gets a **ceiling boost specifically** (`FLYER_CEILING_BOOST`,
+30%), not a floor boost: the whole point is that the upside is real
+even though the points haven't caught up yet, not that the median
+outcome has improved. Also feeds a risk-scaled selection bonus
+(`FLYER_BONUS_WEIGHT_AT_MAX_GPP`, 30% at risk_level=1.0, no-op at
+cash) — same "this is a GPP bet, not a cash one" reasoning as the
+regression bonus. Player rows carry an `is_flyer` boolean, the
+dashboard shows a dedicated 🚀 panel plus badge, and `flyers.json` is
+a new output file alongside the existing sleeper/regression ones.
+
 ## What's automated vs. manual
 
 - **Automated**: nflverse stats/schedule pull + vulnerability scoring,

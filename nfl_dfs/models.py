@@ -122,6 +122,27 @@ class RegressionCandidate:
 
 
 @dataclass(frozen=True)
+class FlyerCandidate:
+    """A genuinely cheap player whose underlying opportunity (target
+    share, WOPR, red-zone share) clears a real absolute bar, distinct
+    from simply being the least-bad option at minimum salary with no
+    real signal behind them at all. Recent-scoring-based projections
+    structurally can't detect an about-to-break-out player — their
+    points won't show it yet, since points are downstream of
+    opportunity that hasn't converted into production. This is a
+    leading indicator that doesn't have that lag."""
+
+    player_name: str
+    position: Position
+    team: str
+    opponent: str
+    salary: int
+    target_share: float
+    wopr: float
+    redzone_share: float
+
+
+@dataclass(frozen=True)
 class SleeperPick:
     """A player flagged as a statistical sleeper: below-median salary
     at their position, whose matchup/game-script/pace signals boost
@@ -243,6 +264,7 @@ class PlayerValue:
     is_out: bool = False  # injury_status is in OUT_INJURY_STATUSES — excluded from lineup building entirely
     is_sleeper: bool = False  # set post-hoc by pipeline.py after SleeperCalculator runs; read by lineup_builder
     is_regression_candidate: bool = False  # set post-hoc by pipeline.py after RegressionCalculator runs
+    is_flyer: bool = False  # genuinely cheap player with real underlying opportunity, not just the least-bad scrub at minimum salary — set post-hoc by pipeline.py after FlyerCalculator runs
     manually_excluded: bool = False  # user-specified --exclude-players match — excluded like is_out
     fanduel_id: str = ""  # for CSV export back to FanDuel's bulk-upload format
     value_score: float = field(init=False)

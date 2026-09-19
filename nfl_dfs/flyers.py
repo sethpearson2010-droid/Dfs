@@ -1,0 +1,94 @@
+"""
+Detects genuine "flyer" candidates at minimum salary — a cheap player
+whose underlying OPPORTUNITY (target share, WOPR, red-zone share)
+clears a real absolute bar, distinct from a player who's simply the
+cheapest available option with no real signal behind them at all.
+
+Real case that motivated this: a $4,000 WR with zero red-zone
+involvement, a zeroed-out real game, and every matchup multiplier
+sitting at or below neutral still got selected — not because of any
+genuine analytical signal, but because SOMETHING has to fill a cheap
+slot to make the salary math work, and an undifferentiated bottom of
+the salary barrel gives the optimizer nothing to prefer one totally
+unremarkable option over another.
+
+Recent-scoring-based projections structurally can't detect an
+about-to-break-out player: a rookie stepping into a bigger role, a
+practice-squad promotion, someone getting real targets the ball
+hasn't bounced their way on yet — their recent POINTS won't show it,
+since points are downstream of opportunity that hasn't converted into
+production. Opportunity metrics (already computed in advanced_stats.py
+for other purposes) are a leading indicator that doesn't have that lag.
+
+Deliberately conservative, the same philosophy as regression.py: a
+real, absolute minimum bar on the underlying metrics is required, not
+just "relatively better than other cheap players" — if the whole
+bottom of the salary barrel has equally thin usage, nobody there
+should be labeled a flyer just for being the least-bad of a bad bunch.
+"""
+
+from __future__ import annotations
+
+from nfl_dfs.models import FlyerCandidate, PlayerValue, Position
+
+ELIGIBLE_POSITIONS = {Position.WR, Position.RB, Position.TE}
+
+# only genuinely cheap players qualify — this is specifically about
+# min-salary "dart throw" plays, not a general value metric (that's
+# what smash_score/value_score already cover for the whole pool)
+MAX_SALARY_FOR_FLYER = 5000
+
+# a real, absolute minimum bar on underlying opportunity — clearing
+# ANY ONE of these means real, meaningful involvement, not just
+# "somewhat more than an equally-thin peer." Below all three genuinely
+# means "barely on the field," not a hidden gem worth a dart throw.
+MIN_TARGET_SHARE = 0.12
+MIN_WOPR = 0.18
+MIN_REDZONE_SHARE = 0.15
+
+TOP_N_PER_POSITION = 3
+
+
+class FlyerCalculator:
+    def identify(self, player_values: list[PlayerValue]) -> list[FlyerCandidate]:
+        candidates: list[FlyerCandidate] = []
+
+        for pv in player_values:
+            if pv.position not in ELIGIBLE_POSITIONS:
+                continue
+            if pv.salary > MAX_SALARY_FOR_FLYER:
+                continue
+            if pv.name_match_quality == "unmatched" or pv.is_stale or pv.is_out or not pv.advanced_metrics:
+                continue
+
+            advanced = pv.advanced_metrics
+            clears_bar = (
+                advanced.recent_target_share >= MIN_TARGET_SHARE
+                or advanced.recent_wopr >= MIN_WOPR
+                or advanced.recent_redzone_share >= MIN_REDZONE_SHARE
+            )
+            if not clears_bar:
+                continue
+
+            candidates.append(
+                FlyerCandidate(
+                    player_name=pv.player_name,
+                    position=pv.position,
+                    team=pv.team,
+                    opponent=pv.opponent,
+                    salary=pv.salary,
+                    target_share=advanced.recent_target_share,
+                    wopr=advanced.recent_wopr,
+                    redzone_share=advanced.recent_redzone_share,
+                )
+            )
+
+        found: list[FlyerCandidate] = []
+        for position in ELIGIBLE_POSITIONS:
+            position_candidates = sorted(
+                (c for c in candidates if c.position == position),
+                key=lambda c: c.wopr,
+                reverse=True,
+            )
+            found.extend(position_candidates[:TOP_N_PER_POSITION])
+        return found

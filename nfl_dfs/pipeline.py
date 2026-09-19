@@ -20,6 +20,7 @@ from nfl_dfs.models import Lineup, PlayerValue, Position, RedZoneWeekly
 from nfl_dfs.name_matching import normalize_name
 from nfl_dfs.ownership import OwnershipEstimator
 from nfl_dfs.pace import PaceCalculator
+from nfl_dfs.flyers import FlyerCalculator
 from nfl_dfs.regression import RegressionCalculator
 from nfl_dfs.salary import OUT_INJURY_STATUSES, FanDuelSalaryImporter
 from nfl_dfs.sleepers import SleeperCalculator
@@ -65,6 +66,13 @@ def label_for_risk(risk_level: float) -> str:
 # of position (no passing TDs, which are worth less, ever apply here).
 REGRESSION_TD_POINT_VALUE = 6.0
 
+# a genuine flyer's real opportunity hasn't shown up in recent scoring
+# yet by definition — this bumps their otherwise-understated ceiling
+# to reflect that upside is real even though the points haven't caught
+# up. Meaningful but not overwhelming: this is a leading indicator,
+# not a guarantee.
+FLYER_CEILING_BOOST = 0.30
+
 INJURY_REPLACEMENT_BOOST_BY_POSITION = {
     Position.RB: 0.25,
     Position.WR: 0.15,
@@ -78,6 +86,7 @@ class DfsPipeline:
         self._salary_importer = FanDuelSalaryImporter()
         self._sleeper_calc = SleeperCalculator()
         self._regression_calc = RegressionCalculator()
+        self._flyer_calc = FlyerCalculator()
         self._lineup_builder = LineupBuilder()
         self._advanced_calc = AdvancedMetricsCalculator()
         self._ownership_estimator = OwnershipEstimator()
@@ -184,6 +193,9 @@ class DfsPipeline:
         regression_keys = {(rc.player_name, rc.team) for rc in regression_candidates}
         regression_gap_by_key = {(rc.player_name, rc.team): rc.regression_gap for rc in regression_candidates}
 
+        flyer_candidates = self._flyer_calc.identify(player_values)
+        flyer_keys = {(fc.player_name, fc.team) for fc in flyer_candidates}
+
         # set directly on the objects (not just tracked via the key
         # sets above) so lineup_builder can read is_sleeper /
         # is_regression_candidate straight off PlayerValue and factor
@@ -192,6 +204,18 @@ class DfsPipeline:
         for pv in player_values:
             if (pv.player_name, pv.team) in sleeper_keys:
                 pv.is_sleeper = True
+            if (pv.player_name, pv.team) in flyer_keys:
+                pv.is_flyer = True
+                # real opportunity that hasn't shown up in recent
+                # scoring yet means the CEILING specifically is
+                # understated (a leading indicator's whole point is
+                # that points haven't caught up), not the floor — a
+                # flyer is still a flyer, i.e. genuinely boom-or-bust,
+                # so only ceiling gets a bump here, unlike the
+                # regression adjustment below which raises the whole
+                # range since a TD-rate correction is a real points
+                # swing, not just added variance.
+                pv.ceiling_projection = round(pv.ceiling_projection * (1 + FLYER_CEILING_BOOST), 2)
             if (pv.player_name, pv.team) in regression_keys:
                 pv.is_regression_candidate = True
                 # a real points adjustment, not just a selection-time
@@ -218,6 +242,7 @@ class DfsPipeline:
         self._write_output(player_values, output_path, sleeper_keys, regression_keys)
         self._write_sleepers(sleeper_picks, output_path)
         self._write_regression_candidates(regression_candidates, output_path)
+        self._write_flyers(flyer_candidates, output_path)
 
         if explore:
             # explicit opt-in only now — one lineup at each of 5 preset
@@ -581,6 +606,7 @@ class DfsPipeline:
                 "fanduel_id": pv.fanduel_id,
                 "is_sleeper": (pv.player_name, pv.team) in sleeper_keys,
                 "is_regression_candidate": (pv.player_name, pv.team) in regression_keys,
+                "is_flyer": pv.is_flyer,
                 "projected_ownership_pct": pv.projected_ownership_pct,
                 "smash_score": pv.smash_score,
                 "smash_alignment": pv.smash_alignment,
@@ -660,6 +686,25 @@ class DfsPipeline:
             for rc in regression_candidates
         ]
         regression_path.write_text(json.dumps(serializable, indent=2))
+
+    def _write_flyers(self, flyer_candidates, output_path: str | Path) -> None:
+        output_path = Path(output_path)
+        flyers_path = output_path.parent / "flyers.json"
+
+        serializable = [
+            {
+                "player_name": fc.player_name,
+                "position": fc.position.value,
+                "team": fc.team,
+                "opponent": fc.opponent,
+                "salary": fc.salary,
+                "target_share": fc.target_share,
+                "wopr": fc.wopr,
+                "redzone_share": fc.redzone_share,
+            }
+            for fc in flyer_candidates
+        ]
+        flyers_path.write_text(json.dumps(serializable, indent=2))
 
     def _write_lineups(
         self,
@@ -741,6 +786,7 @@ class DfsPipeline:
                 "projected_ownership_pct": s.player.projected_ownership_pct,
                 "is_sleeper": s.player.is_sleeper,
                 "is_regression_candidate": s.player.is_regression_candidate,
+                "is_flyer": s.player.is_flyer,
                 "injury_status": s.player.injury_status,
                 "injury_details": s.player.injury_details,
                 "is_backup_qb": s.player.is_backup_qb,

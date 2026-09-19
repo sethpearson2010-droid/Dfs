@@ -56,6 +56,9 @@ def explain_player(player: PlayerValue, stack_partner: str = "", is_bring_back: 
     if player.opportunity_multiplier and player.opportunity_multiplier >= SIGNAL_THRESHOLD:
         reasons.append("real target share / red-zone opportunity beyond his raw scoring average")
 
+    if player.is_flyer:
+        reasons.append("a genuine minimum-salary flyer — real underlying opportunity that hasn't shown up in recent scoring yet")
+
     if player.is_sleeper:
         reasons.append("flagged as a statistical value play relative to his salary")
 

@@ -87,6 +87,15 @@ SLEEPER_BONUS_WEIGHT = 0.08
 # scale 10) — the max-GPP case this was specifically asked for.
 REGRESSION_BONUS_WEIGHT_AT_MAX_GPP = 0.45
 
+# flyers.py's signal is a leading indicator (opportunity that hasn't
+# converted to points yet), same GPP-appropriate reasoning as
+# regression above. A more modest weight than regression's, since a
+# flyer's underlying signal (target share/WOPR/redzone share clearing
+# a minimum bar) is a real but broader "some involvement" bar, not the
+# more specific and larger real-points implication of a TD-rate
+# correction.
+FLYER_BONUS_WEIGHT_AT_MAX_GPP = 0.30
+
 # a gentle, always-on nudge (not risk-scaled, unlike leverage/stack)
 # toward spending more of the salary cap — small enough that real
 # projection differences still dominate player selection, but enough
@@ -481,6 +490,11 @@ class LineupBuilder:
             base *= 1 + SLEEPER_BONUS_WEIGHT
         if player.is_regression_candidate:
             base *= 1 + REGRESSION_BONUS_WEIGHT_AT_MAX_GPP * risk_level
+        if player.is_flyer:
+            # a genuine dart-throw pick, same reasoning as regression:
+            # real but unproven opportunity is a GPP-appropriate bet,
+            # not a cash one — no-op at risk_level=0.
+            base *= 1 + FLYER_BONUS_WEIGHT_AT_MAX_GPP * risk_level
 
         # a small, uniform (not risk-scaled) nudge toward higher-salary
         # players, so lineups lean toward spending closer to the cap
