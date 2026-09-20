@@ -400,12 +400,70 @@ leading indicator that doesn't have that lag — which is why a flagged
 flyer gets a **ceiling boost specifically** (`FLYER_CEILING_BOOST`,
 30%), not a floor boost: the whole point is that the upside is real
 even though the points haven't caught up yet, not that the median
-outcome has improved. Also feeds a risk-scaled selection bonus
-(`FLYER_BONUS_WEIGHT_AT_MAX_GPP`, 30% at risk_level=1.0, no-op at
-cash) — same "this is a GPP bet, not a cash one" reasoning as the
-regression bonus. Player rows carry an `is_flyer` boolean, the
+outcome has improved. Player rows carry an `is_flyer` boolean, the
 dashboard shows a dedicated 🚀 panel plus badge, and `flyers.json` is
 a new output file alongside the existing sleeper/regression ones.
+
+**Reported immediately after shipping: "they aren't worked into
+lineups even at risk 10."** Investigating this surfaced two real,
+separate, more fundamental bugs in the core projection model, plus
+led to a genuine "the percentage bonus alone can't work" finding that
+needed a different kind of fix entirely.
+
+**Bug 1 — matchup multipliers were stacking multiplicatively, not
+additively.** `_project` computed `projection = base * vuln_mult *
+script_mult * pace_mult` — three sequential multiplications. Three
+individually-modest +30% effects multiply to +120% combined (1.3 ×
+1.3 × 1.3 = 2.197), not the +90% you'd expect from summing three +30%
+boosts. Confirmed directly: Bijan Robinson's raw *projection* (not
+even ceiling) reached 47.2 — an unrealistic median expectation for
+any RB. Fixed by combining the multiplier *effects* additively
+(`1 + (vuln-1) + (script-1) + (pace-1)`) instead of multiplying the
+raw multipliers — same result for the common case (one signal
+notably favorable), only reduces the effect specifically when
+multiple signals stack at once.
+
+**Bug 2 — no cap on how far a single signal could swing a
+projection.** Even after fixing the stacking, Derrick Henry's numbers
+barely moved, because his inflation came from `vulnerability=1.645` —
+a single signal, on its own, producing a genuine +64.5% swing (the
+underlying differential really was extreme: an opponent defense
+allowing 129% more than league-average points to RBs). Fixed with
+`MULTIPLIER_SWING_CAP` (0.35) — no individual matchup signal can move
+a projection more than 35% in either direction, however extreme the
+real underlying differential.
+
+**The deeper finding, after both fixes: still 0 flyer appearances
+even in a 50-lineup max-GPP batch.** The remaining inflation traced to
+a harder, more fundamental issue — this early in a season (2 real
+weeks so far), one legitimately huge real game can dominate even a
+*median*-based estimate with such a small sample, for ANY player who's
+had one, not just elite ones. A flyer's whole premise is real
+opportunity that *hasn't* converted into a big game *yet* — meaning
+this dynamic systematically favors "already had one huge game" over
+"has real opportunity but hasn't broken out," which is close to the
+exact "chasing previous week high scorers" bias asked to be reduced a
+few sessions ago. Even similarly-*priced* competition (not just $9k
+studs) showed 2-3x higher ceilings than a genuine flyer's realistic
+14-19 range, purely from this small-sample dynamic — closing that gap
+with an ever-larger percentage bonus would stop being a real signal
+and become an unprincipled hack.
+
+**Fixed with a real minimum-exposure guarantee instead of a bigger
+bonus**: `build_many` now locks the single best flyer per position
+(by ceiling) into `FLYER_MIN_EXPOSURE_PCT` (15%) of a batch, but only
+at real GPP risk levels (`FLYER_MIN_EXPOSURE_RISK_THRESHOLD`, 0.7) —
+reusing the exact same lock machinery already built and tested for
+force-included players, rather than a new mechanism. A low-risk/cash
+batch isn't forced to gamble on unproven opportunity; a genuine GPP
+batch is guaranteed real exposure to it. Verified across the full risk
+spectrum on real data: 0 forced appearances below the threshold (risk
+scale 1 and 5 still show a few organic appearances from the existing
+bonus, just not guaranteed), jumping to 9 of 20 lineups (the top
+flyer at each of 3 positions, each hitting its 15% target) at risk
+scale 8 and 10. Full salary-cap and diversity re-verification across
+risk scales 1/5/8/10 and both seasons: every one still returns the
+full requested count with complete uniqueness and zero cap violations.
 
 ## What's automated vs. manual
 

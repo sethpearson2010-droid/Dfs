@@ -1,63 +1,23 @@
 [
   {
-    "player_name": "Darren Waller",
-    "position": "TE",
-    "team": "CAR",
-    "opponent": "ATL",
-    "salary": 4800,
-    "target_share": 0.164,
-    "wopr": 0.409,
-    "redzone_share": 0.222
+    "player_name": "Mike Washington Jr.",
+    "position": "RB",
+    "team": "LV",
+    "opponent": "LAC",
+    "salary": 4900,
+    "target_share": 0.113,
+    "wopr": 0.253,
+    "redzone_share": 0.154
   },
   {
-    "player_name": "Evan Engram",
-    "position": "TE",
-    "team": "DEN",
-    "opponent": "JAC",
-    "salary": 5000,
-    "target_share": 0.13,
-    "wopr": 0.399,
-    "redzone_share": 0.14
-  },
-  {
-    "player_name": "Cade Otton",
-    "position": "TE",
-    "team": "TB",
-    "opponent": "CLE",
-    "salary": 4800,
-    "target_share": 0.182,
-    "wopr": 0.379,
-    "redzone_share": 0.127
-  },
-  {
-    "player_name": "Denzel Boston",
-    "position": "WR",
-    "team": "CLE",
-    "opponent": "TB",
-    "salary": 4700,
-    "target_share": 0.182,
-    "wopr": 0.623,
-    "redzone_share": 0.156
-  },
-  {
-    "player_name": "Elic Ayomanor",
-    "position": "WR",
+    "player_name": "Michael Carter",
+    "position": "RB",
     "team": "TEN",
     "opponent": "PHI",
-    "salary": 4800,
-    "target_share": 0.159,
-    "wopr": 0.511,
-    "redzone_share": 0.189
-  },
-  {
-    "player_name": "Pat Bryant",
-    "position": "WR",
-    "team": "DEN",
-    "opponent": "JAC",
-    "salary": 5000,
-    "target_share": 0.177,
-    "wopr": 0.489,
-    "redzone_share": 0.1
+    "salary": 4100,
+    "target_share": 0.097,
+    "wopr": 0.158,
+    "redzone_share": 0.27
   },
   {
     "player_name": "Tyjae Spears",
@@ -65,28 +25,68 @@
     "team": "TEN",
     "opponent": "PHI",
     "salary": 4900,
-    "target_share": 0.134,
-    "wopr": 0.128,
-    "redzone_share": 0.297
+    "target_share": 0.138,
+    "wopr": 0.143,
+    "redzone_share": 0.282
   },
   {
-    "player_name": "Raheim Sanders",
-    "position": "RB",
-    "team": "CLE",
-    "opponent": "TB",
+    "player_name": "Elic Ayomanor",
+    "position": "WR",
+    "team": "TEN",
+    "opponent": "PHI",
     "salary": 4800,
-    "target_share": 0.062,
-    "wopr": 0.103,
-    "redzone_share": 0.364
+    "target_share": 0.162,
+    "wopr": 0.502,
+    "redzone_share": 0.179
   },
   {
-    "player_name": "Samaje Perine",
-    "position": "RB",
-    "team": "CIN",
-    "opponent": "HOU",
+    "player_name": "Pat Bryant",
+    "position": "WR",
+    "team": "DEN",
+    "opponent": "JAC",
     "salary": 5000,
-    "target_share": 0.07,
-    "wopr": 0.091,
-    "redzone_share": 0.182
+    "target_share": 0.166,
+    "wopr": 0.46,
+    "redzone_share": 0.082
+  },
+  {
+    "player_name": "Chimere Dike",
+    "position": "WR",
+    "team": "TEN",
+    "opponent": "PHI",
+    "salary": 4500,
+    "target_share": 0.191,
+    "wopr": 0.447,
+    "redzone_share": 0.231
+  },
+  {
+    "player_name": "Drake Dabney",
+    "position": "TE",
+    "team": "GB",
+    "opponent": "NYJ",
+    "salary": 4000,
+    "target_share": 0.2,
+    "wopr": 0.559,
+    "redzone_share": 0.109
+  },
+  {
+    "player_name": "Darren Waller",
+    "position": "TE",
+    "team": "CAR",
+    "opponent": "ATL",
+    "salary": 4800,
+    "target_share": 0.182,
+    "wopr": 0.456,
+    "redzone_share": 0.205
+  },
+  {
+    "player_name": "Hunter Henry",
+    "position": "TE",
+    "team": "NE",
+    "opponent": "PIT",
+    "salary": 5000,
+    "target_share": 0.175,
+    "wopr": 0.351,
+    "redzone_share": 0.222
   }
 ]

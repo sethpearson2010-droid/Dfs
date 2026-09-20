@@ -96,6 +96,16 @@ REGRESSION_BONUS_WEIGHT_AT_MAX_GPP = 0.45
 # correction.
 FLYER_BONUS_WEIGHT_AT_MAX_GPP = 0.30
 
+# the selection-time bonus above wasn't enough on its own — confirmed
+# directly that flyers got 0 appearances even in a 50-lineup max-GPP
+# batch, since their realistic ceiling is 2-3x lower than even
+# similarly-priced competition. Rather than inflate the bonus further
+# into an unprincipled hack, the single best flyer per position gets a
+# real guaranteed minimum exposure at genuine GPP risk levels instead
+# — see build_many's use of these.
+FLYER_MIN_EXPOSURE_RISK_THRESHOLD = 0.7
+FLYER_MIN_EXPOSURE_PCT = 0.15
+
 # a gentle, always-on nudge (not risk-scaled, unlike leverage/stack)
 # toward spending more of the salary cap — small enough that real
 # projection differences still dominate player selection, but enough
@@ -378,8 +388,38 @@ class LineupBuilder:
         consecutive_rejections = 0
         RELAX_AFTER_REJECTIONS = 75
 
-        lock_target_counts = lock_target_counts or {}
-        force_included_players = [p for p in players if p.force_included]
+        lock_target_counts = dict(lock_target_counts or {})
+        force_included_players = list({p.player_name: p for p in players if p.force_included}.values())
+
+        # a real minimum-exposure guarantee for top flyers in GPP
+        # batches, reusing the exact same lock machinery already built
+        # and tested for force-included players. Needed because
+        # neither a selection-time bonus nor batch diversity alone
+        # could get flyers into lineups at all: confirmed directly
+        # that even at risk_level=1.0 across a 50-lineup batch, 0
+        # flyer appearances — the gap between a flyer's realistic
+        # ceiling (~14-19) and even similarly-priced competition
+        # (~34-35, itself often inflated by one big early-season game)
+        # is too large for a percentage bonus to close without making
+        # the bonus itself an unprincipled hack, and the diversity/
+        # exposure mechanism only rotates among genuinely competitive
+        # options — it never reaches down to a non-competitive one.
+        # Only the single best flyer per position gets this guarantee
+        # (by ceiling, since a flyer's case is fundamentally about
+        # upside), and only at real GPP risk levels — a low-risk/cash
+        # batch shouldn't be forced to gamble on unproven opportunity.
+        if risk_level >= FLYER_MIN_EXPOSURE_RISK_THRESHOLD:
+            seen_flyer_positions: set[Position] = set()
+            for p in sorted((p for p in players if p.is_flyer), key=lambda p: -p.ceiling_projection):
+                if p.position in seen_flyer_positions:
+                    continue
+                seen_flyer_positions.add(p.position)
+                normalized = normalize_name(p.player_name)
+                if normalized not in lock_target_counts:
+                    lock_target_counts[normalized] = max(1, round(FLYER_MIN_EXPOSURE_PCT * count))
+                if p.player_name not in {fp.player_name for fp in force_included_players}:
+                    force_included_players.append(p)
+
         lock_usage_count: dict[str, int] = {}
 
         while len(accepted) < count and attempts < max_attempts:

@@ -52,6 +52,12 @@ LEAGUE_AVG_IMPLIED_TOTAL = 22.0  # rough long-run NFL team scoring average
 # the projection — the "pace" signal, distinct from game script.
 PACE_WEIGHT = 0.22
 
+# no single matchup signal can swing a projection more than this much
+# on its own, however extreme the underlying differential — see
+# _project's cap application for why this is needed independent of
+# the multi-signal stacking fix.
+MULTIPLIER_SWING_CAP = 0.35
+
 # floor/ceiling are built from each player's own recent game-to-game
 # standard deviation. Ceiling gets a bigger multiplier than floor
 # loses — DFS upside is asymmetric (points are bounded at 0 below but
@@ -394,7 +400,6 @@ class ValueCalculator:
         if base_projection == 0.0:
             return base_projection, 1.0, 1.0, 1.0
 
-        projection = base_projection
         vuln_multiplier = 1.0
         script_multiplier = 1.0
         pace_multiplier = 1.0
@@ -403,19 +408,46 @@ class ValueCalculator:
             league_avg = self._league_avg_by_position.get(position, vuln.blended_score)
             if league_avg:
                 vuln_multiplier = 1 + VULNERABILITY_WEIGHT * ((vuln.blended_score - league_avg) / league_avg)
-                projection *= vuln_multiplier
 
         if game_context is not None:
             script_multiplier = 1 + GAME_SCRIPT_WEIGHT * (
                 (game_context.implied_team_total - LEAGUE_AVG_IMPLIED_TOTAL) / LEAGUE_AVG_IMPLIED_TOTAL
             )
-            projection *= script_multiplier
 
         if pace_profile is not None and self._league_avg_plays:
             pace_multiplier = 1 + PACE_WEIGHT * (
                 (pace_profile.blended_plays - self._league_avg_plays) / self._league_avg_plays
             )
-            projection *= pace_multiplier
+
+        # cap each individual multiplier to a sane range — a genuinely
+        # extreme differential (a real case: an opposing defense
+        # allowing 129% more than league-average points to RBs)
+        # otherwise produces an unrealistic single-signal swing on its
+        # own, independent of the multi-signal stacking fix below.
+        # Confirmed: this alone (vulnerability=1.645, ~64.5% boost from
+        # one signal) was most of Bijan Robinson's 47-point raw
+        # projection — the stacking fix barely moved his number,
+        # proving this is a distinct problem needing its own cap.
+        vuln_multiplier = max(1 - MULTIPLIER_SWING_CAP, min(1 + MULTIPLIER_SWING_CAP, vuln_multiplier))
+        script_multiplier = max(1 - MULTIPLIER_SWING_CAP, min(1 + MULTIPLIER_SWING_CAP, script_multiplier))
+        pace_multiplier = max(1 - MULTIPLIER_SWING_CAP, min(1 + MULTIPLIER_SWING_CAP, pace_multiplier))
+
+        # combine the three EFFECTS additively (how far each multiplier
+        # sits from neutral), not by multiplying the raw multipliers
+        # together — multiplying them compounds explosively when
+        # multiple signals happen to align favorably at once: three
+        # individually-modest +30% effects multiply to +120% combined
+        # (1.3 x 1.3 x 1.3 = 2.197), not the +90% you'd expect from
+        # three +30% boosts. Confirmed this was producing genuinely
+        # absurd point estimates — Bijan Robinson's raw projection (not
+        # even ceiling) reached 47.2, an unrealistic MEDIAN expectation
+        # for any RB. Additive combination gives the same result as
+        # before for the common case (only one signal notably
+        # favorable) and only reduces the effect specifically when
+        # multiple signals stack, which is exactly the case that was
+        # broken.
+        combined_multiplier = 1.0 + (vuln_multiplier - 1.0) + (script_multiplier - 1.0) + (pace_multiplier - 1.0)
+        projection = base_projection * combined_multiplier
 
         return projection, vuln_multiplier, script_multiplier, pace_multiplier
 
