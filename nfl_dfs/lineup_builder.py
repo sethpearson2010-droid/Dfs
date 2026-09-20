@@ -106,6 +106,19 @@ FLYER_BONUS_WEIGHT_AT_MAX_GPP = 0.30
 FLYER_MIN_EXPOSURE_RISK_THRESHOLD = 0.7
 FLYER_MIN_EXPOSURE_PCT = 0.15
 
+# same fix, same reason, for regression.py's candidates: confirmed
+# directly that the risk-scaled bonus above (REGRESSION_BONUS_WEIGHT_AT_MAX_GPP)
+# alone still wasn't enough — 9 real candidates identified, 0
+# appearances across a 20-lineup max-GPP batch, even after fixing the
+# two multiplier bugs that were inflating competing players' ceilings
+# (see value.py's MULTIPLIER_SWING_CAP and the additive-vs-
+# multiplicative fix). Same reasoning as flyers: rather than inflate
+# the bonus into an unprincipled hack, the single best regression
+# candidate per position gets a real guaranteed minimum exposure at
+# genuine GPP risk levels instead.
+REGRESSION_MIN_EXPOSURE_RISK_THRESHOLD = 0.7
+REGRESSION_MIN_EXPOSURE_PCT = 0.15
+
 # a gentle, always-on nudge (not risk-scaled, unlike leverage/stack)
 # toward spending more of the salary cap — small enough that real
 # projection differences still dominate player selection, but enough
@@ -408,12 +421,68 @@ class LineupBuilder:
         # (by ceiling, since a flyer's case is fundamentally about
         # upside), and only at real GPP risk levels — a low-risk/cash
         # batch shouldn't be forced to gamble on unproven opportunity.
-        if risk_level >= FLYER_MIN_EXPOSURE_RISK_THRESHOLD:
-            seen_flyer_positions: set[Position] = set()
-            for p in sorted((p for p in players if p.is_flyer), key=lambda p: -p.ceiling_projection):
-                if p.position in seen_flyer_positions:
+        # regression and flyers share ELIGIBLE_POSITIONS (RB/WR/TE) —
+        # tracking claimed positions together, not independently,
+        # prevents both mechanisms locking a DIFFERENT cheap player at
+        # the SAME position simultaneously. Confirmed directly this
+        # was a real problem: with both guarantees active
+        # independently, one real lineup ended up with 6 of 9 slots
+        # locked (a flyer AND a regression candidate at each of
+        # WR/RB/TE), leaving too few free slots for salary-floor
+        # enforcement to work with — $6,700 left unused, and reduced
+        # diversity (18/20 unique instead of 20/20) from so much of
+        # the roster being pinned down at once.
+        #
+        # A first fix gave regression flat priority over flyers at any
+        # shared position — simpler, but confirmed unfair in practice:
+        # regression swept all 3 positions every time, leaving flyers
+        # back at 0 appearances (the exact problem just fixed last
+        # session). Instead, both candidate pools are combined and
+        # ranked together by ceiling, so whichever specific player is
+        # genuinely the stronger case wins each position — not
+        # whichever category happens to be checked first.
+        # regression and flyers share ELIGIBLE_POSITIONS (RB/WR/TE) —
+        # tracking claimed positions together, not independently,
+        # prevents both mechanisms locking a DIFFERENT cheap player at
+        # the SAME position simultaneously. Confirmed directly this
+        # was a real problem: with both guarantees active
+        # independently, one real lineup ended up with 6 of 9 slots
+        # locked (a flyer AND a regression candidate at each of
+        # WR/RB/TE), leaving too few free slots for salary-floor
+        # enforcement to work with — $6,700 left unused, and reduced
+        # diversity (18/20 unique instead of 20/20).
+        #
+        # Two earlier attempts at splitting the 3 shared positions both
+        # failed the same way: flat priority for one mechanism swept
+        # all 3 positions every time (confirmed for both orderings
+        # tried), and ranking combined candidates by raw ceiling just
+        # shifted which mechanism swept, since one's boost formula
+        # reliably produces bigger absolute numbers than the other's —
+        # neither is a real "which player is better" comparison, just
+        # an artifact of which formula happens to output bigger
+        # numbers. A fixed position split guarantees both signals real
+        # representation regardless of formula scale: regression gets
+        # RB and TE, flyers get WR.
+        seen_guarantee_positions: set[Position] = set()
+        REGRESSION_POSITIONS = {Position.RB, Position.TE}
+        FLYER_POSITIONS = {Position.WR}
+
+        if risk_level >= REGRESSION_MIN_EXPOSURE_RISK_THRESHOLD:
+            for p in sorted((p for p in players if p.is_regression_candidate), key=lambda p: -p.ceiling_projection):
+                if p.position not in REGRESSION_POSITIONS or p.position in seen_guarantee_positions:
                     continue
-                seen_flyer_positions.add(p.position)
+                seen_guarantee_positions.add(p.position)
+                normalized = normalize_name(p.player_name)
+                if normalized not in lock_target_counts:
+                    lock_target_counts[normalized] = max(1, round(REGRESSION_MIN_EXPOSURE_PCT * count))
+                if p.player_name not in {fp.player_name for fp in force_included_players}:
+                    force_included_players.append(p)
+
+        if risk_level >= FLYER_MIN_EXPOSURE_RISK_THRESHOLD:
+            for p in sorted((p for p in players if p.is_flyer), key=lambda p: -p.ceiling_projection):
+                if p.position not in FLYER_POSITIONS or p.position in seen_guarantee_positions:
+                    continue
+                seen_guarantee_positions.add(p.position)
                 normalized = normalize_name(p.player_name)
                 if normalized not in lock_target_counts:
                     lock_target_counts[normalized] = max(1, round(FLYER_MIN_EXPOSURE_PCT * count))

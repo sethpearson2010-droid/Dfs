@@ -465,6 +465,40 @@ scale 8 and 10. Full salary-cap and diversity re-verification across
 risk scales 1/5/8/10 and both seasons: every one still returns the
 full requested count with complete uniqueness and zero cap violations.
 
+**The exact same fix, and the same 0-appearance problem, applied to
+`regression.py`'s candidates too** — confirmed directly: 9 real
+candidates identified, 0 appearances in a 20-lineup max-GPP batch,
+even after the two multiplier bugs above were fixed. Added
+`REGRESSION_MIN_EXPOSURE_RISK_THRESHOLD`/`REGRESSION_MIN_EXPOSURE_PCT`
+(same 0.7/15% as flyers), reusing the identical lock mechanism.
+
+**But regression and flyers share the same 3 eligible positions
+(RB/WR/TE)** — running both guarantees independently caused a real,
+separate problem: one lineup ended up with 6 of 9 slots locked (a
+flyer *and* a regression candidate at each position simultaneously),
+leaving too few free slots for salary-floor enforcement to work with
+($6,700 left unused, and diversity dropped to 18/20 unique). Two
+follow-up attempts at coordinating them both failed the same way for
+different reasons: flat priority for one mechanism over the other
+swept all 3 positions every time regardless of which was checked
+first, and ranking combined candidates by raw ceiling just shifted
+*which* mechanism swept, since flyers' ceiling-boost formula reliably
+produces bigger absolute numbers than regression's points-adjustment
+formula — neither comparison was really "which player is better," just
+an artifact of which formula happens to output bigger numbers.
+
+Settled on a fixed position split instead — regression gets RB and TE,
+flyers get WR — which has a real rationale beyond just resolving the
+conflict: regression's signal (red-zone *touches* converting to TDs)
+fits RB/TE's more touch-concentrated usage (goal-line packages, etc.)
+naturally, while flyers' signal (target share/WOPR) fits WR's more
+target/route-based profile. Verified across the full risk spectrum:
+both signals get real, simultaneous representation once risk crosses
+into GPP territory (6 regression + 3 flyer appearances at risk scale
+8-10 in one real test), full lineup count and diversity maintained at
+every risk level and both seasons, leftover staying reasonable
+throughout ($0-$2,000, no repeat of the $6,700 collapse).
+
 ## What's automated vs. manual
 
 - **Automated**: nflverse stats/schedule pull + vulnerability scoring,
