@@ -1038,6 +1038,29 @@ fires post-fix (0 triggers across the same 162-lineup stress test) —
 meaning the real fix works on its own; the net is insurance, not a
 patch over an unfixed root cause.
 
+**Another follow-on issue, reported as "leaving $4-5k in salary that
+should be used"**: once flyers got a real minimum-exposure guarantee
+(see "Minimum-salary flyers" below), lineups with a locked flyer
+started leaving noticeably more unused salary than normal ones —
+confirmed directly: $2,400-$4,200 unused on flyer-locked lineups vs.
+under $2,200 (mostly under $1,200) without one. Root cause: strict
+salary-floor enforcement (`_enforce_salary_floor`) was unconditionally
+disabled for batches (see the diversity-collapse investigation
+above), but that decision was made in the context of a *tight*
+`--max-player-salary` making the pool of good expensive upgrades too
+thin — a completely different scenario from "a locked flyer freed up
+its own salary and the rest of the roster didn't absorb it." With no
+per-player cap set (the common case), that collapse risk doesn't
+apply, and `_enforce_salary_floor` already correctly skips locked
+slots, so re-enabling it only touches the other 8 (unlocked) slots —
+safe even with a flyer locked in. Fixed by making the disable
+conditional on whether `max_player_salary` is actually set, rather
+than always-off. Verified: flyer-locked lineups now leave $400-$1,500
+(down from $2,400-$4,200), full lineup count and diversity holding
+across risk scales 1/5/8/10 and both seasons, and the original tight-
+`max_player_salary` protection re-confirmed still intact when that
+flag *is* set.
+
 **That fix had a real, serious side effect of its own, reported as
 "risk 5 only generating 3 lineups" and "not seeing a lot of
 variations"**: correctly refusing to overspend meant `_greedy_fill`

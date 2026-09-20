@@ -452,18 +452,28 @@ class LineupBuilder:
                 player_noise=noise,
                 local_search_iterations=BUILD_MANY_LOCAL_SEARCH_ITERATIONS,
                 max_player_salary=max_player_salary,
-                # NOT max_salary_leftover here, even with randomized
-                # tie-breaking: verified directly that under a tight
-                # --max-player-salary, the pool of genuinely GOOD
-                # expensive upgrade options is itself small enough that
-                # the enforcement loop still funnels every candidate
-                # toward the same final lineup regardless of starting
-                # point or random tie-breaks — this is a real structural
-                # tension (spend-near-cap vs. diversity), not a fixable
-                # bug, once the constrained pool is this thin. The
-                # stronger always-on SALARY_UTILIZATION_WEIGHT below
-                # pushes spend up without that collapse.
-                max_salary_leftover=None,
+                # only disabled when max_player_salary is actually
+                # constraining the pool — verified directly that a
+                # TIGHT --max-player-salary makes the pool of genuinely
+                # good expensive upgrade options thin enough that
+                # strict enforcement (even with randomized tie-
+                # breaking) still funnels every candidate toward the
+                # same final lineup, a real structural tension, not a
+                # fixable bug. But with no per-player cap (the common
+                # case), that risk doesn't apply, and disabling this
+                # unconditionally caused a real, reported issue: a
+                # locked flyer (see FLYER_MIN_EXPOSURE_PCT above) frees
+                # up its own salary relative to a normal pick at that
+                # slot, and the softer always-on SALARY_UTILIZATION_WEIGHT
+                # bias alone wasn't enough to make the rest of the
+                # roster absorb it — confirmed leaving $2,400-$4,200
+                # unused specifically on lineups with a locked flyer,
+                # vs. under $2,200 (mostly under $1,200) without one.
+                # _enforce_salary_floor already correctly skips locked
+                # slots (locked_slot_names), so re-enabling it here only
+                # affects the OTHER 8 slots — safe even with a flyer
+                # locked in.
+                max_salary_leftover=max_salary_leftover if max_player_salary is None else None,
                 locked_override=current_locked,
             )
             if candidate is None:
