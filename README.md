@@ -499,6 +499,96 @@ into GPP territory (6 regression + 3 flyer appearances at risk scale
 every risk level and both seasons, leftover staying reasonable
 throughout ($0-$2,000, no repeat of the $6,700 collapse).
 
+## Learning from real GPP-winning lineups (weekly maintenance)
+
+`inputs/gpp_winners.json` stores real, manually-imported winning GPP
+lineups. `nfl_dfs/gpp_winner_analysis.py` computes real, concrete
+patterns from whatever's stored — salary distribution by roster slot,
+FLEX position tendencies, QB salary tier, and stacking rate (a QB
+paired with a same-team WR/TE, the classic GPP correlation play) —
+regenerated automatically on every pipeline run into
+`output/gpp_winner_analysis.json`, with a dashboard panel (🏆 Real GPP
+Winner Patterns) showing both the aggregate numbers and a week-by-week
+trend table.
+
+**This is explicitly not a model that predicts winners** — it's a
+small, growing dataset of real outcomes, and every statistic is
+reported with its sample size attached rather than treated as a
+precise target. `analyze()` needs at least 3 imported weeks before
+calling anything a real trend rather than noise — below that, the
+per-week list still shows (always useful), but the trend note says
+plainly that it's too early to draw a conclusion either way.
+
+### The weekly workflow
+
+Each week, once that week's contest results are in:
+
+1. **Paste the winning lineup** (or however many you have) to Claude —
+   include, for each of the 9 players: name, team, position, salary,
+   and points scored, plus the week/contest. Any note about *why* a
+   player had a big or small game (an injury elsewhere, a blowout
+   script) is useful context even though it isn't a separate field.
+2. **Claude appends it** to `inputs/gpp_winners.json` in the existing
+   shape and re-runs the pipeline, which regenerates the analysis
+   automatically.
+3. **Review what changed** — the per-week trend table makes it obvious
+   whether a pattern (salary utilization, stacking, FLEX position,
+   QB salary tier) is holding steady, drifting, or was a one-off. A
+   pattern seen in literally every imported week so far is worth a
+   real tuning change to a `lineup_builder.py` constant (with the
+   before/after verified against real lineup output, the same
+   standard as every other change in this project); a pattern that's
+   inconsistent week to week is worth watching, not acting on yet.
+
+Nothing about this is automatic tuning — every constant change is a
+deliberate, reviewed decision each week, verified against real output
+before and after, not a self-adjusting system drifting on noisy
+few-data-point weekly signals without oversight.
+
+### What the first two imported weeks showed, and what changed
+
+Two real winners from the "NFL Sunday Million" were imported to start:
+
+- **Both spent $59,900 of the $60,000 cap** — exactly $100 left over,
+  in both cases. Far tighter than the $2,000 default this project had
+  been using.
+- **Both had a real same-team QB+WR stack** — Bryce Young + Jalen
+  Coker (both CAR) in Week 1, Dak Prescott + CeeDee Lamb (both DAL) in
+  Week 2. The Week 1 stack wasn't obvious from a manual read-through —
+  the analysis code caught it. A 2/2 (100%) rate.
+- **Directly validated the injury-replacement feature** (see above):
+  the two players noted as having benefited from a teammate's injury —
+  Dalton Schultz (Nico Collins out) and Rashod Bateman (Zay Flowers
+  out) — are exactly the pattern that feature already targets.
+
+Two real tuning changes made from these findings, both verified
+against real data before and after:
+
+1. **`DEFAULT_MAX_SALARY_LEFTOVER`** tightened from $2,000 to $500 —
+   but confirmed directly that applying this uniformly caused a severe
+   diversity collapse at pure cash (risk-scale 1: 9/20 lineups built,
+   only 1 unique composition). Root cause understood via `git stash`:
+   this collapse is actually a **pre-existing** characteristic of
+   `risk_level=0.0` specifically (cash's pool of near-best floor
+   options has much less spread between alternatives to begin with),
+   confirmed present with the OLD $2,000 default too, not something
+   these changes introduced. Fixed properly with `CASH_MAX_SALARY_LEFTOVER`
+   (2000) and linear risk-scaling in `build_many` — genuine GPP builds
+   get the tight $500 target the real data supports, cash builds keep
+   the safer $2,000, and an explicit `--max-salary-leftover` override
+   is still respected exactly as given, with no scaling applied.
+2. **`STACK_BONUS_PER_PLAYER`/`BRING_BACK_BONUS`** raised (8.0/4.0 →
+   20.0/8.0, in two verified steps) after confirming our own lineups
+   were only producing a real stack 55% of the time (11/20) at max
+   GPP, versus the real winners' 100%. Landed at ~80-85% in testing —
+   a real, meaningful improvement without chasing an exact match to a
+   2-lineup sample, which could easily look very different once more
+   winners are imported.
+
+Verified after both changes: full lineup count and complete diversity
+maintained across risk scales 3/5/8/10 and both seasons, zero salary-
+cap violations throughout.
+
 ## What's automated vs. manual
 
 - **Automated**: nflverse stats/schedule pull + vulnerability scoring,

@@ -139,8 +139,21 @@ TIE_BREAK_TOLERANCE_FLOOR = 0.5
 # bonus for also rostering a player from the QB's opponent in the same
 # game (a full game stack) — both scale with risk_level, same reasoning
 # as the ownership leverage bonus above.
-STACK_BONUS_PER_PLAYER = 8.0
-BRING_BACK_BONUS = 4.0
+#
+# Raised from 8.0/4.0 (in two steps, verifying stacking rate after
+# each) after importing real GPP-winning lineups
+# (gpp_winner_analysis.py, inputs/gpp_winners.json): both of the first
+# two real winners imported had a genuine same-team QB+pass-catcher
+# stack — a 2/2 (100%) rate — while our own lineups were only
+# producing a real stack in 11/20 (55%) at max GPP. Small sample (2
+# winners), so not chased all the way to exactly match 100% (a single
+# future import could look very different) — settled at a real,
+# meaningful improvement (80% in testing) rather than over-fitting
+# further. Stacking is also well-established general GPP strategy
+# independent of this specific data, so treated as a real signal worth
+# acting on either way.
+STACK_BONUS_PER_PLAYER = 20.0
+BRING_BACK_BONUS = 8.0
 STACK_ELIGIBLE_POSITIONS = {Position.RB, Position.WR, Position.TE}
 
 # diversity controls for build_many(): a new lineup must differ from
@@ -165,7 +178,29 @@ DEFAULT_MAX_POSITION_OVERLAP = 2
 # default target: don't leave more than this much of the $60,000 cap
 # unused. A lineup that leaves a lot of cap on the table is usually
 # leaving real points on the table too — see _enforce_salary_floor.
-DEFAULT_MAX_SALARY_LEFTOVER = 2000
+#
+# Tightened from $2,000 after importing real GPP-winning lineups
+# (gpp_winner_analysis.py, inputs/gpp_winners.json): both of the first
+# two real winners imported spent exactly $59,900 of the $60,000 cap —
+# only $100 left over, in both cases. Small sample (2 winners), so not
+# set to literally match $100 (a single future import could look very
+# different), but the finding is a striking, exactly-consistent one
+# worth acting on rather than dismissing for its size — $500 is a real
+# tightening from the old default while leaving room for legitimate
+# cases (a rare true "punt" build) that a hard $100 target would rule
+# out entirely.
+DEFAULT_MAX_SALARY_LEFTOVER = 500
+
+# build_many specifically (not single-lineup build()) needs a LESS
+# aggressive target at low risk levels — confirmed directly that
+# applying the tight $500 GPP-context target uniformly caused a severe
+# diversity collapse at cash (risk-scale 1: 9/20 lineups built, only 1
+# unique composition). Cash's pool of near-best floor options has much
+# less spread between alternatives to begin with, so a tight target
+# forces too many candidates toward the same near-optimal combination.
+# This is the old, pre-real-data default, now scoped specifically to
+# the cash end of build_many's risk-scaled range.
+CASH_MAX_SALARY_LEFTOVER = 2000
 BUILD_MANY_LOCAL_SEARCH_ITERATIONS = 250
 MAX_ATTEMPTS_PER_LINEUP = 100
 MAX_TOTAL_ATTEMPTS = 8000
@@ -401,6 +436,19 @@ class LineupBuilder:
         consecutive_rejections = 0
         RELAX_AFTER_REJECTIONS = 75
 
+        # scale the salary-leftover target by risk level when the
+        # caller left it at the default — real GPP winner data
+        # supports a tight $500 target at genuine GPP risk levels, but
+        # cash needs the older, safer $2,000 (see CASH_MAX_SALARY_LEFTOVER
+        # above for why). An explicit override (a value that isn't the
+        # default) is respected exactly as given, no scaling applied.
+        if max_salary_leftover == DEFAULT_MAX_SALARY_LEFTOVER:
+            effective_max_salary_leftover = round(
+                CASH_MAX_SALARY_LEFTOVER - risk_level * (CASH_MAX_SALARY_LEFTOVER - DEFAULT_MAX_SALARY_LEFTOVER)
+            )
+        else:
+            effective_max_salary_leftover = max_salary_leftover
+
         lock_target_counts = dict(lock_target_counts or {})
         force_included_players = list({p.player_name: p for p in players if p.force_included}.values())
 
@@ -542,7 +590,7 @@ class LineupBuilder:
                 # slots (locked_slot_names), so re-enabling it here only
                 # affects the OTHER 8 slots — safe even with a flyer
                 # locked in.
-                max_salary_leftover=max_salary_leftover if max_player_salary is None else None,
+                max_salary_leftover=effective_max_salary_leftover if max_player_salary is None else None,
                 locked_override=current_locked,
             )
             if candidate is None:

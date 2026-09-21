@@ -265,6 +265,12 @@
     <div id="flyersList"></div>
   </div>
 
+  <div class="sleepers-panel" id="gppWinnerPanel" style="display:none; border-color:#facc1544;">
+    <h2 style="color:#facc15;">🏆 Real GPP Winner Patterns</h2>
+    <div id="gppWinnerSummary" style="font-size:13px; line-height:1.6; color:var(--text); margin-bottom:10px;"></div>
+    <div id="gppWinnerTrend" style="font-size:12px; color:var(--muted);"></div>
+  </div>
+
   <div class="lineups-panel" id="lineupsPanel" style="display:none;">
     <h2>Lineup Builder — Cash to GPP</h2>
     <div class="risk-slider-row">
@@ -312,6 +318,7 @@ let allPlayers = [];
 let sleepers = [];
 let regressionCandidates = [];
 let flyers = [];
+let gppWinnerAnalysis = null;
 let lineups = [];
 let runConfig = null;
 let pendingExclusions = JSON.parse(localStorage.getItem("dfs_pending_exclusions") || "[]");
@@ -367,6 +374,13 @@ async function loadData() {
   }
 
   try {
+    const gppWinnerRes = await freshFetch("../output/gpp_winner_analysis.json");
+    if (gppWinnerRes.ok) gppWinnerAnalysis = await gppWinnerRes.json();
+  } catch (e) {
+    gppWinnerAnalysis = null;
+  }
+
+  try {
     const lineupRes = await freshFetch("../output/lineups.json");
     if (lineupRes.ok) lineups = await lineupRes.json();
   } catch (e) {
@@ -384,6 +398,7 @@ async function loadData() {
   renderSleepers();
   renderRegressionCandidates();
   renderFlyers();
+  renderGppWinnerAnalysis();
   renderLineups();
   initRebuildPanel();
   render();
@@ -841,6 +856,59 @@ function renderFlyers() {
     `;
     list.appendChild(card);
   });
+}
+
+function renderGppWinnerAnalysis() {
+  const panel = document.getElementById("gppWinnerPanel");
+  const summary = document.getElementById("gppWinnerSummary");
+  const trendEl = document.getElementById("gppWinnerTrend");
+  if (!gppWinnerAnalysis || !gppWinnerAnalysis.sample_size) {
+    panel.style.display = "none";
+    return;
+  }
+  panel.style.display = "block";
+  const a = gppWinnerAnalysis;
+  const su = a.salary_utilization;
+  const stacking = a.stacking;
+  const flexCounts = Object.entries(a.flex_position_tendency.counts)
+    .map(([pos, count]) => `${pos}: ${count}`)
+    .join(", ");
+  summary.innerHTML = `
+    <div style="color:var(--muted); margin-bottom:8px;">${a.trend_note}</div>
+    <div><strong>Salary used:</strong> avg $${su.total_salary_used.avg.toLocaleString()} of $60,000 (leftover avg $${su.leftover.avg.toLocaleString()}, range $${su.leftover.min}-$${su.leftover.max})</div>
+    <div><strong>QB salary:</strong> avg $${a.qb_salary_tier.avg.toLocaleString()} (range $${a.qb_salary_tier.min.toLocaleString()}-$${a.qb_salary_tier.max.toLocaleString()})</div>
+    <div><strong>Stacking:</strong> ${stacking.lineups_with_a_stack} of ${a.sample_size} winners (${stacking.stack_rate_pct}%) had a real same-team QB+pass-catcher stack</div>
+    <div><strong>FLEX position:</strong> ${flexCounts || "no data yet"}</div>
+  `;
+
+  const rows = a.weekly_trend
+    .map(
+      w => `
+    <tr>
+      <td>Wk${w.week}${w.season ? " '" + String(w.season).slice(2) : ""}</td>
+      <td>$${w.total_salary.toLocaleString()} ($${w.leftover} left)</td>
+      <td>${w.qb_name} ($${w.qb_salary.toLocaleString()})</td>
+      <td>${w.flex_name} (${w.flex_position})</td>
+      <td>${w.has_stack ? "✅ " + w.stack_partners : "—"}</td>
+      <td>${w.total_points}</td>
+    </tr>`
+    )
+    .join("");
+  trendEl.innerHTML = `
+    <div style="overflow-x:auto;">
+    <table style="width:100%; border-collapse:collapse;">
+      <thead><tr style="color:var(--muted); text-align:left;">
+        <th style="padding:4px 8px;">Week</th>
+        <th style="padding:4px 8px;">Salary Used</th>
+        <th style="padding:4px 8px;">QB</th>
+        <th style="padding:4px 8px;">FLEX</th>
+        <th style="padding:4px 8px;">Stack</th>
+        <th style="padding:4px 8px;">Total Pts</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    </div>
+  `;
 }
 
 function buildFilters() {

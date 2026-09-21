@@ -1,0 +1,38 @@
+[
+  {
+    "season": 2026,
+    "week": 1,
+    "contest": "NFL Sunday Million",
+    "prize_pool": "$2M",
+    "notes": "",
+    "players": [
+      {"name": "B. Young", "team": "CAR", "position": "QB", "salary": 6800, "points": 35.44, "roster_slot": "QB"},
+      {"name": "J. Gibbs", "team": "DET", "position": "RB", "salary": 9100, "points": 34.1, "roster_slot": "RB"},
+      {"name": "D. Swift", "team": "CHI", "position": "RB", "salary": 6600, "points": 34.9, "roster_slot": "RB"},
+      {"name": "J. Coker", "team": "CAR", "position": "WR", "salary": 5400, "points": 32.8, "roster_slot": "WR"},
+      {"name": "A. St. Brown", "team": "DET", "position": "WR", "salary": 8600, "points": 23.7, "roster_slot": "WR"},
+      {"name": "C. Olave", "team": "NO", "position": "WR", "salary": 7400, "points": 26.2, "roster_slot": "WR"},
+      {"name": "D. Kincaid", "team": "BUF", "position": "TE", "salary": 5200, "points": 18.5, "roster_slot": "TE"},
+      {"name": "A. Jeanty", "team": "LV", "position": "RB", "salary": 7000, "points": 32.7, "roster_slot": "FLEX"},
+      {"name": "LV Raiders", "team": "LV", "position": "D", "salary": 3800, "points": 13, "roster_slot": "D"}
+    ]
+  },
+  {
+    "season": 2026,
+    "week": 2,
+    "contest": "NFL Sunday Million",
+    "prize_pool": "$2M",
+    "notes": "D. Schultz benefited from N. Collins (HOU) being out; R. Bateman benefited from Z. Flowers (BAL) being out",
+    "players": [
+      {"name": "D. Prescott", "team": "DAL", "position": "QB", "salary": 8000, "points": 29.76, "roster_slot": "QB"},
+      {"name": "C. McCaffrey", "team": "SF", "position": "RB", "salary": 9000, "points": 20.6, "roster_slot": "RB"},
+      {"name": "A. Jones Sr.", "team": "MIN", "position": "RB", "salary": 5900, "points": 13.5, "roster_slot": "RB"},
+      {"name": "C. Lamb", "team": "DAL", "position": "WR", "salary": 8500, "points": 34.3, "roster_slot": "WR"},
+      {"name": "J. Smith-Njigba", "team": "SEA", "position": "WR", "salary": 9000, "points": 41, "roster_slot": "WR"},
+      {"name": "R. Bateman", "team": "BAL", "position": "WR", "salary": 5000, "points": 18.3, "roster_slot": "WR"},
+      {"name": "D. Schultz", "team": "HOU", "position": "TE", "salary": 5200, "points": 23, "roster_slot": "TE"},
+      {"name": "L. Burden III", "team": "CHI", "position": "WR", "salary": 6000, "points": 4.7, "roster_slot": "FLEX"},
+      {"name": "CAR Panthers", "team": "CAR", "position": "D", "salary": 3300, "points": 26, "roster_slot": "D"}
+    ]
+  }
+]

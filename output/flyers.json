@@ -1,5 +1,35 @@
 [
   {
+    "player_name": "Drake Dabney",
+    "position": "TE",
+    "team": "GB",
+    "opponent": "NYJ",
+    "salary": 4000,
+    "target_share": 0.2,
+    "wopr": 0.559,
+    "redzone_share": 0.109
+  },
+  {
+    "player_name": "Darren Waller",
+    "position": "TE",
+    "team": "CAR",
+    "opponent": "ATL",
+    "salary": 4800,
+    "target_share": 0.182,
+    "wopr": 0.456,
+    "redzone_share": 0.205
+  },
+  {
+    "player_name": "Hunter Henry",
+    "position": "TE",
+    "team": "NE",
+    "opponent": "PIT",
+    "salary": 5000,
+    "target_share": 0.175,
+    "wopr": 0.351,
+    "redzone_share": 0.222
+  },
+  {
     "player_name": "Elic Ayomanor",
     "position": "WR",
     "team": "TEN",
@@ -58,35 +88,5 @@
     "target_share": 0.138,
     "wopr": 0.143,
     "redzone_share": 0.282
-  },
-  {
-    "player_name": "Drake Dabney",
-    "position": "TE",
-    "team": "GB",
-    "opponent": "NYJ",
-    "salary": 4000,
-    "target_share": 0.2,
-    "wopr": 0.559,
-    "redzone_share": 0.109
-  },
-  {
-    "player_name": "Darren Waller",
-    "position": "TE",
-    "team": "CAR",
-    "opponent": "ATL",
-    "salary": 4800,
-    "target_share": 0.182,
-    "wopr": 0.456,
-    "redzone_share": 0.205
-  },
-  {
-    "player_name": "Hunter Henry",
-    "position": "TE",
-    "team": "NE",
-    "opponent": "PIT",
-    "salary": 5000,
-    "target_share": 0.175,
-    "wopr": 0.351,
-    "redzone_share": 0.222
   }
 ]

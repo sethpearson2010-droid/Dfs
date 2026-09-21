@@ -20,6 +20,7 @@ from nfl_dfs.models import Lineup, PlayerValue, Position, RedZoneWeekly
 from nfl_dfs.name_matching import normalize_name
 from nfl_dfs.ownership import OwnershipEstimator
 from nfl_dfs.pace import PaceCalculator
+from nfl_dfs import gpp_winner_analysis
 from nfl_dfs.flyers import FlyerCalculator
 from nfl_dfs.regression import RegressionCalculator
 from nfl_dfs.salary import OUT_INJURY_STATUSES, FanDuelSalaryImporter
@@ -243,6 +244,9 @@ class DfsPipeline:
         self._write_sleepers(sleeper_picks, output_path)
         self._write_regression_candidates(regression_candidates, output_path)
         self._write_flyers(flyer_candidates, output_path)
+
+        output_dir = Path(output_path).parent
+        gpp_winner_analysis.write_analysis(output_dir / "gpp_winner_analysis.json")
 
         if explore:
             # explicit opt-in only now — one lineup at each of 5 preset

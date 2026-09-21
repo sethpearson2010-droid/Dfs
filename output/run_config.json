@@ -5,7 +5,7 @@
   "num_lineups": 1,
   "randomness": 1.0,
   "max_player_salary": null,
-  "max_salary_leftover": 2000,
+  "max_salary_leftover": 500,
   "explore": false,
   "exclude_players": [],
   "include_players": []
