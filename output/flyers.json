@@ -1,65 +1,5 @@
 [
   {
-    "player_name": "Elic Ayomanor",
-    "position": "WR",
-    "team": "TEN",
-    "opponent": "NYG",
-    "salary": 4900,
-    "target_share": 0.162,
-    "wopr": 0.502,
-    "redzone_share": 0.179
-  },
-  {
-    "player_name": "Chimere Dike",
-    "position": "WR",
-    "team": "TEN",
-    "opponent": "NYG",
-    "salary": 4400,
-    "target_share": 0.191,
-    "wopr": 0.447,
-    "redzone_share": 0.231
-  },
-  {
-    "player_name": "Isaiah Williams",
-    "position": "WR",
-    "team": "NYJ",
-    "opponent": "DET",
-    "salary": 4800,
-    "target_share": 0.181,
-    "wopr": 0.368,
-    "redzone_share": 0.143
-  },
-  {
-    "player_name": "Theo Johnson",
-    "position": "TE",
-    "team": "NYG",
-    "opponent": "TEN",
-    "salary": 4900,
-    "target_share": 0.177,
-    "wopr": 0.418,
-    "redzone_share": 0.164
-  },
-  {
-    "player_name": "Chig Okonkwo",
-    "position": "TE",
-    "team": "WAS",
-    "opponent": "SEA",
-    "salary": 4800,
-    "target_share": 0.19,
-    "wopr": 0.328,
-    "redzone_share": 0.214
-  },
-  {
-    "player_name": "Cade Otton",
-    "position": "TE",
-    "team": "TB",
-    "opponent": "MIN",
-    "salary": 4900,
-    "target_share": 0.16,
-    "wopr": 0.319,
-    "redzone_share": 0.12
-  },
-  {
     "player_name": "Mike Washington Jr.",
     "position": "RB",
     "team": "LV",
@@ -67,7 +7,8 @@
     "salary": 4800,
     "target_share": 0.113,
     "wopr": 0.253,
-    "redzone_share": 0.154
+    "redzone_share": 0.154,
+    "snap_pct": 0.7
   },
   {
     "player_name": "Tyrone Tracy Jr.",
@@ -77,7 +18,8 @@
     "salary": 4900,
     "target_share": 0.131,
     "wopr": 0.221,
-    "redzone_share": 0.4
+    "redzone_share": 0.4,
+    "snap_pct": 0.69
   },
   {
     "player_name": "Michael Carter",
@@ -87,6 +29,73 @@
     "salary": 4000,
     "target_share": 0.097,
     "wopr": 0.158,
-    "redzone_share": 0.27
+    "redzone_share": 0.27,
+    "snap_pct": 0.53
+  },
+  {
+    "player_name": "Elic Ayomanor",
+    "position": "WR",
+    "team": "TEN",
+    "opponent": "NYG",
+    "salary": 4900,
+    "target_share": 0.162,
+    "wopr": 0.502,
+    "redzone_share": 0.179,
+    "snap_pct": 0.94
+  },
+  {
+    "player_name": "Chimere Dike",
+    "position": "WR",
+    "team": "TEN",
+    "opponent": "NYG",
+    "salary": 4400,
+    "target_share": 0.191,
+    "wopr": 0.447,
+    "redzone_share": 0.231,
+    "snap_pct": 0.72
+  },
+  {
+    "player_name": "Isaiah Williams",
+    "position": "WR",
+    "team": "NYJ",
+    "opponent": "DET",
+    "salary": 4800,
+    "target_share": 0.181,
+    "wopr": 0.368,
+    "redzone_share": 0.143,
+    "snap_pct": 0.52
+  },
+  {
+    "player_name": "Theo Johnson",
+    "position": "TE",
+    "team": "NYG",
+    "opponent": "TEN",
+    "salary": 4900,
+    "target_share": 0.177,
+    "wopr": 0.418,
+    "redzone_share": 0.164,
+    "snap_pct": 0.96
+  },
+  {
+    "player_name": "Chig Okonkwo",
+    "position": "TE",
+    "team": "WAS",
+    "opponent": "SEA",
+    "salary": 4800,
+    "target_share": 0.19,
+    "wopr": 0.328,
+    "redzone_share": 0.214,
+    "snap_pct": null
+  },
+  {
+    "player_name": "Cade Otton",
+    "position": "TE",
+    "team": "TB",
+    "opponent": "MIN",
+    "salary": 4900,
+    "target_share": 0.16,
+    "wopr": 0.319,
+    "redzone_share": 0.12,
+    "snap_pct": 0.96
   }
 ]

@@ -850,7 +850,7 @@ function renderFlyers() {
     card.innerHTML = `
       <div>
         <div class="sleeper-name">${fc.player_name} <span class="pos-badge">${fc.position}</span> — ${fc.team} vs ${fc.opponent} · $${fc.salary.toLocaleString()}</div>
-        <div class="sleeper-reasons">Target share ${Math.round(fc.target_share*100)}% · WOPR ${fc.wopr} · RZ share ${Math.round(fc.redzone_share*100)}%</div>
+        <div class="sleeper-reasons">Target share ${Math.round(fc.target_share*100)}% · WOPR ${fc.wopr} · RZ share ${Math.round(fc.redzone_share*100)}%${fc.snap_pct != null ? " · Snap % " + Math.round(fc.snap_pct*100) + "%" : ""}</div>
       </div>
       <div class="sleeper-boost" style="color:#a78bfa;">🚀</div>
     `;

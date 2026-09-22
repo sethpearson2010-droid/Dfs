@@ -205,6 +205,9 @@ class ValueCalculator:
         canonical_name = name_match.canonical_name
         is_stale = self._is_stale(canonical_name) if canonical_name else False
         is_backup_qb = self._is_backup_qb(entry.position, canonical_name) if canonical_name else False
+        recent_snap_pct = (
+            self._recent_snap_pct_by_normalized_name.get(normalize_name(canonical_name)) if canonical_name else None
+        )
 
         if is_stale and not is_forced:
             # hasn't recorded a stat line recently enough to trust —
@@ -233,6 +236,7 @@ class ValueCalculator:
                 ceiling_projection=0.0,
                 is_stale=True,
                 is_backup_qb=is_backup_qb,
+                recent_snap_pct=recent_snap_pct,
                 force_included=is_forced,
                 fanduel_id=entry.fanduel_id,
                 injury_status=entry.injury_status,
@@ -323,6 +327,7 @@ class ValueCalculator:
             pace_multiplier=round(pace_multiplier, 3),
             opportunity_multiplier=round(opportunity_multiplier, 3),
             is_backup_qb=is_backup_qb,
+            recent_snap_pct=recent_snap_pct,
             force_included=is_forced,
             fanduel_id=entry.fanduel_id,
             injury_status=entry.injury_status,

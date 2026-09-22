@@ -1,8 +1,9 @@
 """
 Detects genuine "flyer" candidates at minimum salary — a cheap player
-whose underlying OPPORTUNITY (target share, WOPR, red-zone share)
-clears a real absolute bar, distinct from a player who's simply the
-cheapest available option with no real signal behind them at all.
+whose underlying OPPORTUNITY (target share, WOPR, red-zone share, or
+snap share) clears a real absolute bar, distinct from a player who's
+simply the cheapest available option with no real signal behind them
+at all.
 
 Real case that motivated this: a $4,000 WR with zero red-zone
 involvement, a zeroed-out real game, and every matchup multiplier
@@ -46,6 +47,19 @@ MIN_TARGET_SHARE = 0.12
 MIN_WOPR = 0.18
 MIN_REDZONE_SHARE = 0.15
 
+# snap share is a genuinely different kind of signal from the three
+# above — target share/WOPR/red-zone share all measure INVOLVEMENT
+# when the ball comes their way, but a player can be getting real,
+# meaningful field time (run-blocking, pass-pro, routes that don't
+# get the target) well before that shows up in receiving/red-zone
+# numbers at all. 40% is a real bar — enough to mean regular, non-
+# token usage (not just a handful of garbage-time snaps) without
+# requiring near-every-down usage, which would just describe an
+# established starter, not a breakout candidate. Uses the single most
+# recent real game (see value.py's _build_recent_snap_pcts) — the same
+# "are they playing right now" reasoning as the backup-QB check.
+MIN_SNAP_PCT = 0.40
+
 TOP_N_PER_POSITION = 3
 
 
@@ -74,10 +88,12 @@ class FlyerCalculator:
             # guard — they come from weekly_stats, which the is_stale
             # check above already protects.
             redzone_share_is_real = advanced.real_games_in_touches_sample > 0
+            has_real_snap_share = pv.recent_snap_pct is not None and pv.recent_snap_pct >= MIN_SNAP_PCT
             clears_bar = (
                 advanced.recent_target_share >= MIN_TARGET_SHARE
                 or advanced.recent_wopr >= MIN_WOPR
                 or (redzone_share_is_real and advanced.recent_redzone_share >= MIN_REDZONE_SHARE)
+                or has_real_snap_share
             )
             if not clears_bar:
                 continue
@@ -92,6 +108,7 @@ class FlyerCalculator:
                     target_share=advanced.recent_target_share,
                     wopr=advanced.recent_wopr,
                     redzone_share=advanced.recent_redzone_share,
+                    snap_pct=pv.recent_snap_pct,
                 )
             )
 

@@ -404,6 +404,28 @@ outcome has improved. Player rows carry an `is_flyer` boolean, the
 dashboard shows a dedicated 🚀 panel plus badge, and `flyers.json` is
 a new output file alongside the existing sleeper/regression ones.
 
+**Added a fourth qualifying criterion, snap share, on request**: the
+original three (target share, WOPR, red-zone share) all measure
+involvement *when the ball comes their way* — but a player can be
+getting real, meaningful field time (run-blocking, pass-pro, routes
+that don't draw the target) well before that shows up in receiving
+numbers at all. `MIN_SNAP_PCT` (0.40) uses the same data already
+computed for backup-QB detection (`recent_snap_pct` on `PlayerValue`,
+now exposed — previously computed internally in `value.py` but never
+surfaced) — the single most recent real game's offense snap %, not
+averaged, same "are they playing right now" reasoning. Verified this
+is a genuine expansion, not just a relabeling of existing candidates:
+22 real players (mostly backup-tier TEs) now qualify purely via snap
+share who wouldn't have under the original three criteria, at real
+snap percentages (42%-89%) — confirming meaningful field time well
+before it's shown up in target/red-zone volume yet, exactly the
+leading-indicator case this module exists for. `snap_pct` is now
+included on `FlyerCandidate` and shown in the dashboard panel.
+`TOP_N_PER_POSITION` (3) still caps how many of the (now larger) pool
+actually get used, so this doesn't flood the system with marginal
+picks. Full lineup count, diversity, and salary-cap integrity
+confirmed across the full risk spectrum and both seasons.
+
 **Reported immediately after shipping: "they aren't worked into
 lineups even at risk 10."** Investigating this surfaced two real,
 separate, more fundamental bugs in the core projection model, plus

@@ -140,6 +140,7 @@ class FlyerCandidate:
     target_share: float
     wopr: float
     redzone_share: float
+    snap_pct: float | None = None  # offense snap % from the single most recent real game - None if no snap data
 
 
 @dataclass(frozen=True)
@@ -255,6 +256,7 @@ class PlayerValue:
     opportunity_multiplier: float = 1.0
     is_stale: bool = False  # hasn't recorded a stat line recently enough to trust — likely injured/inactive
     is_backup_qb: bool = False  # low snap share in most recent game — flagged, NOT auto-excluded (see value.py's _is_backup_qb docstring for why)
+    recent_snap_pct: float | None = None  # offense snap % from the single most recent real game (not averaged - see value.py's _build_recent_snap_pcts); None if no snap data available
     force_included: bool = False  # --include-players match — bypassed is_stale/is_out, may be using a position-average fallback projection
     recent_game_log: list = field(default_factory=list)  # [(week, fantasy_points_ppr), ...] most recent RECENT_FORM_WINDOW games; negative weeks are carried-over prior-season games
     volatility_label: str = ""  # "Consistent" / "Moderate volatility" / "Boom/bust" - coefficient of variation, doesn't change the projection itself

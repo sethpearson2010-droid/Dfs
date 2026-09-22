@@ -598,6 +598,7 @@ class DfsPipeline:
                 "name_match_quality": pv.name_match_quality,
                 "is_stale": pv.is_stale,
                 "is_backup_qb": pv.is_backup_qb,
+                "recent_snap_pct": pv.recent_snap_pct,
                 "force_included": pv.force_included,
                 "recent_game_log": format_game_log(pv.recent_game_log),
                 "explanation": explain_player(pv),
@@ -705,6 +706,7 @@ class DfsPipeline:
                 "target_share": fc.target_share,
                 "wopr": fc.wopr,
                 "redzone_share": fc.redzone_share,
+                "snap_pct": fc.snap_pct,
             }
             for fc in flyer_candidates
         ]
