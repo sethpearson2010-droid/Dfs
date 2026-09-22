@@ -32,11 +32,20 @@ def explain_player(player: PlayerValue, stack_partner: str = "", is_bring_back: 
     bring_back_players)."""
     reasons: list[str] = []
 
-    if player.is_out or player.is_stale:
-        # shouldn't normally reach here (excluded players aren't
-        # selected), but if this is ever called on one directly, don't
-        # fabricate a positive-sounding reason for a zeroed-out player
-        return "Not a real selection — this player was excluded (see injury/staleness status) and has a zeroed-out projection."
+    if player.is_out or player.is_stale or player.projection <= 0:
+        # shouldn't normally reach here (excluded/zero-projection
+        # players aren't actually selected), but if this is ever
+        # called on one directly, don't fabricate a positive-sounding
+        # reason (a real bug found this way: a player with a genuinely
+        # zero projection — Nikko Remigio, matched but with zero real
+        # production or signal anywhere — still showed "Selected for a
+        # low-owned leverage play" purely because his ownership
+        # happened to be low, even though a projection of exactly zero
+        # means the optimizer would never actually pick him regardless
+        # of any other signal. Confirmed: 0 real appearances across a
+        # 20-lineup batch, matching the honest text below, not the
+        # misleading "Selected for..." wording it showed before.)
+        return "Not a real selection — this player has a zeroed-out projection (excluded for injury/staleness, or genuinely no real production or signal to project from) and would never actually be picked by the optimizer."
 
     if player.force_included:
         reasons.append("manually force-included — likely stepping into a larger role than the box scores reflect yet")
