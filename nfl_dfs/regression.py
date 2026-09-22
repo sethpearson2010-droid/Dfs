@@ -67,6 +67,21 @@ class RegressionCalculator:
             if touches < MIN_REDZONE_TOUCHES:
                 continue  # too small a sample to trust this player's own rate
 
+            # a real gap found and fixed: a player whose red-zone
+            # touches are ENTIRELY carried over from last season (zero
+            # real current-season games contributing to the average —
+            # see real_games_in_touches_sample, added in
+            # advanced_stats.py for exactly this kind of check) isn't
+            # a "due for positive TD regression" story at all — that
+            # signal is specifically about REAL, CURRENT opportunity
+            # that hasn't converted yet, not a diminished or since-
+            # changed role from last year. Confirmed directly: Kimani
+            # Vidal was flagged this way — 3.2 redzone touches/game,
+            # 100% from 2025 carryover, while his real 2026 games so
+            # far show 0.0 points and no real touches at all.
+            if advanced.real_games_in_touches_sample == 0:
+                continue
+
             expected = league_rate * touches
             gap = expected - advanced.recent_touchdowns_per_game
             if gap < MIN_REGRESSION_GAP:

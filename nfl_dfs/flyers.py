@@ -62,10 +62,22 @@ class FlyerCalculator:
                 continue
 
             advanced = pv.advanced_metrics
+            # a real gap found and fixed: redzone_share can be 100%
+            # carryover (see real_games_in_touches_sample, added in
+            # advanced_stats.py) even for a player who isn't flagged
+            # is_stale overall — the is_stale check above covers their
+            # SCORING average, not this specific metric. A player
+            # whose entire red-zone signal is last season's role
+            # shouldn't count toward "genuine current opportunity"
+            # here, same reasoning as the identical fix in
+            # regression.py. target_share/wopr don't need this same
+            # guard — they come from weekly_stats, which the is_stale
+            # check above already protects.
+            redzone_share_is_real = advanced.real_games_in_touches_sample > 0
             clears_bar = (
                 advanced.recent_target_share >= MIN_TARGET_SHARE
                 or advanced.recent_wopr >= MIN_WOPR
-                or advanced.recent_redzone_share >= MIN_REDZONE_SHARE
+                or (redzone_share_is_real and advanced.recent_redzone_share >= MIN_REDZONE_SHARE)
             )
             if not clears_bar:
                 continue

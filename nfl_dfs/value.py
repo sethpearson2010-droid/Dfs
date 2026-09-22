@@ -344,9 +344,20 @@ class ValueCalculator:
             return ceiling_projection, 1.0  # e.g. QB/K — these metrics aren't meaningful for this position
 
         wopr_rel = _clamp((advanced.recent_wopr - league_wopr) / league_wopr, -1, 1) if league_wopr else 0.0
+        # a real gap found and fixed: recent_redzone_share can be 100%
+        # carryover (real_games_in_touches_sample == 0 — see
+        # advanced_stats.py) even for a player whose overall scoring
+        # isn't stale. Confirmed directly: several backup-tier RBs
+        # (Kimani Vidal, Tyrone Tracy Jr., Bam Knight) had their
+        # ceiling boosted by red-zone volume that was entirely last
+        # season's role, while their real 2026 games so far showed
+        # near-zero production. wopr_rel doesn't need this same guard
+        # — it comes from weekly_stats, which the is_stale check
+        # already protects elsewhere.
+        redzone_share_is_real = advanced.real_games_in_touches_sample > 0
         rz_rel = (
             _clamp((advanced.recent_redzone_share - league_rz_share) / league_rz_share, -1, 1)
-            if league_rz_share
+            if league_rz_share and redzone_share_is_real
             else 0.0
         )
         opportunity_score = 0.5 * wopr_rel + 0.5 * rz_rel

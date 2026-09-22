@@ -805,6 +805,34 @@ a player with data in both seasons showed a correctly blended,
 properly-ordered sequence (prior-season games at negative weeks,
 current-season games following).
 
+**A real follow-on bug, reported as "why is Kimani Vidal / Tyrone
+Tracy Jr. / Bam Knight popping on TD regression and lineups — most
+haven't had a carry and reception"**: the transparency field added for
+the clarity gap above (`real_games_in_touches_sample`) turned out to
+expose a real, separate correctness bug once put to use. All three
+players' entire red-zone-touch signal was 100% carried over from last
+season — confirmed directly: Kimani Vidal showed 3.2 redzone
+touches/game, zero of it from any real 2026 game, while his actual
+2026 production so far was 0.0 points. `regression.py` was flagging
+him as "due for positive TD regression" based entirely on that stale
+volume — but the whole premise of that signal is *current*
+opportunity that hasn't converted yet, not a role that may not even
+exist anymore. The same underlying gap existed in three separate
+places, since each computes its own read on red-zone opportunity: 
+`regression.py`'s candidate detection, `flyers.py`'s "clears a real
+bar" check, and — the most fundamental instance, since it touches
+every player's ceiling directly, not just flagged candidates — 
+`value.py`'s `_apply_opportunity_ceiling`. Fixed in all three by
+skipping (or zeroing out) any red-zone-share contribution when
+`real_games_in_touches_sample == 0`; target share and WOPR didn't need
+the same guard, since those come from `weekly_stats`, which the
+existing `is_stale` check already protects. Verified: all three
+reported players dropped out of both the regression and flyer lists,
+and interestingly, risk-scale 1 (cash) went from partial to full 20/20
+diversity too — suggesting this bug had been inflating several
+min-salary/thin-data players' apparent competitiveness beyond what
+their real 2026 role actually supported.
+
 **A real follow-on clarity gap, reported as "Tez Johnson showing 2
 red zone targets but only had 1 target"**: the math itself checks out
 (his `redzone_touches_per_game` of 2.0 is the correct average of his
