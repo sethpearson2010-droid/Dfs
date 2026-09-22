@@ -1,8 +1,8 @@
 {
-  "season": 2025,
+  "season": 2026,
   "risk_level": 0.444,
   "risk_scale": 5,
-  "num_lineups": 1,
+  "num_lineups": 50,
   "randomness": 1.0,
   "max_player_salary": null,
   "max_salary_leftover": 500,

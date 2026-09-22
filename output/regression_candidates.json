@@ -1,92 +1,62 @@
 [
   {
-    "player_name": "Kene Nwangwu",
+    "player_name": "Jonathon Brooks",
     "position": "RB",
-    "team": "NYJ",
-    "opponent": "DET",
+    "team": "CAR",
+    "opponent": "CLE",
     "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 3.0,
-    "expected_touchdowns_per_game": 0.44,
-    "regression_gap": 0.44
+    "recent_redzone_touches": 4.0,
+    "expected_touchdowns_per_game": 0.53,
+    "regression_gap": 0.53
   },
   {
     "player_name": "Woody Marks",
     "position": "RB",
     "team": "HOU",
     "opponent": "IND",
-    "recent_avg_touchdowns": 0.2,
-    "recent_redzone_touches": 4.0,
-    "expected_touchdowns_per_game": 0.59,
-    "regression_gap": 0.39
+    "recent_avg_touchdowns": 0.0,
+    "recent_redzone_touches": 3.4,
+    "expected_touchdowns_per_game": 0.45,
+    "regression_gap": 0.45
   },
   {
-    "player_name": "Jawhar Jordan",
+    "player_name": "Jadarian Price",
     "position": "RB",
-    "team": "HOU",
-    "opponent": "IND",
+    "team": "SEA",
+    "opponent": "WAS",
     "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 2.5,
+    "recent_redzone_touches": 3.0,
+    "expected_touchdowns_per_game": 0.4,
+    "regression_gap": 0.4
+  },
+  {
+    "player_name": "Jalen Nailor",
+    "position": "WR",
+    "team": "LV",
+    "opponent": "NO",
+    "recent_avg_touchdowns": 0.0,
+    "recent_redzone_touches": 2.2,
     "expected_touchdowns_per_game": 0.37,
     "regression_gap": 0.37
   },
   {
-    "player_name": "Tez Johnson",
+    "player_name": "KC Concepcion Jr.",
+    "position": "WR",
+    "team": "CLE",
+    "opponent": "CAR",
+    "recent_avg_touchdowns": 0.0,
+    "recent_redzone_touches": 2.0,
+    "expected_touchdowns_per_game": 0.33,
+    "regression_gap": 0.33
+  },
+  {
+    "player_name": "Ted Hurst III",
     "position": "WR",
     "team": "TB",
     "opponent": "MIN",
     "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 2.25,
-    "expected_touchdowns_per_game": 0.37,
-    "regression_gap": 0.37
-  },
-  {
-    "player_name": "Michael Pittman Jr.",
-    "position": "WR",
-    "team": "PIT",
-    "opponent": "CIN",
-    "recent_avg_touchdowns": 0.0,
     "recent_redzone_touches": 2.0,
     "expected_touchdowns_per_game": 0.33,
     "regression_gap": 0.33
-  },
-  {
-    "player_name": "Justin Jefferson",
-    "position": "WR",
-    "team": "MIN",
-    "opponent": "TB",
-    "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 2.0,
-    "expected_touchdowns_per_game": 0.33,
-    "regression_gap": 0.33
-  },
-  {
-    "player_name": "Cade Stover",
-    "position": "TE",
-    "team": "HOU",
-    "opponent": "IND",
-    "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 3.0,
-    "expected_touchdowns_per_game": 0.38,
-    "regression_gap": 0.38
-  },
-  {
-    "player_name": "Tyler Warren",
-    "position": "TE",
-    "team": "IND",
-    "opponent": "HOU",
-    "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 2.2,
-    "expected_touchdowns_per_game": 0.28,
-    "regression_gap": 0.28
-  },
-  {
-    "player_name": "Theo Johnson",
-    "position": "TE",
-    "team": "NYG",
-    "opponent": "TEN",
-    "recent_avg_touchdowns": 0.0,
-    "recent_redzone_touches": 1.8,
-    "expected_touchdowns_per_game": 0.23,
-    "regression_gap": 0.23
   }
 ]

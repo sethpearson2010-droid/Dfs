@@ -280,6 +280,20 @@ class LineupBuilder:
             and not p.is_stale
             and not p.is_out
             and not p.manually_excluded
+            # a genuinely zero projection means no real signal supports
+            # this player being a rational pick, ever — not just
+            # "usually loses to better options." Confirmed a real bug
+            # from relying on the latter: Nikko Remigio (projection
+            # exactly 0.0, matched, not stale/out/excluded) still won a
+            # FLEX slot in a 50-lineup batch, because deep into a large
+            # batch the exposure penalty on already-used players can
+            # exhaust the pool of genuinely competitive options down to
+            # several equally-worthless (zero-projection) candidates,
+            # and a tie among them is broken by list order, not merit.
+            # force_included is still respected even at 0 projection —
+            # that's an explicit human override, not the optimizer's
+            # own judgment.
+            and (p.projection > 0 or p.force_included)
         ]
         if max_player_salary is not None:
             usable = [p for p in usable if p.salary <= max_player_salary]
