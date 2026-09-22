@@ -505,37 +505,86 @@ class LineupBuilder:
         # all 3 positions every time (confirmed for both orderings
         # tried), and ranking combined candidates by raw ceiling just
         # shifted which mechanism swept, since one's boost formula
-        # reliably produces bigger absolute numbers than the other's —
-        # neither is a real "which player is better" comparison, just
-        # an artifact of which formula happens to output bigger
-        # numbers. A fixed position split guarantees both signals real
-        # representation regardless of formula scale: regression gets
-        # RB and TE, flyers get WR.
+        # reliably produces bigger absolute numbers than the other's.
+        # A third attempt fixed the split by hardcoding which mechanism
+        # owns which position (regression: RB/TE, flyers: WR) — this
+        # also failed, but for a different, more subtle reason:
+        # confirmed directly that a week can have regression candidates
+        # at WR (not RB/TE) and flyer candidates spread across all 3
+        # positions, which the hardcoded split simply couldn't adapt
+        # to — regression's WR candidates got zero guaranteed exposure
+        # regardless of merit (4/20 real appearances that week, versus
+        # flyers' 18/20 from a mix of the guarantee AND raw
+        # competitiveness at positions the split hadn't even reserved
+        # for them).
+        #
+        # Settled on an adaptive version instead: for each of the 3
+        # shared positions, whichever mechanism has a real candidate
+        # THERE gets it; only when BOTH have one at the very same
+        # position does the assignment alternate (regression first),
+        # so real candidates from either signal always have a shot
+        # regardless of which position they happen to occupy that
+        # particular week.
         seen_guarantee_positions: set[Position] = set()
-        REGRESSION_POSITIONS = {Position.RB, Position.TE}
-        FLYER_POSITIONS = {Position.WR}
+        SHARED_GUARANTEE_POSITIONS = (Position.RB, Position.WR, Position.TE)
 
-        if risk_level >= REGRESSION_MIN_EXPOSURE_RISK_THRESHOLD:
-            for p in sorted((p for p in players if p.is_regression_candidate), key=lambda p: -p.ceiling_projection):
-                if p.position not in REGRESSION_POSITIONS or p.position in seen_guarantee_positions:
-                    continue
-                seen_guarantee_positions.add(p.position)
-                normalized = normalize_name(p.player_name)
-                if normalized not in lock_target_counts:
-                    lock_target_counts[normalized] = max(1, round(REGRESSION_MIN_EXPOSURE_PCT * count))
-                if p.player_name not in {fp.player_name for fp in force_included_players}:
-                    force_included_players.append(p)
+        best_regression_by_position = {
+            position: next(
+                iter(
+                    sorted(
+                        (p for p in players if p.is_regression_candidate and p.position == position),
+                        key=lambda p: -p.ceiling_projection,
+                    )
+                ),
+                None,
+            )
+            for position in SHARED_GUARANTEE_POSITIONS
+        }
+        best_flyer_by_position = {
+            position: next(
+                iter(
+                    sorted(
+                        (p for p in players if p.is_flyer and p.position == position),
+                        key=lambda p: -p.ceiling_projection,
+                    )
+                ),
+                None,
+            )
+            for position in SHARED_GUARANTEE_POSITIONS
+        }
 
-        if risk_level >= FLYER_MIN_EXPOSURE_RISK_THRESHOLD:
-            for p in sorted((p for p in players if p.is_flyer), key=lambda p: -p.ceiling_projection):
-                if p.position not in FLYER_POSITIONS or p.position in seen_guarantee_positions:
-                    continue
-                seen_guarantee_positions.add(p.position)
-                normalized = normalize_name(p.player_name)
-                if normalized not in lock_target_counts:
-                    lock_target_counts[normalized] = max(1, round(FLYER_MIN_EXPOSURE_PCT * count))
-                if p.player_name not in {fp.player_name for fp in force_included_players}:
-                    force_included_players.append(p)
+        def _apply_guarantee(p: PlayerValue, exposure_pct: float) -> None:
+            seen_guarantee_positions.add(p.position)
+            normalized = normalize_name(p.player_name)
+            if normalized not in lock_target_counts:
+                lock_target_counts[normalized] = max(1, round(exposure_pct * count))
+            if p.player_name not in {fp.player_name for fp in force_included_players}:
+                force_included_players.append(p)
+
+        conflict_count = 0
+        for position in SHARED_GUARANTEE_POSITIONS:
+            regression_candidate_here = (
+                best_regression_by_position[position]
+                if risk_level >= REGRESSION_MIN_EXPOSURE_RISK_THRESHOLD
+                else None
+            )
+            flyer_candidate_here = (
+                best_flyer_by_position[position] if risk_level >= FLYER_MIN_EXPOSURE_RISK_THRESHOLD else None
+            )
+            if regression_candidate_here and flyer_candidate_here:
+                # both have a real candidate at this exact position —
+                # alternate so repeated conflicts within one run (or
+                # across weeks, since real candidate pools shift)
+                # don't always favor the same mechanism
+                if conflict_count % 2 == 0:
+                    _apply_guarantee(regression_candidate_here, REGRESSION_MIN_EXPOSURE_PCT)
+                else:
+                    _apply_guarantee(flyer_candidate_here, FLYER_MIN_EXPOSURE_PCT)
+                conflict_count += 1
+            elif regression_candidate_here:
+                _apply_guarantee(regression_candidate_here, REGRESSION_MIN_EXPOSURE_PCT)
+            elif flyer_candidate_here:
+                _apply_guarantee(flyer_candidate_here, FLYER_MIN_EXPOSURE_PCT)
 
         lock_usage_count: dict[str, int] = {}
 

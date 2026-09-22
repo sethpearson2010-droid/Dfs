@@ -487,17 +487,39 @@ produces bigger absolute numbers than regression's points-adjustment
 formula — neither comparison was really "which player is better," just
 an artifact of which formula happens to output bigger numbers.
 
-Settled on a fixed position split instead — regression gets RB and TE,
-flyers get WR — which has a real rationale beyond just resolving the
-conflict: regression's signal (red-zone *touches* converting to TDs)
-fits RB/TE's more touch-concentrated usage (goal-line packages, etc.)
-naturally, while flyers' signal (target share/WOPR) fits WR's more
-target/route-based profile. Verified across the full risk spectrum:
-both signals get real, simultaneous representation once risk crosses
-into GPP territory (6 regression + 3 flyer appearances at risk scale
-8-10 in one real test), full lineup count and diversity maintained at
-every risk level and both seasons, leftover staying reasonable
-throughout ($0-$2,000, no repeat of the $6,700 collapse).
+Settled on a fixed position split at the time — regression gets RB and
+TE, flyers get WR — which had a real rationale beyond just resolving
+the conflict: regression's signal (red-zone *touches* converting to
+TDs) fits RB/TE's more touch-concentrated usage naturally, while
+flyers' signal (target share/WOPR) fits WR's more target/route-based
+profile. Verified working at the time: both signals getting real,
+simultaneous representation once risk crossed into GPP territory.
+
+**That fixed split had a real limitation of its own, reported as
+"still not really including TD regression and low-salary flyers in
+lineups"**: confirmed directly that a week can have regression
+candidates show up at WR (not RB/TE at all) while flyers spread across
+all 3 positions — the hardcoded split simply couldn't adapt to that,
+so regression's WR candidates got zero guaranteed exposure regardless
+of merit (4/20 real appearances that week, versus flyers' 18/20 from a
+mix of the guarantee and raw competitiveness at positions the split
+hadn't even reserved for them). Replaced with an adaptive version:
+for each of the 3 shared positions, whichever mechanism has a real
+candidate *there* gets the guarantee; only when both have one at the
+exact same position does the assignment alternate (regression first),
+so a real candidate from either signal always has a shot regardless of
+which position it happens to occupy that particular week. Verified:
+regression's WR candidate (previously locked out entirely) now
+reliably wins its fair share of position conflicts (e.g. Woody Marks
+winning the RB slot in one real test), while flyers still show up more
+often overall in some weeks — confirmed this reflects real, honest
+differences in candidate strength that week (flyers' ceiling-boost
+formula can produce a bigger practical swing than regression's
+points-adjustment for a similar-magnitude signal), not an unfair
+mechanism, since flyer appearances beyond their guaranteed share come
+from winning fairly through normal, non-guaranteed competitive
+selection. Full lineup count, diversity, and salary-cap integrity
+confirmed across the full risk spectrum and both seasons.
 
 ## Learning from real GPP-winning lineups (weekly maintenance)
 
