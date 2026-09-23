@@ -1217,6 +1217,27 @@ cheaper/less-obvious players whose case is "great matchup, not just
 name recognition," scaling to zero at cash (risk_level=0) same as the
 other risk-scaled bonuses.
 
+## FanDuel CSV export format
+
+Verified directly against a real FanDuel lineup-upload template (a
+genuine download from FanDuel's own "Upload Lineups from CSV" screen,
+not just their docs). Found and fixed one real discrepancy: the
+dashboard's export header used `D` for the defense column; FanDuel's
+real template uses `DEF`. Everything else checked out: header row is
+`QB,RB,RB,WR,WR,WR,TE,FLEX,DEF` (one column per roster slot, headers
+repeated for the multiple RB/WR slots, matching the template exactly),
+the bare FanDuel player ID alone is a valid cell value per the
+template's own stated rules, and our own `fanduel_id` field already
+matches the real template's ID format byte-for-byte (spot-checked
+several players, e.g. Kenneth Walker III as `134503-103342` in both).
+Everything past column 9 is explicitly ignored by FanDuel's uploader
+per the template's own instructions, so no name/position/salary
+columns are needed in the export. Also confirmed `MAX_LINEUPS` (150)
+stays safely under FanDuel's stated 250-lineups-per-upload cap.
+Verified end-to-end on real data: generated an export CSV from real
+lineup output and cross-checked specific IDs resolve to the correct
+players.
+
 ## Salary constraints
 
 **Batch size raised from 50 to 150 lineups on request.** `MAX_LINEUPS`

@@ -697,17 +697,23 @@ function renderLineups() {
 }
 
 const FANDUEL_SLOT_ORDER = ["QB", "RB1", "RB2", "WR1", "WR2", "WR3", "TE", "FLEX", "D"];
-const FANDUEL_HEADER = ["QB", "RB", "RB", "WR", "WR", "WR", "TE", "FLEX", "D"];
+const FANDUEL_HEADER = ["QB", "RB", "RB", "WR", "WR", "WR", "TE", "FLEX", "DEF"];
 
 function lineupsToFanDuelCsv(lineupList) {
-  // FanDuel's bulk-upload template uses one column per roster slot
-  // (headers repeat for RB/WR since there are multiple of each) and
-  // accepts either the bare FanDuel player ID or "ID:Name" per cell —
-  // bare ID is used here since FanDuel's own docs confirm ID alone is
-  // valid, and it's the least likely to break on quoting/formatting.
-  // NOTE: FanDuel's exact expected format has drifted before — if a
-  // real upload is rejected, download a fresh template from FanDuel's
-  // own "Upload Lineups from CSV" screen and compare headers.
+  // Verified directly against FanDuel's own real lineup-upload
+  // template (a genuine "FanDuel-NFL-...-lineup-upload-template.csv"
+  // download, not just their docs): header row is exactly
+  // QB,RB,RB,WR,WR,WR,TE,FLEX,DEF (one column per roster slot, headers
+  // repeated for the multiple RB/WR slots) — a real bug found this
+  // way: this header previously said "D" for the last column, not
+  // "DEF", which FanDuel's real template uses. Confirmed the bare
+  // FanDuel player ID alone (e.g. "134503-103342") is a valid cell
+  // value per the template's own stated rules ("paste either the
+  // Player ID + Name OR ID"), and confirmed our own fanduel_id field
+  // already matches this exact ID format byte-for-byte against the
+  // real template's reference player list. Everything past column 9
+  // is explicitly ignored by FanDuel's uploader per the template's own
+  // instructions, so no need to include name/position/salary columns.
   const rows = [FANDUEL_HEADER.join(",")];
   lineupList.forEach(lineup => {
     const bySlot = Object.fromEntries(lineup.slots.map(s => [s.slot, s]));
