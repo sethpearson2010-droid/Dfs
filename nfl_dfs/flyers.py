@@ -43,22 +43,34 @@ MAX_SALARY_FOR_FLYER = 5000
 # ANY ONE of these means real, meaningful involvement, not just
 # "somewhat more than an equally-thin peer." Below all three genuinely
 # means "barely on the field," not a hidden gem worth a dart throw.
-MIN_TARGET_SHARE = 0.12
-MIN_WOPR = 0.18
-MIN_REDZONE_SHARE = 0.15
+#
+# Raised significantly (0.12/0.18/0.15 → 0.20/0.35/0.30) after a real
+# reported case (Kevin Austin Jr., Mason Taylor, Greg Dulcich flagged
+# as flyers when they shouldn't have been) exposed how permissive the
+# original bars actually were: checked directly against the full real
+# player pool and found 71 of 167 (42%) of the ENTIRE min-salary
+# WR/RB/TE population qualified — the bar was doing almost no
+# selecting at all. The new thresholds bring that down to ~19 of 167
+# (11%) on the same real data, a genuinely selective rate rather than
+# "most cheap players somehow clear it."
+MIN_TARGET_SHARE = 0.20
+MIN_WOPR = 0.35
+MIN_REDZONE_SHARE = 0.30
 
 # snap share is a genuinely different kind of signal from the three
 # above — target share/WOPR/red-zone share all measure INVOLVEMENT
 # when the ball comes their way, but a player can be getting real,
 # meaningful field time (run-blocking, pass-pro, routes that don't
 # get the target) well before that shows up in receiving/red-zone
-# numbers at all. 40% is a real bar — enough to mean regular, non-
-# token usage (not just a handful of garbage-time snaps) without
-# requiring near-every-down usage, which would just describe an
-# established starter, not a breakout candidate. Uses the single most
-# recent real game (see value.py's _build_recent_snap_pcts) — the same
-# "are they playing right now" reasoning as the backup-QB check.
-MIN_SNAP_PCT = 0.40
+# numbers at all. Uses the single most recent real game (see
+# value.py's _build_recent_snap_pcts) — the same "are they playing
+# right now" reasoning as the backup-QB check.
+#
+# Raised from 0.40 to 0.65 in the same tightening pass above — 40%
+# turned out to describe ordinary rotational usage for a large share
+# of the player pool, not a meaningful standout signal; 65% means real,
+# sustained snaps, not just "gets some run."
+MIN_SNAP_PCT = 0.65
 
 TOP_N_PER_POSITION = 3
 

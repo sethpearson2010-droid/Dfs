@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "player_name": "Davis Mills",
+    "position": "QB",
+    "team": "HOU",
+    "opponent": "IND",
+    "salary": 6000,
+    "base_projection": 14.52,
+    "adjusted_projection": 16.69,
+    "boost_pct": 0.149,
+    "reasons": [
+      "opponent allows 20.87 pts/gm to QB recently",
+      "team averaging 63.0 plays/gm recently"
+    ]
+  }
+]

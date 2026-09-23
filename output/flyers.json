@@ -1,25 +1,36 @@
 [
   {
-    "player_name": "Michael Mayer",
-    "position": "TE",
+    "player_name": "Mike Washington Jr.",
+    "position": "RB",
     "team": "LV",
     "opponent": "NO",
-    "salary": 5000,
-    "target_share": 0.213,
-    "wopr": 0.424,
-    "redzone_share": 0.125,
-    "snap_pct": 0.84
+    "salary": 4800,
+    "target_share": 0.113,
+    "wopr": 0.253,
+    "redzone_share": 0.154,
+    "snap_pct": 0.7
   },
   {
-    "player_name": "Cade Otton",
-    "position": "TE",
-    "team": "TB",
-    "opponent": "MIN",
+    "player_name": "Tyrone Tracy Jr.",
+    "position": "RB",
+    "team": "NYG",
+    "opponent": "TEN",
     "salary": 4900,
-    "target_share": 0.189,
-    "wopr": 0.391,
-    "redzone_share": 0.13,
-    "snap_pct": 0.89
+    "target_share": 0.131,
+    "wopr": 0.221,
+    "redzone_share": 0.4,
+    "snap_pct": 0.69
+  },
+  {
+    "player_name": "Dare Ogunbowale",
+    "position": "RB",
+    "team": "LV",
+    "opponent": "NO",
+    "salary": 4000,
+    "target_share": 0.051,
+    "wopr": 0.096,
+    "redzone_share": 0.333,
+    "snap_pct": 0.13
   },
   {
     "player_name": "Theo Johnson",
@@ -27,10 +38,32 @@
     "team": "NYG",
     "opponent": "TEN",
     "salary": 4900,
-    "target_share": 0.152,
-    "wopr": 0.355,
-    "redzone_share": 0.153,
-    "snap_pct": 0.28
+    "target_share": 0.177,
+    "wopr": 0.418,
+    "redzone_share": 0.164,
+    "snap_pct": 0.96
+  },
+  {
+    "player_name": "Cade Otton",
+    "position": "TE",
+    "team": "TB",
+    "opponent": "MIN",
+    "salary": 4900,
+    "target_share": 0.16,
+    "wopr": 0.319,
+    "redzone_share": 0.12,
+    "snap_pct": 0.96
+  },
+  {
+    "player_name": "Michael Mayer",
+    "position": "TE",
+    "team": "LV",
+    "opponent": "NO",
+    "salary": 5000,
+    "target_share": 0.142,
+    "wopr": 0.293,
+    "redzone_share": 0.147,
+    "snap_pct": 0.95
   },
   {
     "player_name": "Elic Ayomanor",
@@ -38,64 +71,31 @@
     "team": "TEN",
     "opponent": "NYG",
     "salary": 4900,
-    "target_share": 0.187,
-    "wopr": 0.573,
+    "target_share": 0.162,
+    "wopr": 0.502,
     "redzone_share": 0.179,
-    "snap_pct": 0.53
+    "snap_pct": 0.94
   },
   {
-    "player_name": "Caleb Douglas",
+    "player_name": "Chimere Dike",
     "position": "WR",
-    "team": "MIA",
-    "opponent": "KC",
-    "salary": 5000,
-    "target_share": 0.195,
-    "wopr": 0.437,
-    "redzone_share": 0.114,
-    "snap_pct": 0.86
-  },
-  {
-    "player_name": "Treylon Burks",
-    "position": "WR",
-    "team": "WAS",
-    "opponent": "SEA",
-    "salary": 4600,
-    "target_share": 0.142,
-    "wopr": 0.361,
-    "redzone_share": 0.075,
-    "snap_pct": 0.3
-  },
-  {
-    "player_name": "DJ Herman",
-    "position": "RB",
-    "team": "MIA",
-    "opponent": "KC",
-    "salary": 4000,
-    "target_share": 0.13,
-    "wopr": 0.345,
-    "redzone_share": 0.0,
-    "snap_pct": 0.29
-  },
-  {
-    "player_name": "Tyjae Spears",
-    "position": "RB",
     "team": "TEN",
     "opponent": "NYG",
-    "salary": 4900,
-    "target_share": 0.143,
-    "wopr": 0.142,
-    "redzone_share": 0.256,
-    "snap_pct": 0.36
+    "salary": 4400,
+    "target_share": 0.191,
+    "wopr": 0.447,
+    "redzone_share": 0.231,
+    "snap_pct": 0.72
   },
   {
-    "player_name": "Samaje Perine",
-    "position": "RB",
-    "team": "CIN",
-    "opponent": "PIT",
+    "player_name": "Isaiah Williams",
+    "position": "WR",
+    "team": "NYJ",
+    "opponent": "DET",
     "salary": 4800,
-    "target_share": 0.071,
-    "wopr": 0.101,
-    "redzone_share": 0.192,
-    "snap_pct": 0.4
+    "target_share": 0.181,
+    "wopr": 0.368,
+    "redzone_share": 0.143,
+    "snap_pct": 0.52
   }
 ]

@@ -426,6 +426,24 @@ actually get used, so this doesn't flood the system with marginal
 picks. Full lineup count, diversity, and salary-cap integrity
 confirmed across the full risk spectrum and both seasons.
 
+**Reported almost immediately after, naming specific players who
+shouldn't have qualified (Kevin Austin Jr., Mason Taylor, Greg
+Dulcich)**: checking directly against the real player pool showed why
+— all four original thresholds were far more permissive than intended.
+71 of the 167 (42%) entire real min-salary WR/RB/TE population cleared
+at least one bar, meaning the criteria were barely selecting anything
+at all rather than identifying genuine standouts. Raised all four
+significantly (`MIN_TARGET_SHARE` 0.12→0.20, `MIN_WOPR` 0.18→0.35,
+`MIN_REDZONE_SHARE` 0.15→0.30, `MIN_SNAP_PCT` 0.40→0.65) — verified
+this brings the qualifying rate down to ~19 of 167 (11%) on the same
+real data, a genuinely selective bar, and confirmed all three named
+players now correctly fail every criterion. Re-verified full lineup
+count and diversity across the full risk spectrum and both seasons —
+flyer exposure now correctly ramps with risk level (0-2 appearances at
+cash-leaning risk scales, 11-16 once the minimum-exposure guarantee
+kicks in at real GPP levels), rather than a flood of marginal picks at
+every setting.
+
 **Reported immediately after shipping: "they aren't worked into
 lineups even at risk 10."** Investigating this surfaced two real,
 separate, more fundamental bugs in the core projection model, plus
