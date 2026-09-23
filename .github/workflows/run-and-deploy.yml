@@ -20,7 +20,7 @@ on:
         required: false
         default: "5"
       num_lineups:
-        description: "How many lineups to build, all at risk_scale above (independent setting — e.g. risk_scale 5 + num_lineups 50 builds 50 lineups all at level 5)"
+        description: "How many lineups to build (max 150), all at risk_scale above (independent setting — e.g. risk_scale 5 + num_lineups 50 builds 50 lineups all at level 5)"
         required: false
         default: "1"
       explore:

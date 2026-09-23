@@ -52,7 +52,7 @@ from nfl_dfs.name_matching import normalize_name
 from nfl_dfs.roster_rules import ROSTER_SLOTS, SALARY_CAP
 
 LOCAL_SEARCH_ITERATIONS = 3000
-MAX_LINEUPS = 50
+MAX_LINEUPS = 150
 
 # how much lower ownership boosts the objective at max risk_level —
 # scales linearly with risk_level, so it's a no-op in cash (risk=0)
@@ -203,7 +203,12 @@ DEFAULT_MAX_SALARY_LEFTOVER = 500
 CASH_MAX_SALARY_LEFTOVER = 2000
 BUILD_MANY_LOCAL_SEARCH_ITERATIONS = 250
 MAX_ATTEMPTS_PER_LINEUP = 100
-MAX_TOTAL_ATTEMPTS = 8000
+# raised from 8000 alongside MAX_LINEUPS (50 -> 150) - at the old cap,
+# a 150-lineup batch would average only ~53 attempts/lineup (8000/150),
+# well below the ~100/lineup budget every smaller batch size actually
+# gets, throttling the search exactly when it has the most diverse
+# lineups left to find. 150 * MAX_ATTEMPTS_PER_LINEUP with headroom.
+MAX_TOTAL_ATTEMPTS = 20000
 
 # base noise magnitude for build_many()'s diversity; actual noise used
 # is scaled by risk_level (cash batches stay close to "the" best

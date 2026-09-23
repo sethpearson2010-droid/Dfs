@@ -1,5 +1,38 @@
 [
   {
+    "player_name": "Elic Ayomanor",
+    "position": "WR",
+    "team": "TEN",
+    "opponent": "NYG",
+    "salary": 4900,
+    "target_share": 0.162,
+    "wopr": 0.502,
+    "redzone_share": 0.179,
+    "snap_pct": 0.94
+  },
+  {
+    "player_name": "Chimere Dike",
+    "position": "WR",
+    "team": "TEN",
+    "opponent": "NYG",
+    "salary": 4400,
+    "target_share": 0.191,
+    "wopr": 0.447,
+    "redzone_share": 0.231,
+    "snap_pct": 0.72
+  },
+  {
+    "player_name": "Isaiah Williams",
+    "position": "WR",
+    "team": "NYJ",
+    "opponent": "DET",
+    "salary": 4800,
+    "target_share": 0.181,
+    "wopr": 0.368,
+    "redzone_share": 0.143,
+    "snap_pct": 0.52
+  },
+  {
     "player_name": "Mike Washington Jr.",
     "position": "RB",
     "team": "LV",
@@ -64,38 +97,5 @@
     "wopr": 0.293,
     "redzone_share": 0.147,
     "snap_pct": 0.95
-  },
-  {
-    "player_name": "Elic Ayomanor",
-    "position": "WR",
-    "team": "TEN",
-    "opponent": "NYG",
-    "salary": 4900,
-    "target_share": 0.162,
-    "wopr": 0.502,
-    "redzone_share": 0.179,
-    "snap_pct": 0.94
-  },
-  {
-    "player_name": "Chimere Dike",
-    "position": "WR",
-    "team": "TEN",
-    "opponent": "NYG",
-    "salary": 4400,
-    "target_share": 0.191,
-    "wopr": 0.447,
-    "redzone_share": 0.231,
-    "snap_pct": 0.72
-  },
-  {
-    "player_name": "Isaiah Williams",
-    "position": "WR",
-    "team": "NYJ",
-    "opponent": "DET",
-    "salary": 4800,
-    "target_share": 0.181,
-    "wopr": 0.368,
-    "redzone_share": 0.143,
-    "snap_pct": 0.52
   }
 ]

@@ -1219,6 +1219,16 @@ other risk-scaled bonuses.
 
 ## Salary constraints
 
+**Batch size raised from 50 to 150 lineups on request.** `MAX_LINEUPS`
+(50 → 150) and `MAX_TOTAL_ATTEMPTS` (8,000 → 20,000, so a 150-lineup
+batch keeps the same ~100-attempts-per-lineup search budget every
+smaller batch size already got, rather than being throttled right
+when the most diverse lineups are hardest to find) both updated
+together. Verified directly on real data: 150/150 lineups built, all
+150 genuinely unique, zero salary-cap violations, across risk scales
+5/8/10 and both seasons — full runtime for a 150-lineup batch around
+78 seconds, well within a GitHub Actions run.
+
 **A real, serious bug found and fixed: lineups could actually exceed
 the $60,000 cap.** Confirmed with a live screenshot showing a "Cash"
 lineup at $62,000 (-$2,000 "left"). Root cause: in `_greedy_fill`,
