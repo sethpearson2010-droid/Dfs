@@ -1238,6 +1238,24 @@ Verified end-to-end on real data: generated an export CSV from real
 lineup output and cross-checked specific IDs resolve to the correct
 players.
 
+**That verification wasn't actually sufficient — a real upload still
+failed completely** ("File does not include valid positions", "0/50
+lineups entered"). A 0-of-N total failure, not a single bad row,
+pointed at the header itself rather than any specific lineup's data —
+confirmed by byte-comparing our exported header against the real
+template's header directly: ours was `QB,RB,RB,WR,WR,WR,TE,FLEX,DEF`,
+theirs was `QB,RB,RB,WR,WR,WR,TE,FLEX,DEF,"","Instructions"` — two
+trailing columns we were missing entirely, even though the template's
+own instructions say content past column 9 is ignored. FanDuel's
+uploader most likely validates column count on the header before it
+even reads position labels, so a 9-column header — correct data,
+wrong shape — could fail before any row is parsed. Fixed by matching
+the real template's header exactly, byte for byte (confirmed via
+direct comparison after the fix). Re-verified on a full real
+150-lineup export: header matches exactly, all 150 data rows still
+pass every structural check (correct column count, no duplicate
+players, no empty cells).
+
 ## Salary constraints
 
 **Batch size raised from 50 to 150 lineups on request.** `MAX_LINEUPS`

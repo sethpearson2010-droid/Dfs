@@ -714,7 +714,19 @@ function lineupsToFanDuelCsv(lineupList) {
   // real template's reference player list. Everything past column 9
   // is explicitly ignored by FanDuel's uploader per the template's own
   // instructions, so no need to include name/position/salary columns.
-  const rows = [FANDUEL_HEADER.join(",")];
+  // Confirmed via a real uploaded FanDuel template AND a real failed
+  // upload (error: "File does not include valid positions", 0/50
+  // lineups entered — every row failed, not just one): our header row
+  // was missing two trailing columns FanDuel's own real template
+  // includes — `,"","Instructions"` — even though the template's own
+  // instructions say content past column 9 is ignored. A total
+  // failure across every row points at the HEADER itself failing
+  // FanDuel's parser (likely a column-count check before it even
+  // looks at position labels), not bad data in any specific row.
+  // Matching their template exactly, byte for byte, is the safest fix
+  // given a real, confirmed difference and a total (not partial)
+  // failure.
+  const rows = [FANDUEL_HEADER.join(",") + ',"","Instructions"'];
   lineupList.forEach(lineup => {
     const bySlot = Object.fromEntries(lineup.slots.map(s => [s.slot, s]));
     const row = FANDUEL_SLOT_ORDER.map(slot => {
