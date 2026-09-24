@@ -1256,6 +1256,24 @@ direct comparison after the fix). Re-verified on a full real
 pass every structural check (correct column count, no duplicate
 players, no empty cells).
 
+**That fix was necessary but not sufficient — a real re-upload with it
+applied still failed the same way**, confirmed by the header in the
+new failing file matching exactly, byte for byte. Properly parsing
+FanDuel's template with a real CSV reader (`csv.reader`, not just
+eyeballing the raw text) found the actual remaining gap: *every* row
+in their template has 11 columns — even their own reference player
+rows have 10 leading empty fields before any content starts at column
+11. Our data rows only had 9 comma-separated values (no trailing
+columns at all), a real column-count mismatch against the 11-column
+header FanDuel's uploader likely validates against consistently, not
+just on the header row. Fixed by appending two trailing empty columns
+to every data row (`,,`), matching the real template's structure
+exactly. Re-verified on a full real 150-lineup export using a proper
+CSV reader rather than raw text inspection: every one of the 151 rows
+(header + 150 data rows) now parses to exactly 11 columns — one single,
+consistent count throughout the whole file — with the first 9 columns
+on every data row still holding the correct, unique player IDs.
+
 ## Salary constraints
 
 **Batch size raised from 50 to 150 lineups on request.** `MAX_LINEUPS`
