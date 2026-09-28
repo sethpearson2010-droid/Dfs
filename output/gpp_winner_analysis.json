@@ -1,5 +1,5 @@
 {
-  "sample_size": 2,
+  "sample_size": 3,
   "weekly_trend": [
     {
       "season": 2026,
@@ -28,34 +28,48 @@
       "stack_partners": 1,
       "has_stack": true,
       "total_points": 211.16
+    },
+    {
+      "season": 2026,
+      "week": 3,
+      "contest": "NFL Sunday Million",
+      "total_salary": 59700,
+      "leftover": 300,
+      "qb_salary": 6700,
+      "qb_name": "G. Smith",
+      "flex_position": "RB",
+      "flex_name": "A. Jones Sr.",
+      "stack_partners": 2,
+      "has_stack": true,
+      "total_points": 212.2
     }
   ],
-  "trend_note": "2 week(s) imported so far \u2014 too early to call anything a trend rather than noise; keep importing weekly.",
+  "trend_note": "3 week(s) imported so far \u2014 enough to start distinguishing a real, repeating pattern from a single week's noise, though still a small sample.",
   "salary_utilization": {
     "total_salary_used": {
-      "min": 59900,
+      "min": 59700,
       "max": 59900,
-      "avg": 59900,
-      "median": 59900.0
+      "avg": 59833.3,
+      "median": 59900
     },
     "leftover": {
       "min": 100,
-      "max": 100,
-      "avg": 100,
-      "median": 100.0
+      "max": 300,
+      "avg": 166.7,
+      "median": 100
     },
     "note": "How much of the $60,000 cap winning lineups actually used. A small sample can still show a striking, consistent pattern (e.g. every winner so far spending within a few hundred dollars of the full cap) \u2014 worth treating as a real signal even with few data points, since it's a strong, repeatable behavior, not a borderline average."
   },
   "qb_salary_tier": {
-    "min": 6800,
+    "min": 6700,
     "max": 8000,
-    "avg": 7400,
-    "median": 7400.0,
+    "avg": 7166.7,
+    "median": 6800,
     "note": "The salary of the QB actually rostered in each winning lineup \u2014 not necessarily the most expensive QB available that week."
   },
   "flex_position_tendency": {
     "counts": {
-      "RB": 1,
+      "RB": 2,
       "WR": 1
     },
     "entries": [
@@ -68,6 +82,11 @@
         "position": "WR",
         "salary": 6000,
         "points": 4.7
+      },
+      {
+        "position": "RB",
+        "salary": 6200,
+        "points": 11.7
       }
     ],
     "note": "Which position wins FLEX in practice, and at what salary/outcome \u2014 small samples will look position-heavy just from which games happened to break that way."
@@ -75,79 +94,80 @@
   "salary_by_roster_slot": {
     "D": {
       "min": 3300,
-      "max": 3800,
-      "avg": 3550,
-      "median": 3550.0
+      "max": 4300,
+      "avg": 3800,
+      "median": 3800
     },
     "FLEX": {
       "min": 6000,
       "max": 7000,
-      "avg": 6500,
-      "median": 6500.0
+      "avg": 6400,
+      "median": 6200
     },
     "QB": {
-      "min": 6800,
+      "min": 6700,
       "max": 8000,
-      "avg": 7400,
-      "median": 7400.0
+      "avg": 7166.7,
+      "median": 6800
     },
     "RB": {
       "min": 5900,
-      "max": 9100,
-      "avg": 7650,
+      "max": 9200,
+      "avg": 7683.3,
       "median": 7800.0
     },
     "TE": {
-      "min": 5200,
+      "min": 4700,
       "max": 5200,
-      "avg": 5200,
-      "median": 5200.0
+      "avg": 5033.3,
+      "median": 5200
     },
     "WR": {
       "min": 5000,
-      "max": 9000,
-      "avg": 7316.7,
-      "median": 7950.0
+      "max": 9200,
+      "avg": 7355.6,
+      "median": 7400
     }
   },
   "points_by_position": {
     "QB": {
-      "min": 30,
+      "min": 29,
       "max": 35,
-      "avg": 32.5,
-      "median": 32.5
+      "avg": 31.3,
+      "median": 30
     },
     "RB": {
-      "min": 14,
-      "max": 35,
-      "avg": 27.4,
-      "median": 33
+      "min": 12,
+      "max": 38,
+      "avg": 26.1,
+      "median": 27.5
     },
     "WR": {
       "min": 5,
       "max": 41,
       "avg": 25.9,
-      "median": 26
+      "median": 25.5
     },
     "TE": {
       "min": 18,
       "max": 23,
-      "avg": 20.5,
-      "median": 20.5
+      "avg": 21.3,
+      "median": 23
     },
     "D": {
-      "min": 13,
+      "min": 10,
       "max": 26,
-      "avg": 19.5,
-      "median": 19.5
+      "avg": 16.3,
+      "median": 13
     }
   },
   "stacking": {
-    "lineups_with_a_stack": 2,
+    "lineups_with_a_stack": 3,
     "lineups_without_a_stack": 0,
     "stack_rate_pct": 100.0,
     "stack_size_distribution": {
-      "1": 2
+      "1": 2,
+      "2": 1
     },
     "note": "A QB paired with one or more WR/TE from his own team \u2014 the classic GPP correlation play. RB isn't counted as a stack partner since a big RB game usually implies a run-heavy script, working against the QB's own score."
   }
