@@ -257,7 +257,8 @@ class PlayerValue:
     is_stale: bool = False  # hasn't recorded a stat line recently enough to trust — likely injured/inactive
     is_backup_qb: bool = False  # low snap share in most recent game — flagged, NOT auto-excluded (see value.py's _is_backup_qb docstring for why)
     recent_snap_pct: float | None = None  # offense snap % from the single most recent real game (not averaged - see value.py's _build_recent_snap_pcts); None if no snap data available
-    force_included: bool = False  # --include-players match — bypassed is_stale/is_out, may be using a position-average fallback projection
+    force_included: bool = False  # --include-players match — bypassed is_stale/is_out, may be using a position-average fallback projection, and LOCKED into every lineup of a batch (see lineup_builder.py)
+    is_injury_replacement_qb: bool = False  # auto-detected as a team's new starter (real starter marked Out/IR) — same is_stale/is_out bypass and fallback-projection treatment as force_included, but deliberately NOT locked into every lineup: unlike --include-players (a deliberate, known-in-advance choice), this is a heuristic guess (highest-salaried healthy backup) that can be wrong (committee, unexpected start), so it competes on its (fallback) merits rather than being guaranteed 100% exposure across a GPP batch
     recent_game_log: list = field(default_factory=list)  # [(week, fantasy_points_ppr), ...] most recent RECENT_FORM_WINDOW games; negative weeks are carried-over prior-season games
     volatility_label: str = ""  # "Consistent" / "Moderate volatility" / "Boom/bust" - coefficient of variation, doesn't change the projection itself
     injury_replacement_for: str = ""  # set when this player's projection was boosted because a same-team, same-position starter is marked Out/IR

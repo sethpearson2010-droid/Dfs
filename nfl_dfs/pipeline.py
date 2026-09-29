@@ -173,13 +173,26 @@ class DfsPipeline:
 
         salaries = self._salary_importer.load(salary_csv_path)
 
+        # deliberately NOT merged into include_players: that would
+        # LOCK the auto-detected backup into every lineup of the
+        # batch (see PlayerValue.is_injury_replacement_qb's docstring
+        # for why that was a real problem — a heuristic guess
+        # shouldn't get guaranteed 100% exposure the way a deliberate
+        # --include-players choice does). Kept as its own list, passed
+        # to value_calc.build() separately below, so he gets the same
+        # "don't leave him at a bogus 0 projection" treatment but
+        # competes for a roster spot on that projection's merits.
         auto_replacement_qbs = self._detect_injury_replacement_qbs(salaries)
-        combined_include_players = list(dict.fromkeys((include_players or []) + auto_replacement_qbs))
 
         value_calc = ValueCalculator(
             vulnerability_scores, weekly_stats, game_contexts, pace_profiles, advanced_metrics, snap_counts
         )
-        player_values = value_calc.build(salaries, force_include=combined_include_players)
+        player_values = value_calc.build(
+            salaries,
+            force_include=include_players or [],
+            injury_replacement_qbs=auto_replacement_qbs,
+        )
+        self._tag_injury_replacement_qbs(player_values, salaries, auto_replacement_qbs)
 
         self._apply_manual_exclusions(player_values, exclude_players)
 
@@ -457,13 +470,19 @@ class DfsPipeline:
         """Auto-detects a team's backup QB when their presumptive
         starter (the team's highest-salaried QB — FanDuel's own
         pricing is a reasonable proxy for role) is marked Out/IR in
-        the real FanDuel injury data, and force-includes that backup
-        the same way --include-players would — reusing the same "make
-        viable even with a thin track record" machinery, just
-        triggered automatically by real injury news instead of
-        needing you to type a name in each week. Only acts when the
-        presumptive starter is actually marked out; a backup who's
-        merely questionable or a committee situation isn't touched."""
+        the real FanDuel injury data. The backup gets value_calc's
+        is_injury_replacement_qb treatment (see build()'s docstring
+        and PlayerValue.is_injury_replacement_qb) — real injury news
+        overriding what the box scores show — automatically instead
+        of needing you to type a name into --include-players each
+        week. Deliberately does NOT force_include/lock the backup into
+        every lineup: unlike --include-players (a deliberate, known
+        choice), this is a heuristic guess (highest-salaried healthy
+        backup) that can be wrong (committee, surprise start), so it
+        should compete for a roster spot rather than guarantee 100%
+        exposure across a batch. Only acts when the presumptive
+        starter is actually marked out; a backup who's merely
+        questionable or a committee situation isn't touched."""
         by_team: dict[str, list] = defaultdict(list)
         for entry in salaries:
             if entry.position == Position.QB:
@@ -487,6 +506,25 @@ class DfsPipeline:
                 f"in place of {starter.player_name} ({starter.injury_status})"
             )
         return auto_included
+
+    def _tag_injury_replacement_qbs(self, player_values: list[PlayerValue], salaries, auto_replacement_qbs: list[str]) -> None:
+        """Sets injury_replacement_for on each auto-detected backup QB
+        (see _detect_injury_replacement_qbs) so the explanation text
+        surfaces WHO they're replacing, the same way the RB/WR/TE
+        injury-replacement boost already does — purely cosmetic/
+        explanatory, doesn't touch the projection itself (that's
+        handled by value_calc.build's injury_replacement_qbs
+        parameter)."""
+        if not auto_replacement_qbs:
+            return
+        auto_normalized = {normalize_name(name) for name in auto_replacement_qbs}
+        starter_by_team: dict[str, str] = {}
+        for entry in salaries:
+            if entry.position == Position.QB and entry.injury_status.upper() in OUT_INJURY_STATUSES:
+                starter_by_team[entry.team] = entry.player_name
+        for pv in player_values:
+            if normalize_name(pv.player_name) in auto_normalized and pv.team in starter_by_team:
+                pv.injury_replacement_for = starter_by_team[pv.team]
 
     def _apply_injury_replacement_boosts(self, player_values: list[PlayerValue]) -> None:
         """When a team's presumptive starter (highest-salaried player,

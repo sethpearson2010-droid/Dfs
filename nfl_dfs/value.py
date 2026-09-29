@@ -151,10 +151,27 @@ class ValueCalculator:
         self._recent_snap_pct_by_normalized_name = self._build_recent_snap_pcts(snap_counts or {})
         self._league_avg_scoring_by_position = self._build_league_avg_scoring_by_position(weekly_stats)
         self._force_include_normalized: set[str] = set()
+        self._injury_replacement_normalized: set[str] = set()
         self._name_matcher = PlayerNameMatcher(known_names=list(self._recent_player_avg.keys()))
 
-    def build(self, salaries: list[SalaryEntry], force_include: list[str] | None = None) -> list[PlayerValue]:
+    def build(
+        self,
+        salaries: list[SalaryEntry],
+        force_include: list[str] | None = None,
+        injury_replacement_qbs: list[str] | None = None,
+    ) -> list[PlayerValue]:
+        """`force_include` is --include-players: a deliberate, known
+        choice, LOCKED into every lineup of a batch by lineup_builder.
+        `injury_replacement_qbs` gets the same is_stale/is_out bypass
+        and fallback-projection treatment (see _value_one) but is
+        deliberately NOT locked — it's a heuristic guess (auto-detected
+        from real injury data) that should compete on its own merits,
+        not guarantee 100% exposure across a batch. See
+        PlayerValue.is_injury_replacement_qb."""
         self._force_include_normalized = {normalize_name(name) for name in (force_include or []) if name.strip()}
+        self._injury_replacement_normalized = {
+            normalize_name(name) for name in (injury_replacement_qbs or []) if name.strip()
+        }
         values = [self._value_one(entry) for entry in salaries]
         if force_include:
             matched = [v.player_name for v in values if v.force_included]
@@ -169,7 +186,15 @@ class ValueCalculator:
 
         is_out = entry.injury_status.upper() in OUT_INJURY_STATUSES
         is_forced = normalize_name(entry.player_name) in self._force_include_normalized
-        if is_out and not is_forced:
+        is_injury_replacement = normalize_name(entry.player_name) in self._injury_replacement_normalized
+        # both force_include and injury_replacement bypass the hard
+        # is_out/is_stale zero-outs and get the same fallback
+        # projection treatment below — the difference between them is
+        # NOT projection quality, it's whether lineup_builder locks
+        # them into every lineup (force_included only; see that
+        # field's docstring on PlayerValue).
+        bypass_hard_zero = is_forced or is_injury_replacement
+        if is_out and not bypass_hard_zero:
             # FanDuel's own injury designation says this player isn't
             # realistically playing (Out, IR, suspended, etc.) — this
             # is a direct, authoritative signal, more reliable than the
@@ -195,6 +220,7 @@ class ValueCalculator:
                 injury_details=entry.injury_details,
                 is_out=True,
                 force_included=is_forced,
+                is_injury_replacement_qb=is_injury_replacement,
             )
 
         vuln = self._vulnerability.get((entry.opponent, entry.position))
@@ -209,7 +235,7 @@ class ValueCalculator:
             self._recent_snap_pct_by_normalized_name.get(normalize_name(canonical_name)) if canonical_name else None
         )
 
-        if is_stale and not is_forced:
+        if is_stale and not bypass_hard_zero:
             # hasn't recorded a stat line recently enough to trust —
             # likely injured/inactive/benched. Zero everything out
             # rather than let old, no-longer-relevant numbers make
@@ -238,6 +264,7 @@ class ValueCalculator:
                 is_backup_qb=is_backup_qb,
                 recent_snap_pct=recent_snap_pct,
                 force_included=is_forced,
+                is_injury_replacement_qb=is_injury_replacement,
                 fanduel_id=entry.fanduel_id,
                 injury_status=entry.injury_status,
                 injury_details=entry.injury_details,
@@ -245,7 +272,7 @@ class ValueCalculator:
             )
 
         base_projection = self._recent_player_avg.get(canonical_name, 0.0) if canonical_name else 0.0
-        if is_forced and base_projection <= 0.0:
+        if bypass_hard_zero and base_projection <= 0.0:
             # no real historical data for this player at all (a true
             # rookie, someone who's barely played) — rather than leave
             # them at a hard 0 (unselectable no matter how forced),
@@ -253,23 +280,32 @@ class ValueCalculator:
             # baseline. This is explicitly NOT a real projection for
             # them specifically — just enough to make them viable for
             # the optimizer to consider, which is the whole point of
-            # forcing them in when you know something the box scores
-            # don't (e.g. they're the new starter as of this week).
+            # forcing/flagging them when you know something the box
+            # scores don't (e.g. they're the new starter as of this
+            # week).
             #
             # Deliberately <= 0.0, not == 0.0: confirmed a real case
-            # (Jalon Daniels, auto-force-included as TB's replacement
-            # starter after Baker Mayfield went Out) where his only
-            # recorded game was a single garbage-time snap averaging
-            # -1.1 fantasy points. That's not real signal about his
-            # value as a new starter, but base_projection == 0.0 was
-            # false, so this fallback never fired — the -1.1 flowed
-            # straight through, got floor-clamped to 0.0 downstream,
-            # and force_included still locked a 0.0-projection QB into
-            # every lineup in the batch (explanation text literally
-            # said "would never actually be picked by the optimizer").
-            # A zero-or-negative base is exactly the "no real signal"
+            # (Jalon Daniels, auto-detected as TB's replacement starter
+            # after Baker Mayfield went Out) where his only recorded
+            # game was a single garbage-time snap averaging -1.1
+            # fantasy points. That's not real signal about his value as
+            # a new starter, but base_projection == 0.0 was false, so
+            # this fallback never fired — the -1.1 flowed straight
+            # through and got floor-clamped to 0.0 downstream. A
+            # zero-or-negative base is exactly the "no real signal"
             # case this fallback exists for, whether that base came
             # from truly no data or from one meaningless data point.
+            #
+            # This same case is also why is_injury_replacement_qb is a
+            # separate, non-locking flag from force_included: Daniels
+            # was originally routed through force_include, which fixed
+            # his 0.0 projection but ALSO locked him into 100% of every
+            # generated lineup — a real diversification problem for a
+            # heuristic guess (highest-salaried healthy backup), not a
+            # deliberate, known --include-players choice. Now he gets
+            # this same fallback-projection treatment but competes for
+            # a roster spot on that projection's merits like anyone
+            # else, rather than being guaranteed in every lineup.
             base_projection = self._league_avg_scoring_by_position.get(entry.position, 0.0)
         stdev = self._recent_player_stdev.get(canonical_name, 0.0) if canonical_name else 0.0
 
@@ -344,6 +380,7 @@ class ValueCalculator:
             is_backup_qb=is_backup_qb,
             recent_snap_pct=recent_snap_pct,
             force_included=is_forced,
+            is_injury_replacement_qb=is_injury_replacement,
             fanduel_id=entry.fanduel_id,
             injury_status=entry.injury_status,
             injury_details=entry.injury_details,
