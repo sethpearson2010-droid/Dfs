@@ -245,7 +245,7 @@ class ValueCalculator:
             )
 
         base_projection = self._recent_player_avg.get(canonical_name, 0.0) if canonical_name else 0.0
-        if is_forced and base_projection == 0.0:
+        if is_forced and base_projection <= 0.0:
             # no real historical data for this player at all (a true
             # rookie, someone who's barely played) — rather than leave
             # them at a hard 0 (unselectable no matter how forced),
@@ -255,6 +255,21 @@ class ValueCalculator:
             # the optimizer to consider, which is the whole point of
             # forcing them in when you know something the box scores
             # don't (e.g. they're the new starter as of this week).
+            #
+            # Deliberately <= 0.0, not == 0.0: confirmed a real case
+            # (Jalon Daniels, auto-force-included as TB's replacement
+            # starter after Baker Mayfield went Out) where his only
+            # recorded game was a single garbage-time snap averaging
+            # -1.1 fantasy points. That's not real signal about his
+            # value as a new starter, but base_projection == 0.0 was
+            # false, so this fallback never fired — the -1.1 flowed
+            # straight through, got floor-clamped to 0.0 downstream,
+            # and force_included still locked a 0.0-projection QB into
+            # every lineup in the batch (explanation text literally
+            # said "would never actually be picked by the optimizer").
+            # A zero-or-negative base is exactly the "no real signal"
+            # case this fallback exists for, whether that base came
+            # from truly no data or from one meaningless data point.
             base_projection = self._league_avg_scoring_by_position.get(entry.position, 0.0)
         stdev = self._recent_player_stdev.get(canonical_name, 0.0) if canonical_name else 0.0
 
