@@ -654,10 +654,40 @@ class ValueCalculator:
             for name, games in by_player.items()
         }
 
+    def _real_preferred_window(self, weeks_and_values: list[tuple[int, float]]) -> list[float]:
+        """Given a player's (week, value) pairs (week <= 0 = carried-
+        over prior-season game, per pipeline.py's
+        _fetch_weekly_stats_with_carryover), returns the last
+        RECENT_FORM_WINDOW values to use — preferring REAL
+        current-season games the moment any exist, only falling back
+        to the full carryover-blended window when zero real games
+        exist yet.
+
+        A real gap found and fixed here: this same file's
+        _build_player_averages/_build_player_stdevs (this method's
+        callers) always blended in carryover regardless of how much
+        real data already existed — correct for truly bootstrapping a
+        player with zero current-season games, but wrong once a player
+        HAS a real game: confirmed directly with Bam Knight (RB, ARI),
+        whose last-5-game window was 4 carried-over 2025 games
+        (13.2/16.8/6.4/-0.2 — a real, meaningful role last season)
+        plus exactly ONE real 2026 game (2.4 — his actual "2 carries
+        in 3 games" current role). The median of that blended set was
+        6.4, ~2.7x his real, current signal, because the old games
+        outnumbered and outweighed the one real one. Same underlying
+        mistake as the WOPR/target_share/air_yards_share fix in
+        advanced_stats.py's _recent_avg_by_player — fixed the same way
+        here, for the plain scoring projection itself."""
+        weeks_and_values = sorted(weeks_and_values, key=lambda pair: pair[0])
+        real_values = [value for week, value in weeks_and_values if week > 0]
+        if real_values:
+            return real_values[-RECENT_FORM_WINDOW:]
+        return [value for _week, value in weeks_and_values[-RECENT_FORM_WINDOW:]]
+
     def _build_player_averages(self, weekly_stats: list[WeeklyStatLine]) -> dict[str, float]:
-        by_player: dict[str, list[float]] = defaultdict(list)
+        by_player: dict[str, list[tuple[int, float]]] = defaultdict(list)
         for line in weekly_stats:
-            by_player[line.player_name].append(line.fantasy_points_ppr)
+            by_player[line.player_name].append((line.week, line.fantasy_points_ppr))
 
         # median, not mean: over a small recent-form window, a single
         # outlier game — a backup QB's one huge garbage-time stat line
@@ -667,15 +697,15 @@ class ValueCalculator:
         # median resists that; it only moves if MULTIPLE recent games
         # support the higher number.
         return {
-            name: round(statistics.median(pts[-RECENT_FORM_WINDOW:]), 2)
-            for name, pts in by_player.items()
-            if pts
+            name: round(statistics.median(self._real_preferred_window(weeks)), 2)
+            for name, weeks in by_player.items()
+            if weeks
         }
 
     def _build_player_stdevs(self, weekly_stats: list[WeeklyStatLine]) -> dict[str, float]:
-        by_player: dict[str, list[float]] = defaultdict(list)
+        by_player: dict[str, list[tuple[int, float]]] = defaultdict(list)
         for line in weekly_stats:
-            by_player[line.player_name].append(line.fantasy_points_ppr)
+            by_player[line.player_name].append((line.week, line.fantasy_points_ppr))
 
         # Median Absolute Deviation, not population stdev — same
         # reasoning as the median point-estimate fix above: a single
@@ -691,9 +721,13 @@ class ValueCalculator:
         # so the existing FLOOR/CEILING_STDEV_MULTIPLIER tuning still
         # applies sensibly without needing to be re-tuned from scratch.
         stdevs: dict[str, float] = {}
-        for name, pts in by_player.items():
-            recent = pts[-RECENT_FORM_WINDOW:]
+        for name, weeks in by_player.items():
+            recent = self._real_preferred_window(weeks)
             if len(recent) < 2:
+                # a single real game (see _real_preferred_window) can't
+                # support a spread estimate — 0 here correctly produces
+                # a flat floor=projection=ceiling downstream rather
+                # than fabricating confidence from a lone data point.
                 stdevs[name] = 0.0
                 continue
             median_val = statistics.median(recent)
