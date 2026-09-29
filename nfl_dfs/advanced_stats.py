@@ -49,15 +49,50 @@ class AdvancedMetricsCalculator:
     # ------------------------------------------------------------------
 
     def _recent_avg_by_player(self, weekly_stats: list[WeeklyStatLine], extractor) -> dict[str, float]:
-        by_player: dict[str, list[float]] = defaultdict(list)
+        # a real gap found and fixed: this fed target_share/wopr/
+        # air_yards_share/touchdowns_per_game by blending in carried-
+        # over prior-season games (week <= 0 — see pipeline.py's
+        # _fetch_weekly_stats_with_carryover) alongside real
+        # current-season ones whenever fewer than RECENT_FORM_WINDOW
+        # real games exist yet — true for nearly every player this
+        # early in a season. That blending is the right call for the
+        # PLAIN SCORING projection (see that method's docstring: better
+        # than a hard 0 while bootstrapping). But for these specific
+        # "opportunity" signals — whose whole purpose is detecting a
+        # player's CURRENT role, not last season's — it actively
+        # undermines the signal: confirmed directly with Bam Knight
+        # (RB, ARI), whose recent_wopr computed as 0.107 from a window
+        # of 4 carried-over 2025 games (0.139/0.151/0.244/0.0 — a
+        # meaningfully larger role on presumably more competitive
+        # touches) plus exactly ONE real 2026 game, which itself was
+        # 0.0 — his actual current usage is zero, but the blended
+        # average looked like real, non-trivial opportunity, inflating
+        # his ceiling projection and flyer eligibility off a role he
+        # no longer has. (This is the same class of bug already found
+        # and fixed for redzone_share via real_games_in_touches_sample
+        # in this same file — that fix didn't extend here because of
+        # an incorrect assumption, stated in value.py/flyers.py's
+        # comments at the time, that is_stale already covered this;
+        # is_stale only checks whether a player has ANY recent game,
+        # not whether THIS metric's window is carryover-dominated.)
+        #
+        # Fixed by preferring real current-season games over the
+        # blended window the moment ANY exist, rather than always
+        # blending: a thin real sample is still better signal, for an
+        # opportunity metric specifically, than a wider window diluted
+        # by a role that may no longer apply.
+        by_player: dict[str, list[tuple[int, float]]] = defaultdict(list)
         for line in weekly_stats:
-            by_player[line.player_id].append(extractor(line))
+            by_player[line.player_id].append((line.week, extractor(line)))
 
-        return {
-            player_id: round(sum(values[-RECENT_FORM_WINDOW:]) / len(values[-RECENT_FORM_WINDOW:]), 3)
-            for player_id, values in by_player.items()
-            if values
-        }
+        result: dict[str, float] = {}
+        for player_id, weeks in by_player.items():
+            weeks.sort(key=lambda pair: pair[0])
+            real_values = [value for week, value in weeks if week > 0]
+            window = real_values[-RECENT_FORM_WINDOW:] if real_values else [value for _week, value in weeks[-RECENT_FORM_WINDOW:]]
+            if window:
+                result[player_id] = round(sum(window) / len(window), 3)
+        return result
 
     def _team_by_player_id(self, weekly_stats: list[WeeklyStatLine]) -> dict[str, str]:
         # a player's most recent team, in case of an in-season trade
