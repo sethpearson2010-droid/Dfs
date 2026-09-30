@@ -37,7 +37,19 @@ _COLUMN_ALIASES: dict[str, list[str]] = {
 # play" — excluded from lineup consideration entirely, same as a
 # staleness/unmatched player, rather than just flagged. "NA" means
 # no designation (healthy), not "not available".
-OUT_INJURY_STATUSES = {"O", "IR", "NFI", "SUSP", "PUP"}
+#
+# "D" (Doubtful) added: a real, current gap — 3 real players on a
+# live slate (Terrance Ferguson, Jayden Reed, Charlie Kolar) were
+# marked Doubtful in FanDuel's own injury data but weren't being
+# excluded at all, competing normally with fully healthy players.
+# Doubtful is a strong, specific NFL designation (a team saying a
+# player is unlikely to play, historically correct the large majority
+# of the time) — different from "Questionable" (roughly a coin flip
+# or better), which is deliberately NOT included here: a Questionable
+# player still has a real chance to play and produce, so he should
+# stay eligible and simply get judged on his normal projection, not be
+# hard-excluded on a much weaker signal.
+OUT_INJURY_STATUSES = {"O", "D", "IR", "NFI", "SUSP", "PUP"}
 
 
 class FanDuelSalaryImporter:
