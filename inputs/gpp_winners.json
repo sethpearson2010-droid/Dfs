@@ -6,15 +6,78 @@
     "prize_pool": "$2M",
     "notes": "",
     "players": [
-      {"name": "B. Young", "team": "CAR", "position": "QB", "salary": 6800, "points": 35.44, "roster_slot": "QB"},
-      {"name": "J. Gibbs", "team": "DET", "position": "RB", "salary": 9100, "points": 34.1, "roster_slot": "RB"},
-      {"name": "D. Swift", "team": "CHI", "position": "RB", "salary": 6600, "points": 34.9, "roster_slot": "RB"},
-      {"name": "J. Coker", "team": "CAR", "position": "WR", "salary": 5400, "points": 32.8, "roster_slot": "WR"},
-      {"name": "A. St. Brown", "team": "DET", "position": "WR", "salary": 8600, "points": 23.7, "roster_slot": "WR"},
-      {"name": "C. Olave", "team": "NO", "position": "WR", "salary": 7400, "points": 26.2, "roster_slot": "WR"},
-      {"name": "D. Kincaid", "team": "BUF", "position": "TE", "salary": 5200, "points": 18.5, "roster_slot": "TE"},
-      {"name": "A. Jeanty", "team": "LV", "position": "RB", "salary": 7000, "points": 32.7, "roster_slot": "FLEX"},
-      {"name": "LV Raiders", "team": "LV", "position": "D", "salary": 3800, "points": 13, "roster_slot": "D"}
+      {
+        "name": "B. Young",
+        "team": "CAR",
+        "position": "QB",
+        "salary": 6800,
+        "points": 35.44,
+        "roster_slot": "QB"
+      },
+      {
+        "name": "J. Gibbs",
+        "team": "DET",
+        "position": "RB",
+        "salary": 9100,
+        "points": 34.1,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "D. Swift",
+        "team": "CHI",
+        "position": "RB",
+        "salary": 6600,
+        "points": 34.9,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "J. Coker",
+        "team": "CAR",
+        "position": "WR",
+        "salary": 5400,
+        "points": 32.8,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "A. St. Brown",
+        "team": "DET",
+        "position": "WR",
+        "salary": 8600,
+        "points": 23.7,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "C. Olave",
+        "team": "NO",
+        "position": "WR",
+        "salary": 7400,
+        "points": 26.2,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "D. Kincaid",
+        "team": "BUF",
+        "position": "TE",
+        "salary": 5200,
+        "points": 18.5,
+        "roster_slot": "TE"
+      },
+      {
+        "name": "A. Jeanty",
+        "team": "LV",
+        "position": "RB",
+        "salary": 7000,
+        "points": 32.7,
+        "roster_slot": "FLEX"
+      },
+      {
+        "name": "LV Raiders",
+        "team": "LV",
+        "position": "D",
+        "salary": 3800,
+        "points": 13,
+        "roster_slot": "D"
+      }
     ]
   },
   {
@@ -24,15 +87,78 @@
     "prize_pool": "$2M",
     "notes": "D. Schultz benefited from N. Collins (HOU) being out; R. Bateman benefited from Z. Flowers (BAL) being out",
     "players": [
-      {"name": "D. Prescott", "team": "DAL", "position": "QB", "salary": 8000, "points": 29.76, "roster_slot": "QB"},
-      {"name": "C. McCaffrey", "team": "SF", "position": "RB", "salary": 9000, "points": 20.6, "roster_slot": "RB"},
-      {"name": "A. Jones Sr.", "team": "MIN", "position": "RB", "salary": 5900, "points": 13.5, "roster_slot": "RB"},
-      {"name": "C. Lamb", "team": "DAL", "position": "WR", "salary": 8500, "points": 34.3, "roster_slot": "WR"},
-      {"name": "J. Smith-Njigba", "team": "SEA", "position": "WR", "salary": 9000, "points": 41, "roster_slot": "WR"},
-      {"name": "R. Bateman", "team": "BAL", "position": "WR", "salary": 5000, "points": 18.3, "roster_slot": "WR"},
-      {"name": "D. Schultz", "team": "HOU", "position": "TE", "salary": 5200, "points": 23, "roster_slot": "TE"},
-      {"name": "L. Burden III", "team": "CHI", "position": "WR", "salary": 6000, "points": 4.7, "roster_slot": "FLEX"},
-      {"name": "CAR Panthers", "team": "CAR", "position": "D", "salary": 3300, "points": 26, "roster_slot": "D"}
+      {
+        "name": "D. Prescott",
+        "team": "DAL",
+        "position": "QB",
+        "salary": 8000,
+        "points": 29.76,
+        "roster_slot": "QB"
+      },
+      {
+        "name": "C. McCaffrey",
+        "team": "SF",
+        "position": "RB",
+        "salary": 9000,
+        "points": 20.6,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "A. Jones Sr.",
+        "team": "MIN",
+        "position": "RB",
+        "salary": 5900,
+        "points": 13.5,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "C. Lamb",
+        "team": "DAL",
+        "position": "WR",
+        "salary": 8500,
+        "points": 34.3,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "J. Smith-Njigba",
+        "team": "SEA",
+        "position": "WR",
+        "salary": 9000,
+        "points": 41,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "R. Bateman",
+        "team": "BAL",
+        "position": "WR",
+        "salary": 5000,
+        "points": 18.3,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "D. Schultz",
+        "team": "HOU",
+        "position": "TE",
+        "salary": 5200,
+        "points": 23,
+        "roster_slot": "TE"
+      },
+      {
+        "name": "L. Burden III",
+        "team": "CHI",
+        "position": "WR",
+        "salary": 6000,
+        "points": 4.7,
+        "roster_slot": "FLEX"
+      },
+      {
+        "name": "CAR Panthers",
+        "team": "CAR",
+        "position": "D",
+        "salary": 3300,
+        "points": 26,
+        "roster_slot": "D"
+      }
     ]
   },
   {
@@ -42,15 +168,159 @@
     "prize_pool": "$2M",
     "notes": "DEF (Minnesota) salary confirmed by user against the Week 3 slate; DEF points are an estimate (~10) derived from the box score (1 INT by A. Van Ginkel, 1 sack by K. Van Noy, 1 punt-return TD by M. Price, Vikings allowed 16 points = FanDuel's 14-20-point tier) since the winning-lineup screenshot did not show the DEF row.",
     "players": [
-      {"name": "G. Smith", "team": "NYJ", "position": "QB", "salary": 6700, "points": 29.04, "roster_slot": "QB"},
-      {"name": "J. Gibbs", "team": "DET", "position": "RB", "salary": 9200, "points": 37.9, "roster_slot": "RB"},
-      {"name": "J. Warren", "team": "PIT", "position": "RB", "salary": 6300, "points": 22.1, "roster_slot": "RB"},
-      {"name": "G. Wilson", "team": "NYJ", "position": "WR", "salary": 7300, "points": 24.7, "roster_slot": "WR"},
-      {"name": "M. Wilson", "team": "ARI", "position": "WR", "salary": 5800, "points": 20.4, "roster_slot": "WR"},
-      {"name": "J. Smith-Njigba", "team": "SEA", "position": "WR", "salary": 9200, "points": 33.36, "roster_slot": "WR"},
-      {"name": "K. Sadiq", "team": "NYJ", "position": "TE", "salary": 4700, "points": 23, "roster_slot": "TE"},
-      {"name": "A. Jones Sr.", "team": "MIN", "position": "RB", "salary": 6200, "points": 11.7, "roster_slot": "FLEX"},
-      {"name": "MIN Vikings", "team": "MIN", "position": "D", "salary": 4300, "points": 10, "roster_slot": "D"}
+      {
+        "name": "G. Smith",
+        "team": "NYJ",
+        "position": "QB",
+        "salary": 6700,
+        "points": 29.04,
+        "roster_slot": "QB"
+      },
+      {
+        "name": "J. Gibbs",
+        "team": "DET",
+        "position": "RB",
+        "salary": 9200,
+        "points": 37.9,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "J. Warren",
+        "team": "PIT",
+        "position": "RB",
+        "salary": 6300,
+        "points": 22.1,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "G. Wilson",
+        "team": "NYJ",
+        "position": "WR",
+        "salary": 7300,
+        "points": 24.7,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "M. Wilson",
+        "team": "ARI",
+        "position": "WR",
+        "salary": 5800,
+        "points": 20.4,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "J. Smith-Njigba",
+        "team": "SEA",
+        "position": "WR",
+        "salary": 9200,
+        "points": 33.36,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "K. Sadiq",
+        "team": "NYJ",
+        "position": "TE",
+        "salary": 4700,
+        "points": 23,
+        "roster_slot": "TE"
+      },
+      {
+        "name": "A. Jones Sr.",
+        "team": "MIN",
+        "position": "RB",
+        "salary": 6200,
+        "points": 11.7,
+        "roster_slot": "FLEX"
+      },
+      {
+        "name": "MIN Vikings",
+        "team": "MIN",
+        "position": "D",
+        "salary": 4300,
+        "points": 10,
+        "roster_slot": "D"
+      }
+    ]
+  },
+  {
+    "season": 2026,
+    "week": 4,
+    "contest": "bgmillions",
+    "prize_pool": "$250,000",
+    "notes": "All 9 salaries matched exactly against the Week 4 inputs/salary.csv slate (same slate used elsewhere this session) and sum to exactly $60,000, confirming correct player identification. Box-score points from the lineup-scores screenshot (QB, 2 RB, 3 WR, TE, FLEX, DEF); total matches the displayed 216.48.",
+    "players": [
+      {
+        "name": "C.J. Stroud",
+        "team": "HOU",
+        "position": "QB",
+        "salary": 7000,
+        "points": 26.08,
+        "roster_slot": "QB"
+      },
+      {
+        "name": "A. Jones Sr.",
+        "team": "MIN",
+        "position": "RB",
+        "salary": 6400,
+        "points": 14.8,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "K. Walker III",
+        "team": "KC",
+        "position": "RB",
+        "salary": 8500,
+        "points": 33.4,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "C. Lamb",
+        "team": "DAL",
+        "position": "WR",
+        "salary": 8500,
+        "points": 35.8,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "N. Collins",
+        "team": "HOU",
+        "position": "WR",
+        "salary": 7400,
+        "points": 30.3,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "M. Nabers",
+        "team": "NYG",
+        "position": "WR",
+        "salary": 6800,
+        "points": 23.2,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "T.J. Hockenson",
+        "team": "MIN",
+        "position": "TE",
+        "salary": 4900,
+        "points": 21.4,
+        "roster_slot": "TE"
+      },
+      {
+        "name": "E. Wilson",
+        "team": "SEA",
+        "position": "RB",
+        "salary": 5600,
+        "points": 25.5,
+        "roster_slot": "FLEX"
+      },
+      {
+        "name": "BAL Ravens",
+        "team": "BAL",
+        "position": "D",
+        "salary": 4900,
+        "points": 6,
+        "roster_slot": "D"
+      }
     ]
   }
 ]
