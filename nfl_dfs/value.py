@@ -338,6 +338,9 @@ class ValueCalculator:
 
         floor_projection = max(0.0, projection - FLOOR_STDEV_MULTIPLIER * scaled_stdev)
         ceiling_projection = projection + CEILING_STDEV_MULTIPLIER * scaled_stdev
+        ceiling_projection, opportunity_multiplier = self._apply_opportunity_ceiling(
+            entry.position, ceiling_projection, advanced
+        )
         # sanity cap: with only 5 recent games, MAD-based spread can
         # still overstate the ceiling for a player whose sample is
         # genuinely volatile (a real committee-role boom/bust game
@@ -346,11 +349,20 @@ class ValueCalculator:
         # ceiling at a generous but bounded multiple of the point
         # projection itself, rather than letting an unstable
         # small-sample spread estimate run unchecked.
+        #
+        # Applied AFTER the opportunity multiplier now, not before — a
+        # real bug found here: capping first, then letting the
+        # opportunity multiplier (up to 1.35x) multiply past the cap
+        # afterward, meant the "bounded at 3x" promise this comment
+        # makes was false. A real case: Jaxon Smith-Njigba's ceiling
+        # reached 66.8 on a ~32-point projection (>2x, trending toward
+        # the true unbounded max of 3.0 * 1.35 = 4.05x) once
+        # OPPORTUNITY_CEILING_WEIGHT was raised to 0.35. Capping last
+        # makes the final, displayed ceiling the one actually bounded
+        # at CEILING_TO_PROJECTION_CAP, matching what this comment has
+        # always claimed.
         if projection > 0:
             ceiling_projection = min(ceiling_projection, projection * CEILING_TO_PROJECTION_CAP)
-        ceiling_projection, opportunity_multiplier = self._apply_opportunity_ceiling(
-            entry.position, ceiling_projection, advanced
-        )
         # sanity clamp: found this as a real edge case while testing an
         # unrelated feature — for very low-projection players, the
         # opportunity multiplier and/or the ceiling cap above can
