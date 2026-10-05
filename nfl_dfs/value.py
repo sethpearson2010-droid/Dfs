@@ -30,18 +30,22 @@ from nfl_dfs.salary import OUT_INJURY_STATUSES
 
 # how much the opponent's vulnerability shifts the projection, as a
 # fraction of the league-average points allowed at that position.
-# Raised from 0.35: a stated preference to weight matchup quality and
-# positive-regression probability more heavily than raw recent scoring
-# ("don't chase previous week high scorers") — these weights were
-# originally kept modest specifically so recent-form stayed dominant,
-# which is exactly the opposite of what's wanted here. A first attempt
-# nearly doubled these and produced unrealistic ceilings (57 points
-# for a TE) — the SAME combined multiplier that scales the point
-# estimate also scales the MAD-based spread (see `scale` in
-# `_value_one`), so a larger multiplier compounds on both floor/ceiling
-# at once, not just the projection. Settled on a more measured ~1.4x
-# increase instead.
-VULNERABILITY_WEIGHT = 0.50
+# Lowered from 0.50 (previously raised from an original 0.35) after a
+# real backtest against 4 logged GPP-winning lineups (31 player-weeks,
+# using only data available before each player's winning week — no
+# lookahead): matchup_ratio vs. actual points scored correlated at
+# -0.34, i.e. mildly NEGATIVE, not positive. Concrete cases: Jahmyr
+# Gibbs' 37.9-point week came against the single toughest RB matchup
+# in the whole sample; Kenneth Walker III's 33.4 came against a
+# below-average matchup; meanwhile Luther Burden III got the best WR
+# matchup in the sample and busted for 4.7. The players who actually
+# win these contests tend to be high-volume/talented players who
+# produce regardless of matchup, not matchup-driven plays. Recent
+# target share, by contrast, correlated at +0.49 in the same backtest
+# — the strongest signal tested — so vulnerability is cut well below
+# its original 0.35, not just back to it. Revisit once more weeks are
+# logged (gpp_winners.json) and the sample is larger than 4 weeks.
+VULNERABILITY_WEIGHT = 0.15
 
 # how much a team's implied total (vs. league-average implied total)
 # shifts the projection.
