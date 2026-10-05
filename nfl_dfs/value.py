@@ -109,7 +109,18 @@ STARTER_SNAP_THRESHOLD = 0.5
 # whose role is real (high WOPR/red-zone share) but whose recent
 # points lag due to TD variance has more true ceiling than the raw
 # average alone suggests.
-OPPORTUNITY_CEILING_WEIGHT = 0.20
+#
+# Raised from 0.20 after the same backtest that cut
+# VULNERABILITY_WEIGHT (see that constant's comment): recent target
+# share was the strongest signal tested against the 4 logged
+# GPP-winning lineups, correlating +0.49 with actual points scored —
+# clearly stronger than matchup vulnerability's -0.34. wopr_rel/rz_rel
+# are already clamped to [-1, 1] before this weight is applied, so the
+# multiplier stays bounded ([1-WEIGHT, 1+WEIGHT]) however large the
+# weight gets — no separate swing cap needed the way vulnerability
+# required one. Sample is still only 4 weeks; revisit as more weeks
+# are logged.
+OPPORTUNITY_CEILING_WEIGHT = 0.35
 
 # Team defenses don't appear as individual "players" in nflverse's
 # per-player stats (there's no per-player row for a DST unit), so name
