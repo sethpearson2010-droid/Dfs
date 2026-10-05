@@ -25,7 +25,7 @@ from nfl_dfs.flyers import FlyerCalculator
 from nfl_dfs.regression import RegressionCalculator
 from nfl_dfs.salary import OUT_INJURY_STATUSES, FanDuelSalaryImporter
 from nfl_dfs.sleepers import SleeperCalculator
-from nfl_dfs.value import RECENT_FORM_WINDOW, ValueCalculator
+from nfl_dfs.value import CEILING_TO_PROJECTION_CAP, RECENT_FORM_WINDOW, ValueCalculator
 from nfl_dfs.vulnerability import VulnerabilityCalculator
 
 # the risk slider isn't infinitely continuous in the output — these
@@ -251,6 +251,24 @@ class DfsPipeline:
                 pv.ceiling_projection = round(pv.ceiling_projection + points_adjustment, 2)
                 # defensive: same clamp as value.py's, in case a
                 # degenerate small-number edge case ever inverts these
+                pv.ceiling_projection = max(pv.ceiling_projection, pv.floor_projection)
+
+        # value.py already caps ceiling at CEILING_TO_PROJECTION_CAP x
+        # the point projection - but that cap runs inside _value_one,
+        # before any of the boosts just above. FLYER_CEILING_BOOST in
+        # particular multiplies ceiling alone (not projection), so a
+        # flyer already sitting at the 3x cap comes out of that loop
+        # at 3 * 1.3 = 3.9x - silently exceeding the cap value.py's
+        # own comment promises. Found via a real case: T.J. Hockenson
+        # (is_flyer=True) showed ceiling=40.68 on a 10.55 projection
+        # (3.86x) even after fixing value.py's internal ordering for
+        # OPPORTUNITY_CEILING_WEIGHT. Re-clamping here, after every
+        # post-hoc adjustment above, makes the cap hold for the
+        # player's FINAL projection/ceiling, not just the pre-boost
+        # ones value.py never saw.
+        for pv in player_values:
+            if pv.projection > 0:
+                pv.ceiling_projection = min(pv.ceiling_projection, round(pv.projection * CEILING_TO_PROJECTION_CAP, 2))
                 pv.ceiling_projection = max(pv.ceiling_projection, pv.floor_projection)
 
         self._write_output(player_values, output_path, sleeper_keys, regression_keys)
