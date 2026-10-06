@@ -54,6 +54,14 @@ from nfl_dfs.roster_rules import ROSTER_SLOTS, SALARY_CAP
 LOCAL_SEARCH_ITERATIONS = 3000
 MAX_LINEUPS = 150
 
+# minimum offense snap share (0-1, from the player's single most recent
+# real game) to be lineup-eligible. Without it, near-zero-usage players
+# (e.g. 8% snaps) sneak in as "leverage" picks: their low projected
+# ownership boosts the objective even though no real usage supports
+# them. Skipped when snap data is missing (None), for DEF, and for
+# force_included players (explicit human override).
+MIN_RECENT_SNAP_PCT = 0.25
+
 # how much lower ownership boosts the objective at max risk_level —
 # scales linearly with risk_level, so it's a no-op in cash (risk=0)
 # and fully active at max GPP (risk=1)
@@ -299,6 +307,12 @@ class LineupBuilder:
             # that's an explicit human override, not the optimizer's
             # own judgment.
             and (p.projection > 0 or p.force_included)
+            and (
+                p.force_included
+                or p.position in (Position.DST, Position.K)
+                or p.recent_snap_pct is None
+                or p.recent_snap_pct >= MIN_RECENT_SNAP_PCT
+            )
         ]
         if max_player_salary is not None:
             usable = [p for p in usable if p.salary <= max_player_salary]
