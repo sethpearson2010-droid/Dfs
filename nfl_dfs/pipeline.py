@@ -573,6 +573,18 @@ class DfsPipeline:
             if not out_starters:
                 continue
             vacated = out_starters[0]
+            # a real false positive found in Week 5: James Conner (ARI
+            # RB, IR, $4,500) was treated as the vacated starter - and
+            # got Bam Knight a +25% boost - purely because he was the
+            # highest-paid player OUT at the position. But Love ($6,600)
+            # and Allgeier ($5,600) are both healthy and paid more;
+            # Conner is 4th on the depth chart, so his absence frees up
+            # no real volume. Per this method's own docstring the
+            # presumptive starter is the highest-salaried player at the
+            # position, so the injured player only counts if no healthy
+            # teammate out-earns him.
+            if any(not p.is_out and p.salary > vacated.salary for p in sorted_players):
+                continue
             beneficiaries = [
                 p
                 for p in sorted_players
