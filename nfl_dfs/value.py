@@ -78,6 +78,10 @@ FLOOR_STDEV_MULTIPLIER = 1.0
 CONSISTENT_CV_THRESHOLD = 0.35
 BOOM_BUST_CV_THRESHOLD = 0.70
 CEILING_STDEV_MULTIPLIER = 1.5
+# empirical per-position ceiling cap (see _build_position_ceiling_caps)
+CEILING_CAP_PERCENTILE = 0.99
+CEILING_CAP_MIN_GAME_POINTS = 5.0
+CEILING_CAP_MIN_SAMPLES = 100
 CEILING_TO_PROJECTION_CAP = 3.0  # ceiling can't exceed 3x the point projection, however wide the raw spread estimate
 RECENT_FORM_WINDOW = 5
 MAD_CONSISTENCY_CONSTANT = 1.4826
@@ -165,6 +169,7 @@ class ValueCalculator:
         )
         self._recent_snap_pct_by_normalized_name = self._build_recent_snap_pcts(snap_counts or {})
         self._league_avg_scoring_by_position = self._build_league_avg_scoring_by_position(weekly_stats)
+        self._position_ceiling_cap = self._build_position_ceiling_caps(weekly_stats)
         self._force_include_normalized: set[str] = set()
         self._injury_replacement_normalized: set[str] = set()
         self._name_matcher = PlayerNameMatcher(known_names=list(self._recent_player_avg.keys()))
@@ -363,6 +368,7 @@ class ValueCalculator:
         # always claimed.
         if projection > 0:
             ceiling_projection = min(ceiling_projection, projection * CEILING_TO_PROJECTION_CAP)
+            ceiling_projection = min(ceiling_projection, self.position_ceiling_cap(entry.position))
         # sanity clamp: found this as a real edge case while testing an
         # unrelated feature — for very low-projection players, the
         # opportunity multiplier and/or the ceiling cap above can
@@ -545,6 +551,34 @@ class ValueCalculator:
         projection = base_projection * combined_multiplier
 
         return projection, vuln_multiplier, script_multiplier, pace_multiplier
+
+    def position_ceiling_cap(self, position: Position) -> float:
+        """Empirical single-game ceiling for a position (see
+        _build_position_ceiling_caps); inf if there isn't enough data."""
+        return self._position_ceiling_cap.get(position, float("inf"))
+
+    def _build_position_ceiling_caps(self, weekly_stats: list[WeeklyStatLine]) -> dict[Position, float]:
+        """99th percentile of real single-game PPR points per position,
+        over players who actually had a role (>= 5 points that week).
+
+        Why: the multiplier-based ceiling had no tie to reality. A
+        real Week 5 run showed WR ceilings of 64-66 and an RB at 68,
+        while across 2025-2026 the 99th percentile WR game is ~36 and
+        even the single best WR game is ~46. A ceiling above anything
+        that has actually happened isn't upside, it is noise that
+        ranks players by how many multipliers stacked.
+        """
+        by_pos: dict[Position, list[float]] = defaultdict(list)
+        for line in weekly_stats:
+            if line.fantasy_points_ppr >= CEILING_CAP_MIN_GAME_POINTS:
+                by_pos[line.position].append(line.fantasy_points_ppr)
+        caps: dict[Position, float] = {}
+        for position, values in by_pos.items():
+            if len(values) < CEILING_CAP_MIN_SAMPLES:
+                continue
+            values.sort()
+            caps[position] = values[min(len(values) - 1, int(CEILING_CAP_PERCENTILE * len(values)))]
+        return caps
 
     def _build_last_played_week(self, weekly_stats: list[WeeklyStatLine]) -> dict[str, int]:
         last_played: dict[str, int] = {}

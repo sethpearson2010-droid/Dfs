@@ -269,6 +269,8 @@ class DfsPipeline:
         for pv in player_values:
             if pv.projection > 0:
                 pv.ceiling_projection = min(pv.ceiling_projection, round(pv.projection * CEILING_TO_PROJECTION_CAP, 2))
+                if pv.position in (Position.QB, Position.RB, Position.WR, Position.TE):
+                    pv.ceiling_projection = min(pv.ceiling_projection, value_calc.position_ceiling_cap(pv.position))
                 pv.ceiling_projection = max(pv.ceiling_projection, pv.floor_projection)
 
         self._write_output(player_values, output_path, sleeper_keys, regression_keys)
