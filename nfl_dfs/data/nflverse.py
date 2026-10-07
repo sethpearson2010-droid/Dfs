@@ -20,7 +20,9 @@ from nfl_dfs.data.base import StatDataSource
 from nfl_dfs.models import GameContext, Position, RedZoneWeekly, WeeklyStatLine
 
 BASE_URL = "https://github.com/nflverse/nflverse-data/releases/download"
-SCHEDULE_URL = f"{BASE_URL}/schedules/games.csv"  # all seasons, one file
+# all seasons, one file. nflverse dropped the plain games.csv asset (404);
+# only the gzipped one is published now.
+SCHEDULE_URL = f"{BASE_URL}/schedules/games.csv.gz"
 
 
 def _weekly_stats_url(season: int) -> str:
@@ -297,7 +299,10 @@ class NflverseDataSource(StatDataSource):
         request = urllib.request.Request(url, headers=_HEADERS)
         try:
             with urllib.request.urlopen(request, timeout=60) as response:
-                text = response.read().decode("utf-8")
+                raw = response.read()
+            if url.endswith(".gz"):
+                raw = gzip.decompress(raw)
+            text = raw.decode("utf-8")
         except urllib.error.HTTPError as error:
             if season is not None:
                 _raise_clear_fetch_error(error, season, url)
