@@ -61,9 +61,10 @@ MAX_LINEUPS = 150
 # and starves further). For each lean game, this fraction of a batch
 # locks in a full game stack: the game's best-ceiling QB, the best
 # pass-catcher from the QB's team, and the best bring-back from the
-# opponent. Only at real GPP risk levels.
+# opponent. Applies at every risk level: it is an explicit request, and
+# gating it on risk silently disabled it at the workflow's default
+# risk scale of 5 (= 0.444).
 LEAN_GAME_EXPOSURE_PCT = 0.10
-LEAN_GAME_MIN_RISK_THRESHOLD = 0.5
 
 # minimum offense snap share (0-1, from the player's single most recent
 # real game) to be lineup-eligible. Without it, near-zero-usage players
@@ -631,7 +632,7 @@ class LineupBuilder:
             elif flyer_candidate_here:
                 _apply_guarantee(flyer_candidate_here, FLYER_MIN_EXPOSURE_PCT)
 
-        if lean_games and risk_level >= LEAN_GAME_MIN_RISK_THRESHOLD:
+        if lean_games:
             for lean_pair in lean_games:
                 for lean_player in self._lean_game_stack(players, lean_pair, max_player_salary):
                     normalized = normalize_name(lean_player.player_name)

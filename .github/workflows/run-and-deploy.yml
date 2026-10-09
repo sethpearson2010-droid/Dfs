@@ -53,7 +53,7 @@ on:
         required: false
         default: ""
       lean_game:
-        description: "Optional: game(s) to lean into, as TEAM@TEAM (e.g. 'CLE@NYJ'; comma-separate for several). About 10% of a GPP batch (risk 5+) locks in a full game stack (QB + teammate + bring-back) from each. Leave blank for none."
+        description: "Optional: game(s) to lean into, as TEAM@TEAM (e.g. 'CLE@NYJ'; comma-separate for several). About 10% of a batch locks in a full game stack (QB + teammate + bring-back) from each. Leave blank for none."
         required: false
         default: ""
       skip_redzone:

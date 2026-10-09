@@ -159,7 +159,7 @@ def main() -> None:
         "--lean-game",
         default=None,
         help="Comma-separated games to lean into, as TEAM@TEAM (e.g. 'CLE@NYJ' or 'CLE@NYJ,HOU@TEN'). "
-        "For each, about 10%% of a GPP batch (risk >= 5) locks in a full game stack — the game's "
+        "For each, about 10%% of a GPP batch locks in a full game stack — the game's "
         "best-ceiling QB, his best teammate, and the best opposing bring-back — so a game the "
         "optimizer would otherwise ignore still gets stacked exposure. Ignored for single lineups.",
     )
