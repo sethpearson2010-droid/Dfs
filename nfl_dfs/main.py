@@ -155,6 +155,14 @@ def main() -> None:
         "instead of all of it — omit the suffix to lock into every lineup. Same substring-tolerant "
         "matching as --exclude-players.",
     )
+    parser.add_argument(
+        "--lean-game",
+        default=None,
+        help="Comma-separated games to lean into, as TEAM@TEAM (e.g. 'CLE@NYJ' or 'CLE@NYJ,HOU@TEN'). "
+        "For each, about 10%% of a GPP batch (risk >= 5) locks in a full game stack — the game's "
+        "best-ceiling QB, his best teammate, and the best opposing bring-back — so a game the "
+        "optimizer would otherwise ignore still gets stacked exposure. Ignored for single lineups.",
+    )
     args = parser.parse_args()
     print(f"DEBUG received --exclude-players = [{args.exclude_players}]")
     print(f"DEBUG received --include-players = [{args.include_players}]")
@@ -181,6 +189,15 @@ def main() -> None:
         exclude_players = [name.strip() for name in args.exclude_players.split(",") if name.strip()]
         print(f"Excluding: {', '.join(exclude_players)}")
 
+    lean_games = None
+    if args.lean_game and args.lean_game.strip():
+        lean_games = []
+        for token in args.lean_game.split(","):
+            teams = [t.strip().upper() for t in token.replace("@", " ").replace("/", " ").replace("-", " ").split()]
+            if len(teams) != 2:
+                raise SystemExit(f"--lean-game entries must look like CLE@NYJ, got {token.strip()!r}")
+            lean_games.append((teams[0], teams[1]))
+        print(f"Leaning into: {', '.join('@'.join(g) for g in lean_games)}")
     include_players = None
     lock_target_counts = None
     if args.include_players:
@@ -206,6 +223,7 @@ def main() -> None:
         exclude_players=exclude_players,
         include_players=include_players,
         lock_target_counts=lock_target_counts,
+        lean_games=lean_games,
     )
 
     print(f"Done. Wrote player values to {args.output}")

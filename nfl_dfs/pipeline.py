@@ -108,6 +108,7 @@ class DfsPipeline:
         exclude_players: list[str] | None = None,
         include_players: list[str] | None = None,
         lock_target_counts: dict[str, int] | None = None,
+        lean_games: list[tuple[str, str]] | None = None,
     ) -> None:
         self._write_run_config(
             output_path,
@@ -313,6 +314,7 @@ class DfsPipeline:
                 max_player_salary=max_player_salary,
                 max_salary_leftover=max_salary_leftover,
                 lock_target_counts=lock_target_counts,
+                lean_games=lean_games,
             )
             self._write_lineup_set(lineups, single_risk_level, output_path)
         else:

@@ -52,6 +52,10 @@ on:
         description: "Comma-separated player names to LOCK into every lineup (e.g. a backup about to start due to an injury elsewhere the box scores don't reflect yet). For num_lineups > 1, append ':N' to a name to lock them into only N of the batch instead of all of it, e.g. 'Jayden Daniels:20'. Leave blank for none."
         required: false
         default: ""
+      lean_game:
+        description: "Optional: game(s) to lean into, as TEAM@TEAM (e.g. 'CLE@NYJ'; comma-separate for several). About 10% of a GPP batch (risk 5+) locks in a full game stack (QB + teammate + bring-back) from each. Leave blank for none."
+        required: false
+        default: ""
       skip_redzone:
         description: "Skip the play-by-play red-zone fetch for a faster run"
         type: boolean
@@ -98,6 +102,7 @@ jobs:
           # to.
           EXCLUDE_PLAYERS: ${{ inputs.exclude_players }}
           INCLUDE_PLAYERS: ${{ inputs.include_players }}
+          LEAN_GAME: ${{ inputs.lean_game }}
         run: |
           ARGS="--season ${{ inputs.season }} --salary-csv inputs/salary.csv --output output/players.json"
           if [ "${{ inputs.explore }}" = "true" ]; then
@@ -122,7 +127,7 @@ jobs:
           echo "DEBUG raw exclude_players input = [$EXCLUDE_PLAYERS]"
           echo "DEBUG raw include_players input = [$INCLUDE_PLAYERS]"
           echo "Running: python -m nfl_dfs.main $ARGS --exclude-players [see above] --include-players [see above]"
-          python -m nfl_dfs.main $ARGS --exclude-players "$EXCLUDE_PLAYERS" --include-players "$INCLUDE_PLAYERS"
+          python -m nfl_dfs.main $ARGS --exclude-players "$EXCLUDE_PLAYERS" --include-players "$INCLUDE_PLAYERS" --lean-game "$LEAN_GAME"
 
       - name: Assemble static site
         run: |

@@ -54,6 +54,17 @@ from nfl_dfs.roster_rules import ROSTER_SLOTS, SALARY_CAP
 LOCAL_SEARCH_ITERATIONS = 3000
 MAX_LINEUPS = 150
 
+# "lean" games: a game the caller wants represented even though the
+# optimizer naturally ignores it (e.g. a low-total game with no QB
+# competitive enough to win a slot — and since stack/bring-back bonuses
+# only attach to QBs already chosen, that game then gets none of them
+# and starves further). For each lean game, this fraction of a batch
+# locks in a full game stack: the game's best-ceiling QB, the best
+# pass-catcher from the QB's team, and the best bring-back from the
+# opponent. Only at real GPP risk levels.
+LEAN_GAME_EXPOSURE_PCT = 0.10
+LEAN_GAME_MIN_RISK_THRESHOLD = 0.5
+
 # minimum offense snap share (0-1, from the player's single most recent
 # real game) to be lineup-eligible. Without it, near-zero-usage players
 # (e.g. 8% snaps) sneak in as "leverage" picks: their low projected
@@ -373,6 +384,7 @@ class LineupBuilder:
         max_player_salary: int | None = None,
         max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
         lock_target_counts: dict[str, int] | None = None,
+        lean_games: list[tuple[str, str]] | None = None,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
@@ -619,6 +631,15 @@ class LineupBuilder:
             elif flyer_candidate_here:
                 _apply_guarantee(flyer_candidate_here, FLYER_MIN_EXPOSURE_PCT)
 
+        if lean_games and risk_level >= LEAN_GAME_MIN_RISK_THRESHOLD:
+            for lean_pair in lean_games:
+                for lean_player in self._lean_game_stack(players, lean_pair, max_player_salary):
+                    normalized = normalize_name(lean_player.player_name)
+                    if normalized not in lock_target_counts:
+                        lock_target_counts[normalized] = max(1, round(LEAN_GAME_EXPOSURE_PCT * count))
+                    if lean_player.player_name not in {fp.player_name for fp in force_included_players}:
+                        force_included_players.append(lean_player)
+
         lock_usage_count: dict[str, int] = {}
 
         while len(accepted) < count and attempts < max_attempts:
@@ -707,6 +728,46 @@ class LineupBuilder:
         return accepted
 
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _lean_game_stack(
+        players: list[PlayerValue], teams: tuple[str, str], max_player_salary: int | None
+    ) -> list[PlayerValue]:
+        """QB + best teammate pass-catcher + best opposing bring-back
+        for one lean game, by ceiling. Same eligibility as build()'s
+        usable pool, so a lean pick is never out/stale/zero/below the
+        snap floor. Returns [] if the game has no viable QB."""
+        team_set = {t.upper() for t in teams}
+
+        def viable(p: PlayerValue) -> bool:
+            return (
+                p.team.upper() in team_set
+                and not p.is_out
+                and not p.is_stale
+                and not p.manually_excluded
+                and p.projection > 0
+                and p.name_match_quality != "unmatched"
+                and (p.recent_snap_pct is None or p.recent_snap_pct >= MIN_RECENT_SNAP_PCT)
+                and (max_player_salary is None or p.salary <= max_player_salary)
+            )
+
+        pool = [p for p in players if viable(p)]
+        qbs = [p for p in pool if p.position == Position.QB]
+        if not qbs:
+            return []
+        qb = max(qbs, key=lambda p: p.ceiling_projection)
+        catchers = (Position.WR, Position.TE, Position.RB)
+        teammate = max(
+            (p for p in pool if p.team.upper() == qb.team.upper() and p.position in catchers),
+            key=lambda p: p.ceiling_projection,
+            default=None,
+        )
+        bring_back = max(
+            (p for p in pool if p.team.upper() != qb.team.upper() and p.position in catchers),
+            key=lambda p: p.ceiling_projection,
+            default=None,
+        )
+        return [p for p in (qb, teammate, bring_back) if p is not None]
 
     def _objective(self, player: PlayerValue, risk_level: float, noise: dict[str, float]) -> float:
         base = (1 - risk_level) * player.floor_projection + risk_level * player.ceiling_projection
