@@ -322,5 +322,86 @@
         "roster_slot": "D"
       }
     ]
+  },
+  {
+    "season": 2026,
+    "week": 5,
+    "contest": "unknown (1st place, $2,000 prize, user mark812)",
+    "prize_pool": "unknown",
+    "notes": "From the Week 5 lineup-scores screenshot (QB, 2 RB, 3 WR, TE, FLEX, DEF). Salaries matched against the Week 5 inputs/salary.csv (135023 slate); they sum to $59,800 (the screenshot doesn't show the contest name/entry fee). Point total matches the displayed 247.58.",
+    "players": [
+      {
+        "name": "J. Love",
+        "team": "GB",
+        "position": "QB",
+        "salary": 7400,
+        "points": 28.28,
+        "roster_slot": "QB"
+      },
+      {
+        "name": "J. Warren",
+        "team": "PIT",
+        "position": "RB",
+        "salary": 6700,
+        "points": 36.8,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "A. Jones Sr.",
+        "team": "MIN",
+        "position": "RB",
+        "salary": 6200,
+        "points": 20.2,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "M. Nabers",
+        "team": "NYG",
+        "position": "WR",
+        "salary": 7300,
+        "points": 26.6,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "M. Golden",
+        "team": "GB",
+        "position": "WR",
+        "salary": 6300,
+        "points": 20.3,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "C. Watson",
+        "team": "GB",
+        "position": "WR",
+        "salary": 7000,
+        "points": 32.3,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "I. Likely",
+        "team": "NYG",
+        "position": "TE",
+        "salary": 5300,
+        "points": 26.9,
+        "roster_slot": "TE"
+      },
+      {
+        "name": "J. Gibbs",
+        "team": "DET",
+        "position": "RB",
+        "salary": 10000,
+        "points": 38.2,
+        "roster_slot": "FLEX"
+      },
+      {
+        "name": "GB Packers",
+        "team": "GB",
+        "position": "D",
+        "salary": 3600,
+        "points": 18.0,
+        "roster_slot": "D"
+      }
+    ]
   }
 ]
