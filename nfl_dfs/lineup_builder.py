@@ -66,6 +66,19 @@ MAX_LINEUPS = 150
 # risk scale of 5 (= 0.444).
 LEAN_GAME_EXPOSURE_PCT = 0.10
 
+# STACK-FIRST mode (build_many(stack_first=True)). Every winning lineup
+# we've logged leaned on a same-game stack (Week 5: four Packers from a
+# 31-7 game plus a Giants pair), while the free optimizer spreads 150
+# lineups over near-identical projections. Stack-first picks the games
+# with the best shootout environment, then builds STACK_FIRST_SHARE of
+# the batch around a locked game stack - the QB, two of his team's
+# WR/TE and one opposing WR/TE - rotating the pass-catchers for
+# diversity. The rest of the batch stays free.
+STACK_FIRST_SHARE = 0.7
+STACK_FIRST_GAMES = 4
+STACK_FIRST_GAME_WEIGHTS = (0.40, 0.25, 0.20, 0.15)  # share of stacked lineups, by game rank
+STACK_FIRST_PRIMARY_QB_SHARE = 0.65  # stacked lineups anchored on the game's better QB; the rest on the other side
+
 # minimum offense snap share (0-1, from the player's single most recent
 # real game) to be lineup-eligible. Without it, near-zero-usage players
 # (e.g. 8% snaps) sneak in as "leverage" picks: their low projected
@@ -402,6 +415,7 @@ class LineupBuilder:
         max_salary_leftover: int | None = DEFAULT_MAX_SALARY_LEFTOVER,
         lock_target_counts: dict[str, int] | None = None,
         lean_games: list[tuple[str, str]] | None = None,
+        stack_first: bool = False,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
@@ -658,6 +672,15 @@ class LineupBuilder:
                     if lean_player.player_name not in {fp.player_name for fp in force_included_players}:
                         force_included_players.append(lean_player)
 
+        # stack-first plan: one locked game stack per planned lineup,
+        # indexed by the acceptance order. Stacked lineups use ONLY the
+        # stack plus any user-forced players (not flyer/regression/lean
+        # guarantees), so the locks can't crowd out the stack.
+        user_forced_players = [p for p in players if p.force_included]
+        stack_plan: list[list[PlayerValue]] = (
+            self._build_stack_plan(players, risk_level, count, max_player_salary) if stack_first else []
+        )
+
         lock_usage_count: dict[str, int] = {}
 
         while len(accepted) < count and attempts < max_attempts:
@@ -683,6 +706,19 @@ class LineupBuilder:
                 if lock_usage_count.get(p.player_name, 0)
                 < lock_target_counts.get(normalize_name(p.player_name), count)
             ]
+            if len(accepted) < len(stack_plan) and stack_plan[len(accepted)]:
+                planned = stack_plan[len(accepted)]
+                planned_names = {pp.player_name for pp in planned}
+                planned_has_qb = any(pp.position == Position.QB for pp in planned)
+                extras = [
+                    p
+                    for p in user_forced_players
+                    if p.player_name not in planned_names
+                    and not (planned_has_qb and p.position == Position.QB)
+                    and lock_usage_count.get(p.player_name, 0)
+                    < lock_target_counts.get(normalize_name(p.player_name), count)
+                ]
+                current_locked = planned + extras
 
             self._random = random.Random(seed_counter)
             candidate = self.build(
@@ -747,6 +783,107 @@ class LineupBuilder:
         return accepted
 
     # ------------------------------------------------------------------
+
+    def _build_stack_plan(
+        self,
+        players: list[PlayerValue],
+        risk_level: float,
+        count: int,
+        max_player_salary: int | None,
+    ) -> list[list[PlayerValue]]:
+        """One locked stack (QB + 2 teammates + 1 bring-back) per
+        stacked lineup. See STACK_FIRST_* constants for the design."""
+        import statistics
+
+        def viable(p: PlayerValue) -> bool:
+            return (
+                not p.is_out
+                and not p.is_stale
+                and not p.manually_excluded
+                and p.projection > 0
+                and p.name_match_quality != "unmatched"
+                and (p.recent_snap_pct is None or p.recent_snap_pct >= MIN_RECENT_SNAP_PCT)
+                and (max_player_salary is None or p.salary <= max_player_salary)
+            )
+
+        pool = [p for p in players if viable(p) and p.position in (Position.QB, Position.RB, Position.WR, Position.TE)]
+        games: dict[frozenset, list[PlayerValue]] = {}
+        for p in pool:
+            games.setdefault(frozenset((p.team.upper(), p.opponent.upper())), []).append(p)
+
+        def game_total(group: list[PlayerValue]) -> float | None:
+            for p in group:
+                if p.game_context:
+                    return p.game_context.total_line
+            return None
+
+        scored = []
+        for key, group in games.items():
+            teams = sorted(key)
+            if len(teams) != 2:
+                continue
+            qbs = [p for p in group if p.position == Position.QB]
+            catchers_by_team = {
+                t: [p for p in group if p.team.upper() == t and p.position in (Position.WR, Position.TE)]
+                for t in teams
+            }
+            if not qbs or any(len(c) < 3 for c in catchers_by_team.values()):
+                continue
+            ceilings = sorted((p.ceiling_projection for p in group if p.position != Position.QB), reverse=True)
+            env = sum(ceilings[:6]) + max(p.ceiling_projection for p in qbs)
+            scored.append((key, group, game_total(group) or 0.0, env))
+        if not scored:
+            return []
+
+        def z(values: list[float]) -> list[float]:
+            mean = statistics.fmean(values)
+            sd = statistics.pstdev(values) or 1.0
+            return [(v - mean) / sd for v in values]
+
+        totals_z = z([g[2] for g in scored])
+        env_z = z([g[3] for g in scored])
+        ranked = sorted(zip(scored, totals_z, env_z), key=lambda t: -(0.5 * t[1] + 0.5 * t[2]))
+        top = [t[0] for t in ranked[:STACK_FIRST_GAMES]]
+        weights = STACK_FIRST_GAME_WEIGHTS[: len(top)]
+        weight_sum = sum(weights)
+
+        total_stacked = max(1, round(STACK_FIRST_SHARE * count))
+        plan: list[list[PlayerValue]] = []
+        # pass-catcher pairs (indices into the team's top-4 by ceiling)
+        pair_rotation = [(0, 1), (0, 2), (1, 2), (0, 3), (1, 3), (2, 3)]
+        back_rotation = [0, 1, 2, 0, 1, 0]
+        for rank, (key, group, _total, _env) in enumerate(top):
+            n_game = max(1, round(total_stacked * weights[rank] / weight_sum))
+            teams = sorted(key)
+            qb_by_team = {
+                t: max((p for p in group if p.position == Position.QB and p.team.upper() == t), key=lambda p: p.ceiling_projection, default=None)
+                for t in teams
+            }
+            if any(v is None for v in qb_by_team.values()):
+                continue
+            primary, secondary = sorted(teams, key=lambda t: -qb_by_team[t].ceiling_projection)
+            n_primary = max(1, round(n_game * STACK_FIRST_PRIMARY_QB_SHARE))
+            sides = [primary] * n_primary + [secondary] * max(0, n_game - n_primary)
+            used_counts = {primary: 0, secondary: 0}
+            for side in sides:
+                other = secondary if side == primary else primary
+                mates = sorted(
+                    (p for p in group if p.team.upper() == side and p.position in (Position.WR, Position.TE)),
+                    key=lambda p: -p.ceiling_projection,
+                )[:4]
+                backs = sorted(
+                    (p for p in group if p.team.upper() == other and p.position in (Position.WR, Position.TE)),
+                    key=lambda p: -p.ceiling_projection,
+                )[:3]
+                i = used_counts[side]
+                used_counts[side] += 1
+                a, b = pair_rotation[i % len(pair_rotation)]
+                stack = [qb_by_team[side]]
+                stack += [mates[a], mates[b]] if len(mates) > max(a, b) else mates[:2]
+                if backs:
+                    stack.append(backs[back_rotation[i % len(back_rotation)] % len(backs)])
+                plan.append(stack)
+        return plan
 
     @staticmethod
     def _lean_game_stack(

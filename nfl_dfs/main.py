@@ -163,6 +163,13 @@ def main() -> None:
         "best-ceiling QB, his best teammate, and the best opposing bring-back — so a game the "
         "optimizer would otherwise ignore still gets stacked exposure. Ignored for single lineups.",
     )
+    parser.add_argument(
+        "--stack-first",
+        action="store_true",
+        help="Build ~70%% of a batch (--num-lineups > 1) around locked same-game stacks (QB + 2 "
+        "teammates + 1 bring-back) from the 4 best shootout-environment games, rotating the "
+        "pass-catchers; the rest of the batch stays free.",
+    )
     args = parser.parse_args()
     print(f"DEBUG received --exclude-players = [{args.exclude_players}]")
     print(f"DEBUG received --include-players = [{args.include_players}]")
@@ -224,6 +231,7 @@ def main() -> None:
         include_players=include_players,
         lock_target_counts=lock_target_counts,
         lean_games=lean_games,
+        stack_first=args.stack_first,
     )
 
     print(f"Done. Wrote player values to {args.output}")
