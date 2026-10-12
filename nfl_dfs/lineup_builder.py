@@ -246,7 +246,19 @@ BASE_NOISE_MAGNITUDE = 0.10
 # further lineups — heavily rather than hard-banned, so a thin pool can
 # still complete a full batch by reusing them past the cap if there's
 # truly no alternative.
-DEFAULT_MAX_EXPOSURE_PCT = 0.5
+#
+# Lowered 0.5 -> 0.3 after Week 5: four players sat at 50% exposure
+# (Monangai, Hockenson, M. Wilson, Mayer), all busted (0 / 1.7 / 7.3 /
+# 1.2 pts), and 96% of the 150 lineups held at least one of them, so a
+# single bad outcome sank most of the portfolio.
+DEFAULT_MAX_EXPOSURE_PCT = 0.3
+
+# players FanDuel tags Questionable ("Q") get a much tighter exposure
+# cap: in Week 5, 5 of 12 Q-tagged skill players recorded no stat line
+# (vs 15 of 168 untagged), and Kyle Monangai (Q, did not play) was in
+# 50% of lineups for zero points. Their projections are also
+# discounted (see QUESTIONABLE_AVAILABILITY_FACTOR in pipeline.py).
+QUESTIONABLE_MAX_EXPOSURE_PCT = 0.15
 EXPOSURE_PENALTY_FACTOR = 0.1
 
 
@@ -439,6 +451,7 @@ class LineupBuilder:
         accepted: list[Lineup] = []
         usage_count: dict[str, int] = {}
         max_uses_per_player = max(1, round(max_exposure_pct * count))
+        max_uses_questionable = max(1, round(min(max_exposure_pct, QUESTIONABLE_MAX_EXPOSURE_PCT) * count))
         attempts = 0
         max_attempts = min(count * MAX_ATTEMPTS_PER_LINEUP, MAX_TOTAL_ATTEMPTS)
         seed_counter = 0
@@ -650,7 +663,8 @@ class LineupBuilder:
             noise = {p.player_name: 1 + rng.uniform(-noise_magnitude, noise_magnitude) for p in players}
 
             for p in players:
-                if usage_count.get(p.player_name, 0) >= max_uses_per_player:
+                cap = max_uses_questionable if p.injury_status.upper() == "Q" else max_uses_per_player
+                if usage_count.get(p.player_name, 0) >= cap:
                     noise[p.player_name] = noise.get(p.player_name, 1.0) * EXPOSURE_PENALTY_FACTOR
 
             # a force_included player is locked into THIS candidate

@@ -26,7 +26,14 @@ from nfl_dfs.regression import RegressionCalculator
 from nfl_dfs.salary import OUT_INJURY_STATUSES, FanDuelSalaryImporter
 from nfl_dfs.sleepers import SleeperCalculator
 from nfl_dfs.value import CEILING_TO_PROJECTION_CAP, RECENT_FORM_WINDOW, ValueCalculator
+
 from nfl_dfs.vulnerability import VulnerabilityCalculator
+
+# Questionable ("Q") players only play ~58% of the time (Week 5: 7 of 12
+# recorded a stat line; untagged players: 91%). 0.75 is deliberately
+# milder than the raw rate - it's one week of data, and Q players who do
+# play are usually fine.
+QUESTIONABLE_AVAILABILITY_FACTOR = 0.75
 
 # the risk slider isn't infinitely continuous in the output — these
 # five points span cash (0.0) to max-upside GPP (1.0) with reasonable
@@ -267,6 +274,17 @@ class DfsPipeline:
         # post-hoc adjustment above, makes the cap hold for the
         # player's FINAL projection/ceiling, not just the pre-boost
         # ones value.py never saw.
+        # availability discount for Questionable players (see
+        # QUESTIONABLE_AVAILABILITY_FACTOR). Scales projection, floor
+        # and ceiling together so their ratios (and the cap below) are
+        # unchanged. Skipped for force-included players, which are an
+        # explicit human override.
+        for pv in player_values:
+            if pv.injury_status.upper() == "Q" and not pv.force_included and pv.position != Position.DST:
+                pv.projection = round(pv.projection * QUESTIONABLE_AVAILABILITY_FACTOR, 2)
+                pv.floor_projection = round(pv.floor_projection * QUESTIONABLE_AVAILABILITY_FACTOR, 2)
+                pv.ceiling_projection = round(pv.ceiling_projection * QUESTIONABLE_AVAILABILITY_FACTOR, 2)
+
         for pv in player_values:
             if pv.projection > 0:
                 pv.ceiling_projection = min(pv.ceiling_projection, round(pv.projection * CEILING_TO_PROJECTION_CAP, 2))
