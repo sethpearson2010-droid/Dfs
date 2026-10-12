@@ -35,6 +35,20 @@ from nfl_dfs.vulnerability import VulnerabilityCalculator
 # play are usually fine.
 QUESTIONABLE_AVAILABILITY_FACTOR = 0.75
 
+# Week 5 calibration: regressing actual points on our projections gave
+# a slope of 0.65 (top-10% projected players: 22.8 projected vs 15.7
+# actual), and salary correlated better with results than projection
+# (0.54 vs 0.47). So each skill player's projection is pulled toward the
+# salary-implied expectation for his position (a per-position linear fit
+# of projection on salary across the slate): new = E + SHRINK*(old - E).
+# 0.75 is deliberately milder than the observed 0.65 - one week of data.
+PROJECTION_SHRINK_TO_SALARY = 0.75
+
+# Week 5: only 22% of players reached their projected ceiling, because
+# each player's spread comes from just his last ~4 games. Upside/downside
+# spreads are floored at this fraction of the position's median spread.
+MIN_SPREAD_FRACTION_OF_POSITION_MEDIAN = 0.75
+
 # the risk slider isn't infinitely continuous in the output — these
 # five points span cash (0.0) to max-upside GPP (1.0) with reasonable
 # granularity. Pass a custom list to run() for a different spread.
@@ -274,6 +288,8 @@ class DfsPipeline:
         # post-hoc adjustment above, makes the cap hold for the
         # player's FINAL projection/ceiling, not just the pre-boost
         # ones value.py never saw.
+        self._calibrate_projections(player_values)
+
         # availability discount for Questionable players (see
         # QUESTIONABLE_AVAILABILITY_FACTOR). Scales projection, floor
         # and ceiling together so their ratios (and the cap below) are
@@ -565,6 +581,38 @@ class DfsPipeline:
         for pv in player_values:
             if normalize_name(pv.player_name) in auto_normalized and pv.team in starter_by_team:
                 pv.injury_replacement_for = starter_by_team[pv.team]
+
+    @staticmethod
+    def _calibrate_projections(player_values) -> None:
+        """Shrinks projections toward the salary-implied expectation and
+        floors each player's upside/downside spread at a fraction of his
+        position's median (see PROJECTION_SHRINK_TO_SALARY and
+        MIN_SPREAD_FRACTION_OF_POSITION_MEDIAN). Ceiling/floor move with
+        the projection so their spreads are preserved apart from the
+        floor. Skill positions only."""
+        import statistics
+
+        for position in (Position.QB, Position.RB, Position.WR, Position.TE):
+            group = [pv for pv in player_values if pv.position == position and pv.projection > 0 and not pv.is_out]
+            if len(group) < 8:
+                continue
+            xs = [float(pv.salary) for pv in group]
+            ys = [pv.projection for pv in group]
+            mx, my = statistics.fmean(xs), statistics.fmean(ys)
+            var = sum((x - mx) ** 2 for x in xs)
+            slope = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / var if var else 0.0
+            up_median = statistics.median(max(0.0, pv.ceiling_projection - pv.projection) for pv in group)
+            down_median = statistics.median(max(0.0, pv.projection - pv.floor_projection) for pv in group)
+            for pv in group:
+                up = max(0.0, pv.ceiling_projection - pv.projection)
+                down = max(0.0, pv.projection - pv.floor_projection)
+                expected = my + slope * (pv.salary - mx)
+                new_projection = max(0.1, expected + PROJECTION_SHRINK_TO_SALARY * (pv.projection - expected))
+                up = max(up, MIN_SPREAD_FRACTION_OF_POSITION_MEDIAN * up_median)
+                down = max(down, MIN_SPREAD_FRACTION_OF_POSITION_MEDIAN * down_median)
+                pv.projection = round(new_projection, 2)
+                pv.ceiling_projection = round(new_projection + up, 2)
+                pv.floor_projection = round(max(0.0, new_projection - down), 2)
 
     def _apply_injury_replacement_boosts(self, player_values: list[PlayerValue]) -> None:
         """When a team's presumptive starter (highest-salaried player,

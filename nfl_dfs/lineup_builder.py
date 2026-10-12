@@ -77,7 +77,11 @@ MIN_RECENT_SNAP_PCT = 0.25
 # how much lower ownership boosts the objective at max risk_level —
 # scales linearly with risk_level, so it's a no-op in cash (risk=0)
 # and fully active at max GPP (risk=1)
-LEVERAGE_WEIGHT = 0.15
+# Week 5: the ownership numbers are a salary-driven heuristic, not real
+# crowd data, and higher-'owned' players out-scored low-owned ones (0.38
+# correlation) - so the leverage bonus was rewarding the wrong thing.
+# Cut from 0.15 to near zero until real ownership data exists.
+LEVERAGE_WEIGHT = 0.03
 
 # how much a genuinely good matchup (vulnerability_multiplier > 1)
 # boosts the objective, scaled by risk_level — the "risky lineups draw
