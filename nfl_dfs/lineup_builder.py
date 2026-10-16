@@ -74,9 +74,12 @@ LEAN_GAME_EXPOSURE_PCT = 0.10
 # the batch around a locked game stack - the QB, two of his team's
 # WR/TE and one opposing WR/TE - rotating the pass-catchers for
 # diversity. The rest of the batch stays free.
+FLEX_TE_PENALTY_FRACTION = 0.25  # share of a FLEX-slot TE's objective that is discounted
+
 STACK_FIRST_SHARE = 0.7
 STACK_FIRST_GAMES = 4
 STACK_FIRST_GAME_WEIGHTS = (0.40, 0.25, 0.20, 0.15)  # share of stacked lineups, by game rank
+STACK_FIRST_MIN_QB_PROJECTION_FRACTION = 0.6  # of the median viable-QB projection
 STACK_FIRST_PRIMARY_QB_SHARE = 0.65  # stacked lineups anchored on the game's better QB; the rest on the other side
 
 # minimum offense snap share (0-1, from the player's single most recent
@@ -276,6 +279,12 @@ DEFAULT_MAX_EXPOSURE_PCT = 0.3
 # 50% of lineups for zero points. Their projections are also
 # discounted (see QUESTIONABLE_AVAILABILITY_FACTOR in pipeline.py).
 QUESTIONABLE_MAX_EXPOSURE_PCT = 0.15
+
+# backup QBs (flagged by low recent snap share, and not the detected
+# injury-replacement starter) are tightly capped too: Week 6, Case Keenum
+# (33% snaps, 0.7 pts last game, scored off one old 24.5-pt game) took
+# 10% of lineups on ceiling alone.
+BACKUP_QB_MAX_EXPOSURE_PCT = 0.05
 EXPOSURE_PENALTY_FACTOR = 0.1
 
 
@@ -470,6 +479,7 @@ class LineupBuilder:
         usage_count: dict[str, int] = {}
         max_uses_per_player = max(1, round(max_exposure_pct * count))
         max_uses_questionable = max(1, round(min(max_exposure_pct, QUESTIONABLE_MAX_EXPOSURE_PCT) * count))
+        max_uses_backup_qb = max(1, round(min(max_exposure_pct, BACKUP_QB_MAX_EXPOSURE_PCT) * count))
         attempts = 0
         max_attempts = min(count * MAX_ATTEMPTS_PER_LINEUP, MAX_TOTAL_ATTEMPTS)
         seed_counter = 0
@@ -690,7 +700,12 @@ class LineupBuilder:
             noise = {p.player_name: 1 + rng.uniform(-noise_magnitude, noise_magnitude) for p in players}
 
             for p in players:
-                cap = max_uses_questionable if p.injury_status.upper() == "Q" else max_uses_per_player
+                if p.position == Position.QB and p.is_backup_qb and not p.is_injury_replacement_qb:
+                    cap = max_uses_backup_qb
+                elif p.injury_status.upper() == "Q":
+                    cap = max_uses_questionable
+                else:
+                    cap = max_uses_per_player
                 if usage_count.get(p.player_name, 0) >= cap:
                     noise[p.player_name] = noise.get(p.player_name, 1.0) * EXPOSURE_PENALTY_FACTOR
 
@@ -804,9 +819,22 @@ class LineupBuilder:
                 and p.name_match_quality != "unmatched"
                 and (p.recent_snap_pct is None or p.recent_snap_pct >= MIN_RECENT_SNAP_PCT)
                 and (max_player_salary is None or p.salary <= max_player_salary)
+                # a backup QB (low recent snap share) can't anchor a
+                # stack unless he's the detected injury-replacement
+                # starter - Week 6: Case Keenum (33% snaps, 0.7 pts last
+                # game, Caleb Williams only Questionable) anchored 25% of
+                # lineups purely off one old 24.5-pt game's ceiling.
+                and not (p.position == Position.QB and p.is_backup_qb and not p.is_injury_replacement_qb)
             )
 
         pool = [p for p in players if viable(p) and p.position in (Position.QB, Position.RB, Position.WR, Position.TE)]
+        # a QB must project at least this fraction of the viable-QB median
+        # to anchor a stack (Week 6: Tyson Bagent, projected 3.9, anchored
+        # 7 lineups as CHI's only non-backup QB with Caleb Williams out).
+        qb_projections = sorted(p.projection for p in pool if p.position == Position.QB)
+        if qb_projections:
+            qb_floor = STACK_FIRST_MIN_QB_PROJECTION_FRACTION * qb_projections[len(qb_projections) // 2]
+            pool = [p for p in pool if p.position != Position.QB or p.projection >= qb_floor]
         games: dict[frozenset, list[PlayerValue]] = {}
         for p in pool:
             games.setdefault(frozenset((p.team.upper(), p.opponent.upper())), []).append(p)
@@ -869,11 +897,11 @@ class LineupBuilder:
                 other = secondary if side == primary else primary
                 mates = sorted(
                     (p for p in group if p.team.upper() == side and p.position in (Position.WR, Position.TE)),
-                    key=lambda p: -p.ceiling_projection,
+                    key=lambda p: -(0.6 * p.projection + 0.4 * p.ceiling_projection),
                 )[:4]
                 backs = sorted(
                     (p for p in group if p.team.upper() == other and p.position in (Position.WR, Position.TE)),
-                    key=lambda p: -p.ceiling_projection,
+                    key=lambda p: -(0.6 * p.projection + 0.4 * p.ceiling_projection),
                 )[:3]
                 i = used_counts[side]
                 used_counts[side] += 1
@@ -882,6 +910,21 @@ class LineupBuilder:
                 stack += [mates[a], mates[b]] if len(mates) > max(a, b) else mates[:2]
                 if backs:
                     stack.append(backs[back_rotation[i % len(back_rotation)] % len(backs)])
+                # at most ONE TE per stack: two locked TEs force a TE into
+                # FLEX in most lineups (Week 6 run: 92 of 150 lineups had
+                # two TEs), and every logged winner's FLEX was an RB/WR.
+                tes = [pp for pp in stack if pp.position == Position.TE]
+                for extra_te in tes[1:]:
+                    replacement = next(
+                        (
+                            c
+                            for c in sorted(mates + backs, key=lambda p: -(0.6 * p.projection + 0.4 * p.ceiling_projection))
+                            if c.position == Position.WR and c.player_name not in {x.player_name for x in stack}
+                        ),
+                        None,
+                    )
+                    if replacement is not None:
+                        stack[stack.index(extra_te)] = replacement
                 plan.append(stack)
         return plan
 
@@ -1246,9 +1289,16 @@ class LineupBuilder:
         return current
 
     def _total_objective(self, assigned: dict[str, PlayerValue], risk_level: float, noise: dict[str, float]) -> float:
-        return sum(self._objective(p, risk_level, noise) for p in assigned.values()) + self._stack_bonus(
+        total = sum(self._objective(p, risk_level, noise) for p in assigned.values()) + self._stack_bonus(
             assigned, risk_level
         )
+        # a TE in FLEX counts for less: every logged winner's FLEX was an
+        # RB/WR, and cheap-TE ceilings (~27 on a $5,000 TE) kept pushing
+        # a second TE into 56-61% of lineups.
+        flex = assigned.get("FLEX")
+        if flex is not None and flex.position == Position.TE:
+            total -= FLEX_TE_PENALTY_FRACTION * self._objective(flex, risk_level, noise)
+        return total
 
     def _stack_bonus(self, assigned: dict[str, PlayerValue], risk_level: float) -> float:
         if risk_level <= 0:
