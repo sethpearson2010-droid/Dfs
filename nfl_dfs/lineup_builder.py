@@ -363,6 +363,15 @@ class LineupBuilder:
                 or p.recent_snap_pct is None
                 or p.recent_snap_pct >= MIN_RECENT_SNAP_PCT
             )
+            # flagged backup QB: not a candidate unless he's the detected
+            # injury-replacement starter or force-included (Week 6: Case
+            # Keenum kept appearing in runs with no --exclude-players).
+            and not (
+                p.position == Position.QB
+                and p.is_backup_qb
+                and not p.is_injury_replacement_qb
+                and not p.force_included
+            )
         ]
         if max_player_salary is not None:
             usable = [p for p in usable if p.salary <= max_player_salary]
