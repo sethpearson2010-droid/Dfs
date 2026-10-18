@@ -25,6 +25,23 @@ BASE_URL = "https://github.com/nflverse/nflverse-data/releases/download"
 SCHEDULE_URL = f"{BASE_URL}/schedules/games.csv.gz"
 
 
+# nflverse calls the Rams "LA"; FanDuel (our salary file) calls them "LAR".
+# Without this, every team-keyed lookup for the Rams (schedule/betting
+# line, pace, vulnerability, red zone) silently missed - Week 6: ARI@LAR
+# had no game context at all. The Chargers are "LAC" in both sources and
+# are deliberately NOT touched.
+_TEAM_CODE_FIXES = {"LA": "LAR"}
+_TEAM_COLUMNS = ("team", "opponent_team", "home_team", "away_team", "posteam", "defteam")
+
+
+def _normalize_team_codes(row: dict) -> dict:
+    for column in _TEAM_COLUMNS:
+        value = row.get(column)
+        if value in _TEAM_CODE_FIXES:
+            row[column] = _TEAM_CODE_FIXES[value]
+    return row
+
+
 def _weekly_stats_url(season: int) -> str:
     # nflverse publishes one file per season under this tag; confirmed
     # available all the way back to 1999 and current through this year.
@@ -285,11 +302,12 @@ class NflverseDataSource(StatDataSource):
         with fileobj, gzip.GzipFile(fileobj=fileobj) as gz:
             text_stream = io.TextIOWrapper(gz, encoding="utf-8")
             reader = csv.DictReader(text_stream)
-            yield from reader
+            for row in reader:
+                yield _normalize_team_codes(row)
 
     def _get_csv_rows(self, url: str, cache_name: str, season: int | None = None) -> list[dict]:
         text = self._get_text(url, cache_name, season)
-        return list(csv.DictReader(io.StringIO(text)))
+        return [_normalize_team_codes(row) for row in csv.DictReader(io.StringIO(text))]
 
     def _get_text(self, url: str, cache_name: str, season: int | None = None) -> str:
         cache_path = self.cache_dir / cache_name if self.cache_dir else None
