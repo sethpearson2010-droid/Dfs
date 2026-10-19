@@ -403,5 +403,86 @@
         "roster_slot": "D"
       }
     ]
+  },
+  {
+    "season": 2026,
+    "week": 6,
+    "contest": "unknown (1st place, $250,000 prize, tbartz76)",
+    "prize_pool": "unknown",
+    "notes": "From the Week 6 lineup-scores screenshot. Salaries matched against inputs/salary.csv (135326 slate); they sum to exactly $60,000. Total 194.62. Low-scoring week for a winner; built from BUF-LV (63 pts), NO-NYG (61), with Walker from a 22-6 KC win.",
+    "players": [
+      {
+        "name": "K. Cousins",
+        "team": "LV",
+        "position": "QB",
+        "salary": 6800,
+        "points": 22.52,
+        "roster_slot": "QB"
+      },
+      {
+        "name": "K. Walker III",
+        "team": "KC",
+        "position": "RB",
+        "salary": 8900,
+        "points": 29.9,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "C. Hubbard",
+        "team": "CAR",
+        "position": "RB",
+        "salary": 6800,
+        "points": 21.6,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "M. Nabers",
+        "team": "NYG",
+        "position": "WR",
+        "salary": 7800,
+        "points": 25.5,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "D. London",
+        "team": "ATL",
+        "position": "WR",
+        "salary": 7600,
+        "points": 10.2,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "G. Bernard",
+        "team": "PIT",
+        "position": "WR",
+        "salary": 5100,
+        "points": 20.2,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "I. Likely",
+        "team": "NYG",
+        "position": "TE",
+        "salary": 5500,
+        "points": 20.9,
+        "roster_slot": "TE"
+      },
+      {
+        "name": "J. Cook III",
+        "team": "BUF",
+        "position": "RB",
+        "salary": 8400,
+        "points": 22.8,
+        "roster_slot": "FLEX"
+      },
+      {
+        "name": "TEN Titans",
+        "team": "TEN",
+        "position": "DST",
+        "salary": 3100,
+        "points": 21.0,
+        "roster_slot": "DEF"
+      }
+    ]
   }
 ]
