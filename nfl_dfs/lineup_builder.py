@@ -77,8 +77,18 @@ LEAN_GAME_EXPOSURE_PCT = 0.10
 FLEX_TE_PENALTY_FRACTION = 0.25  # share of a FLEX-slot TE's objective that is discounted
 
 STACK_FIRST_SHARE = 0.7
-STACK_FIRST_GAMES = 4
-STACK_FIRST_GAME_WEIGHTS = (0.40, 0.25, 0.20, 0.15)  # share of stacked lineups, by game rank
+# Week 6 review of all six logged winners: only 48% of their player-slots
+# came from the top third of games by Vegas total (33% is random), their
+# games averaged ~5.5 pts over the posted total, and two-thirds of slots
+# were spread across 4+ games (Bernard came from the lowest-total game on
+# the slate). A 40%-on-one-game plan put 406 of 1,350 Week 6 slots on
+# ARI-LAR (34 pts, winner had none of it). So: spread over six games with
+# a flat-ish weighting (no game > ~22% of stacked lineups), and take the
+# last STACK_FIRST_CONTRARIAN_GAMES from the best remaining *environments*
+# regardless of posted total - the contrarian, under-projected games.
+STACK_FIRST_GAMES = 6
+STACK_FIRST_CONTRARIAN_GAMES = 2
+STACK_FIRST_GAME_WEIGHTS = (0.22, 0.20, 0.17, 0.15, 0.13, 0.13)  # share of stacked lineups, by game rank
 STACK_FIRST_MIN_QB_PROJECTION_FRACTION = 0.6  # of the median viable-QB projection
 STACK_FIRST_PRIMARY_QB_SHARE = 0.65  # stacked lineups anchored on the game's better QB; the rest on the other side
 
@@ -286,6 +296,10 @@ QUESTIONABLE_MAX_EXPOSURE_PCT = 0.15
 # 10% of lineups on ceiling alone.
 BACKUP_QB_MAX_EXPOSURE_PCT = 0.05
 EXPOSURE_PENALTY_FACTOR = 0.1
+# no single game may take more than this share of all player-slots in a
+# batch (Week 6: ARI-LAR held 21-30% of slots and scored 34 pts total).
+# Soft cap, same noise-penalty mechanism as the per-player cap.
+MAX_GAME_SLOT_SHARE = 0.15
 
 
 class LineupBuilder:
@@ -701,6 +715,7 @@ class LineupBuilder:
         )
 
         lock_usage_count: dict[str, int] = {}
+        game_slots: dict[frozenset, int] = {}
 
         while len(accepted) < count and attempts < max_attempts:
             attempts += 1
@@ -716,6 +731,12 @@ class LineupBuilder:
                 else:
                     cap = max_uses_per_player
                 if usage_count.get(p.player_name, 0) >= cap:
+                    noise[p.player_name] = noise.get(p.player_name, 1.0) * EXPOSURE_PENALTY_FACTOR
+                elif (
+                    p.opponent
+                    and game_slots.get(frozenset((p.team.upper(), p.opponent.upper())), 0)
+                    >= MAX_GAME_SLOT_SHARE * 9 * count
+                ):
                     noise[p.player_name] = noise.get(p.player_name, 1.0) * EXPOSURE_PENALTY_FACTOR
 
             # a force_included player is locked into THIS candidate
@@ -786,6 +807,9 @@ class LineupBuilder:
                 candidate_names = {slot.player.player_name for slot in candidate.slots}
                 for slot in candidate.slots:
                     usage_count[slot.player.player_name] = usage_count.get(slot.player.player_name, 0) + 1
+                    if slot.player.opponent:
+                        gk = frozenset((slot.player.team.upper(), slot.player.opponent.upper()))
+                        game_slots[gk] = game_slots.get(gk, 0) + 1
                 for locked_player in current_locked:
                     if locked_player.player_name in candidate_names:
                         lock_usage_count[locked_player.player_name] = (
@@ -880,7 +904,12 @@ class LineupBuilder:
         totals_z = z([g[2] for g in scored])
         env_z = z([g[3] for g in scored])
         ranked = sorted(zip(scored, totals_z, env_z), key=lambda t: -(0.5 * t[1] + 0.5 * t[2]))
-        top = [t[0] for t in ranked[:STACK_FIRST_GAMES]]
+        n_main = max(0, STACK_FIRST_GAMES - STACK_FIRST_CONTRARIAN_GAMES)
+        top = [t[0] for t in ranked[:n_main]]
+        # contrarian slots: best remaining game environments, ignoring the
+        # posted total (a high-ceiling matchup Vegas has priced low)
+        rest = sorted(ranked[n_main:], key=lambda t: -t[2])
+        top += [t[0] for t in rest[:STACK_FIRST_CONTRARIAN_GAMES]]
         weights = STACK_FIRST_GAME_WEIGHTS[: len(top)]
         weight_sum = sum(weights)
 
