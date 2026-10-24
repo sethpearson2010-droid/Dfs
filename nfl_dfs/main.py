@@ -170,6 +170,13 @@ def main() -> None:
         "teammates + 1 bring-back) from the 4 best shootout-environment games, rotating the "
         "pass-catchers; the rest of the batch stays free.",
     )
+    parser.add_argument(
+        "--use-news",
+        action="store_true",
+        help="Fetch ESPN's live injury feed and fold the more severe of (FanDuel, news) status into "
+        "each player: Out/Doubtful/IR are excluded, Questionable gets the availability discount "
+        "and exposure cap. Fail-soft if the feed is unreachable.",
+    )
     args = parser.parse_args()
     print(f"DEBUG received --exclude-players = [{args.exclude_players}]")
     print(f"DEBUG received --include-players = [{args.include_players}]")
@@ -232,6 +239,7 @@ def main() -> None:
         lock_target_counts=lock_target_counts,
         lean_games=lean_games,
         stack_first=args.stack_first,
+        use_news=args.use_news,
     )
 
     print(f"Done. Wrote player values to {args.output}")

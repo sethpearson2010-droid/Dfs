@@ -131,6 +131,7 @@ class DfsPipeline:
         lock_target_counts: dict[str, int] | None = None,
         lean_games: list[tuple[str, str]] | None = None,
         stack_first: bool = False,
+        use_news: bool = False,
     ) -> None:
         self._write_run_config(
             output_path,
@@ -195,6 +196,10 @@ class DfsPipeline:
             snap_counts = {}
 
         salaries = self._salary_importer.load(salary_csv_path)
+        if use_news:
+            from nfl_dfs.news import apply_news, fetch_injury_news
+
+            apply_news(salaries, fetch_injury_news())
 
         # deliberately NOT merged into include_players: that would
         # LOCK the auto-detected backup into every lineup of the

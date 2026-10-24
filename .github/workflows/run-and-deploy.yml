@@ -61,6 +61,11 @@ on:
         type: boolean
         required: false
         default: false
+      use_news:
+        description: "Fetch live injury news (ESPN) at run time: Out/Doubtful/IR players are excluded and Questionable ones discounted and capped. Fail-soft if the feed is unreachable."
+        type: boolean
+        required: false
+        default: true
       skip_redzone:
         description: "Skip the play-by-play red-zone fetch for a faster run"
         type: boolean
@@ -128,6 +133,9 @@ jobs:
           fi
           if [ "${{ inputs.stack_first }}" = "true" ]; then
             ARGS="$ARGS --stack-first"
+          fi
+          if [ "${{ inputs.use_news }}" = "true" ]; then
+            ARGS="$ARGS --use-news"
           fi
           if [ "${{ inputs.skip_redzone }}" = "true" ]; then
             ARGS="$ARGS --skip-redzone"
