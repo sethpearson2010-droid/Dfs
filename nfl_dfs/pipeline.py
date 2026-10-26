@@ -49,6 +49,15 @@ PROJECTION_SHRINK_TO_SALARY = 0.4  # Weeks 4-7 leave-one-week-out: shrinking ano
 # spreads are floored at this fraction of the position's median spread.
 MIN_SPREAD_FRACTION_OF_POSITION_MEDIAN = 0.75
 
+# Weeks 4-7: among skill players <= CHEAP_UPSIDE_SALARY with a real role
+# (>=50% snaps), ~25% beat their own ceiling (a true 90th-percentile
+# ceiling is beaten 10% of the time) - the model's ceilings sit near the
+# 75th percentile, which underprices the cheap boom plays (Pollard 38 on
+# an 11.3 ceiling, Concepcion 22, B. Allen 19) that GPP lineups are built
+# on. The upside (ceiling - projection) is scaled up for them.
+CHEAP_UPSIDE_SALARY = 7500
+CHEAP_UPSIDE_SCALE = 1.0  # OFF: Weeks 5-7 backtests were mixed (x1.25 avg top10 +0.9 but median -3; x1.5 top10 +3.8, mostly one week) - kept as a knob, not shipped
+
 # the risk slider isn't infinitely continuous in the output — these
 # five points span cash (0.0) to max-upside GPP (1.0) with reasonable
 # granularity. Pass a custom list to run() for a different spread.
@@ -306,6 +315,16 @@ class DfsPipeline:
                 pv.projection = round(pv.projection * QUESTIONABLE_AVAILABILITY_FACTOR, 2)
                 pv.floor_projection = round(pv.floor_projection * QUESTIONABLE_AVAILABILITY_FACTOR, 2)
                 pv.ceiling_projection = round(pv.ceiling_projection * QUESTIONABLE_AVAILABILITY_FACTOR, 2)
+
+        for pv in player_values:
+            if (
+                pv.projection > 0
+                and pv.position in (Position.RB, Position.WR, Position.TE)
+                and pv.salary <= CHEAP_UPSIDE_SALARY
+            ):
+                pv.ceiling_projection = round(
+                    pv.projection + CHEAP_UPSIDE_SCALE * max(0.0, pv.ceiling_projection - pv.projection), 2
+                )
 
         for pv in player_values:
             if pv.projection > 0:
