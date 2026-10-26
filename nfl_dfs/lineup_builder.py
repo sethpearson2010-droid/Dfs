@@ -86,6 +86,12 @@ STACK_FIRST_SHARE = 0.7
 # a flat-ish weighting (no game > ~22% of stacked lineups), and take the
 # last STACK_FIRST_CONTRARIAN_GAMES from the best remaining *environments*
 # regardless of posted total - the contrarian, under-projected games.
+# Week 6/7: the cheap boom players that won (Bernard from the lowest-total
+# game of Week 6; Pollard 38 and Concepcion 22 from CLE@TEN, 36.5, the
+# lowest of Week 7) were never in our lineups. This slice of the batch
+# locks a two-player mini-stack - one RB/WR/TE from each side - from the
+# LOWEST posted-total game on the slate (no QB: both winners had none from it).
+LOW_TOTAL_GAME_SHARE = 0.10
 STACK_FIRST_GAMES = 6
 STACK_FIRST_CONTRARIAN_GAMES = 2
 STACK_FIRST_GAME_WEIGHTS = (0.22, 0.20, 0.17, 0.15, 0.13, 0.13)  # share of stacked lineups, by game rank
@@ -917,7 +923,8 @@ class LineupBuilder:
         weights = STACK_FIRST_GAME_WEIGHTS[: len(top)]
         weight_sum = sum(weights)
 
-        total_stacked = max(1, round(STACK_FIRST_SHARE * count))
+        n_low = round(LOW_TOTAL_GAME_SHARE * count)
+        total_stacked = max(1, round(STACK_FIRST_SHARE * count) - n_low)
         plan: list[list[PlayerValue]] = []
 
         # Week 7: ranking a game's QBs by ceiling alone put Tyler Huntley
@@ -976,7 +983,42 @@ class LineupBuilder:
                     if replacement is not None:
                         stack[stack.index(extra_te)] = replacement
                 plan.append(stack)
+        plan.extend(self._low_total_mini_stacks(games, game_total, n_low, top))
         return plan
+
+    @staticmethod
+    def _low_total_mini_stacks(games, game_total, n_low, already_chosen) -> list[list[PlayerValue]]:
+        """n_low two-player stacks (one skill player from each side) from
+        the lowest posted-total game not already used as a main stack
+        game. Rotates the top 3 candidates per side so lineups differ."""
+        if n_low <= 0:
+            return []
+        chosen = {key for key, *_ in already_chosen}
+        candidates = []
+        for key, group in games.items():
+            total = game_total(group)
+            teams = sorted(key)
+            if total is None or key in chosen or len(teams) != 2:
+                continue
+            sides = {}
+            for t in teams:
+                skill = sorted(
+                    (p for p in group if p.team.upper() == t and p.position in (Position.RB, Position.WR, Position.TE)),
+                    key=lambda p: -(0.6 * p.projection + 0.4 * p.ceiling_projection),
+                )[:3]
+                if len(skill) < 2:
+                    break
+                sides[t] = skill
+            else:
+                candidates.append((total, sides, teams))
+        if not candidates:
+            return []
+        _total, sides, teams = min(candidates, key=lambda c: c[0])
+        a, b = sides[teams[0]], sides[teams[1]]
+        out = []
+        for i in range(n_low):
+            out.append([a[i % len(a)], b[(i // len(a) + i) % len(b)]])
+        return out
 
     @staticmethod
     def _lean_game_stack(
