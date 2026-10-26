@@ -484,5 +484,86 @@
         "roster_slot": "DEF"
       }
     ]
+  },
+  {
+    "season": 2026,
+    "week": 7,
+    "contest": "unknown (1st place, $250,000 prize, ny_anchors)",
+    "prize_pool": "unknown",
+    "notes": "From the Week 7 lineup-scores screenshot. Salaries matched against inputs/salary.csv (135562 slate); sum exactly $60,000. Total 205.68. Full CIN-BAL game stack (Burrow, Higgins, Chase + Flowers bring-back), two $5,600 players (Pollard 38, Concepcion 22) from CLE@TEN, the lowest total on the slate (36.5), and TB DST 27.",
+    "players": [
+      {
+        "name": "J. Burrow",
+        "team": "CIN",
+        "position": "QB",
+        "salary": 8300,
+        "points": 28.88,
+        "roster_slot": "QB"
+      },
+      {
+        "name": "C. McCaffrey",
+        "team": "SF",
+        "position": "RB",
+        "salary": 8700,
+        "points": 19.0,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "T. Pollard",
+        "team": "TEN",
+        "position": "RB",
+        "salary": 5600,
+        "points": 38.0,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "Z. Flowers",
+        "team": "BAL",
+        "position": "WR",
+        "salary": 7800,
+        "points": 26.7,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "K. Concepcion Jr.",
+        "team": "CLE",
+        "position": "WR",
+        "salary": 5600,
+        "points": 22.2,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "T. Higgins",
+        "team": "CIN",
+        "position": "WR",
+        "salary": 7000,
+        "points": 26.8,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "T. Higbee",
+        "team": "LAR",
+        "position": "TE",
+        "salary": 4900,
+        "points": 2.4,
+        "roster_slot": "TE"
+      },
+      {
+        "name": "J. Chase",
+        "team": "CIN",
+        "position": "WR",
+        "salary": 8800,
+        "points": 14.7,
+        "roster_slot": "FLEX"
+      },
+      {
+        "name": "TB Buccaneers",
+        "team": "TB",
+        "position": "DST",
+        "salary": 3300,
+        "points": 27.0,
+        "roster_slot": "DEF"
+      }
+    ]
   }
 ]
