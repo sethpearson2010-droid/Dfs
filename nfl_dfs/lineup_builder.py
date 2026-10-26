@@ -288,6 +288,7 @@ DEFAULT_MAX_EXPOSURE_PCT = 0.3
 # (vs 15 of 168 untagged), and Kyle Monangai (Q, did not play) was in
 # 50% of lineups for zero points. Their projections are also
 # discounted (see QUESTIONABLE_AVAILABILITY_FACTOR in pipeline.py).
+DST_MAX_EXPOSURE_PCT = 0.15  # Week 6/7: one defense in 29% of lineups (TEN, 44 of 150) scored 0; cheap unprojected DSTs (TEN 21, TB 27) won
 QUESTIONABLE_MAX_EXPOSURE_PCT = 0.15
 
 # backup QBs (flagged by low recent snap share, and not the detected
@@ -503,6 +504,7 @@ class LineupBuilder:
         max_uses_per_player = max(1, round(max_exposure_pct * count))
         max_uses_questionable = max(1, round(min(max_exposure_pct, QUESTIONABLE_MAX_EXPOSURE_PCT) * count))
         max_uses_backup_qb = max(1, round(min(max_exposure_pct, BACKUP_QB_MAX_EXPOSURE_PCT) * count))
+        max_uses_dst = max(1, round(min(max_exposure_pct, DST_MAX_EXPOSURE_PCT) * count))
         attempts = 0
         max_attempts = min(count * MAX_ATTEMPTS_PER_LINEUP, MAX_TOTAL_ATTEMPTS)
         seed_counter = 0
@@ -728,6 +730,8 @@ class LineupBuilder:
                     cap = max_uses_backup_qb
                 elif p.injury_status.upper() == "Q":
                     cap = max_uses_questionable
+                elif p.position == Position.DST:
+                    cap = max_uses_dst
                 else:
                     cap = max_uses_per_player
                 if usage_count.get(p.player_name, 0) >= cap:
@@ -915,6 +919,14 @@ class LineupBuilder:
 
         total_stacked = max(1, round(STACK_FIRST_SHARE * count))
         plan: list[list[PlayerValue]] = []
+
+        # Week 7: ranking a game's QBs by ceiling alone put Tyler Huntley
+        # (13.1 projected, fill-in with no real history, 33.5 ceiling) ahead
+        # of Joe Burrow (23.2 / 29.1) as the anchor of 26 of 33 CIN-BAL
+        # lineups. Blend projection in, like the pass-catcher ranking.
+        def qb_score(p: PlayerValue) -> float:
+            return 0.6 * p.projection + 0.4 * p.ceiling_projection
+
         # pass-catcher pairs (indices into the team's top-4 by ceiling)
         pair_rotation = [(0, 1), (0, 2), (1, 2), (0, 3), (1, 3), (2, 3)]
         back_rotation = [0, 1, 2, 0, 1, 0]
@@ -922,12 +934,12 @@ class LineupBuilder:
             n_game = max(1, round(total_stacked * weights[rank] / weight_sum))
             teams = sorted(key)
             qb_by_team = {
-                t: max((p for p in group if p.position == Position.QB and p.team.upper() == t), key=lambda p: p.ceiling_projection, default=None)
+                t: max((p for p in group if p.position == Position.QB and p.team.upper() == t), key=qb_score, default=None)
                 for t in teams
             }
             if any(v is None for v in qb_by_team.values()):
                 continue
-            primary, secondary = sorted(teams, key=lambda t: -qb_by_team[t].ceiling_projection)
+            primary, secondary = sorted(teams, key=lambda t: -qb_score(qb_by_team[t]))
             n_primary = max(1, round(n_game * STACK_FIRST_PRIMARY_QB_SHARE))
             sides = [primary] * n_primary + [secondary] * max(0, n_game - n_primary)
             used_counts = {primary: 0, secondary: 0}
