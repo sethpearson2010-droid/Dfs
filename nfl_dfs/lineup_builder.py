@@ -455,6 +455,8 @@ class LineupBuilder:
         lock_target_counts: dict[str, int] | None = None,
         lean_games: list[tuple[str, str]] | None = None,
         stack_first: bool = False,
+        seed_offset: int = 0,
+        max_count: int = MAX_LINEUPS,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
@@ -504,7 +506,7 @@ class LineupBuilder:
         remaining lineups treat them as a normal (still viable, since
         force_included already gave them a real or fallback
         projection) player rather than a guaranteed one."""
-        count = max(1, min(count, MAX_LINEUPS))
+        count = max(1, min(count, max_count))
         accepted: list[Lineup] = []
         usage_count: dict[str, int] = {}
         max_uses_per_player = max(1, round(max_exposure_pct * count))
@@ -513,7 +515,7 @@ class LineupBuilder:
         max_uses_dst = max(1, round(min(max_exposure_pct, DST_MAX_EXPOSURE_PCT) * count))
         attempts = 0
         max_attempts = min(count * MAX_ATTEMPTS_PER_LINEUP, MAX_TOTAL_ATTEMPTS)
-        seed_counter = 0
+        seed_counter = seed_offset
 
         # noise scales with risk_level: cash batches should stay close
         # to the single best lineup, GPP batches should differentiate

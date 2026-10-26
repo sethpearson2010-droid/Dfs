@@ -141,6 +141,7 @@ class DfsPipeline:
         lean_games: list[tuple[str, str]] | None = None,
         stack_first: bool = False,
         use_news: bool = False,
+        simulate: bool = False,
     ) -> None:
         self._write_run_config(
             output_path,
@@ -365,17 +366,36 @@ class DfsPipeline:
         # specific players/combinations vary for diversity.
         num_lineups = max(1, min(num_lineups, MAX_LINEUPS))
         if num_lineups > 1:
-            lineups = self._lineup_builder.build_many(
-                player_values,
-                single_risk_level,
-                num_lineups,
-                randomness=randomness,
-                max_player_salary=max_player_salary,
-                max_salary_leftover=max_salary_leftover,
-                lock_target_counts=lock_target_counts,
-                lean_games=lean_games,
-                stack_first=stack_first,
-            )
+            def _build(seed_offset: int = 0):
+                return self._lineup_builder.build_many(
+                    player_values,
+                    single_risk_level,
+                    num_lineups,
+                    randomness=randomness,
+                    max_player_salary=max_player_salary,
+                    max_salary_leftover=max_salary_leftover,
+                    lock_target_counts=lock_target_counts,
+                    lean_games=lean_games,
+                    stack_first=stack_first,
+                    seed_offset=seed_offset,
+                )
+
+            if simulate:
+                # candidate pool = 3 independent batches (different noise
+                # seeds), de-duplicated, then the simulation picks the
+                # num_lineups that best cover the top-1% outcomes
+                from nfl_dfs.simulation import select_portfolio
+
+                pool, seen = [], set()
+                for offset in (0, 100_000, 200_000):
+                    for lineup in _build(offset):
+                        key = frozenset(slot.player.player_name for slot in lineup.slots)
+                        if key not in seen:
+                            seen.add(key)
+                            pool.append(lineup)
+                lineups = select_portfolio(player_values, pool, num_lineups)
+            else:
+                lineups = _build()
             self._write_lineup_set(lineups, single_risk_level, output_path)
         else:
             lineup = self._lineup_builder.build(

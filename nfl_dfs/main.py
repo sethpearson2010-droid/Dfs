@@ -177,6 +177,13 @@ def main() -> None:
         "each player: Out/Doubtful/IR are excluded, Questionable gets the availability discount "
         "and exposure cap. Fail-soft if the feed is unreachable.",
     )
+    parser.add_argument(
+        "--simulate",
+        action="store_true",
+        help="Build a pool of ~3x candidates, simulate correlated player outcomes against a simulated "
+        "field, and keep the --num-lineups that best maximise the chance at least one finishes top 1%%. "
+        "Slower (about a minute).",
+    )
     args = parser.parse_args()
     print(f"DEBUG received --exclude-players = [{args.exclude_players}]")
     print(f"DEBUG received --include-players = [{args.include_players}]")
@@ -240,6 +247,7 @@ def main() -> None:
         lean_games=lean_games,
         stack_first=args.stack_first,
         use_news=args.use_news,
+        simulate=args.simulate,
     )
 
     print(f"Done. Wrote player values to {args.output}")
