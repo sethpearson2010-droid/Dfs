@@ -565,5 +565,86 @@
         "roster_slot": "DEF"
       }
     ]
+  },
+  {
+    "season": 2026,
+    "week": 7,
+    "contest": "second Week 7 contest (1st place, $1,500 prize, stayeduptolate)",
+    "prize_pool": "unknown",
+    "notes": "From a second Week 7 lineup-scores screenshot. Salaries matched against inputs/salary.csv (135562 slate); they sum to $58,200 ($1,800 unspent). Total 228.78. Shares 7 of 9 players with the other Week 7 winner (Burrow, Chase, Higgins, Flowers, Pollard, Concepcion, TB DST): CIN-BAL full game stack plus the CLE@TEN cheap core. Only differences: Kaytron Allen $4,600 RB (19.4) and McBride TE (25.1).",
+    "players": [
+      {
+        "name": "J. Burrow",
+        "team": "CIN",
+        "position": "QB",
+        "salary": 8300,
+        "points": 28.88,
+        "roster_slot": "QB"
+      },
+      {
+        "name": "K. Allen",
+        "team": "MIA",
+        "position": "RB",
+        "salary": 4600,
+        "points": 19.4,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "T. Pollard",
+        "team": "TEN",
+        "position": "RB",
+        "salary": 5600,
+        "points": 38.0,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "J. Chase",
+        "team": "CIN",
+        "position": "WR",
+        "salary": 8800,
+        "points": 14.7,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "T. Higgins",
+        "team": "CIN",
+        "position": "WR",
+        "salary": 7000,
+        "points": 26.8,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "K. Concepcion Jr.",
+        "team": "CLE",
+        "position": "WR",
+        "salary": 5600,
+        "points": 22.2,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "T. McBride",
+        "team": "ARI",
+        "position": "TE",
+        "salary": 7200,
+        "points": 25.1,
+        "roster_slot": "TE"
+      },
+      {
+        "name": "Z. Flowers",
+        "team": "BAL",
+        "position": "WR",
+        "salary": 7800,
+        "points": 26.7,
+        "roster_slot": "FLEX"
+      },
+      {
+        "name": "TB Buccaneers",
+        "team": "TB",
+        "position": "DST",
+        "salary": 3300,
+        "points": 27.0,
+        "roster_slot": "DEF"
+      }
+    ]
   }
 ]
