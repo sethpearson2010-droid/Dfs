@@ -571,7 +571,7 @@
     "week": 7,
     "contest": "second Week 7 contest (1st place, $1,500 prize, stayeduptolate)",
     "prize_pool": "unknown",
-    "notes": "From a second Week 7 lineup-scores screenshot. Salaries matched against inputs/salary.csv (135562 slate); they sum to $58,200 ($1,800 unspent). Total 228.78. Shares 7 of 9 players with the other Week 7 winner (Burrow, Chase, Higgins, Flowers, Pollard, Concepcion, TB DST): CIN-BAL full game stack plus the CLE@TEN cheap core. Only differences: Kaytron Allen $4,600 RB (19.4) and McBride TE (25.1).",
+    "notes": "From a second Week 7 lineup-scores screenshot. Salaries matched against inputs/salary.csv (135562 slate); they sum to $59,900. Total 228.78. Shares 7 of 9 players with the other Week 7 winner (Burrow, Chase, Higgins, Flowers, Pollard, Concepcion, TB DST): CIN-BAL full game stack plus the CLE@TEN cheap core. Only differences: Braelon Allen (NYJ RB, $6,300, 19.4) and McBride TE (25.1).",
     "players": [
       {
         "name": "J. Burrow",
@@ -582,10 +582,10 @@
         "roster_slot": "QB"
       },
       {
-        "name": "K. Allen",
-        "team": "MIA",
+        "name": "B. Allen",
+        "team": "NYJ",
         "position": "RB",
-        "salary": 4600,
+        "salary": 6300,
         "points": 19.4,
         "roster_slot": "RB"
       },
