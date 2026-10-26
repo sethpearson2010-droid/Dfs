@@ -42,7 +42,7 @@ QUESTIONABLE_AVAILABILITY_FACTOR = 0.75
 # salary-implied expectation for his position (a per-position linear fit
 # of projection on salary across the slate): new = E + SHRINK*(old - E).
 # 0.75 is deliberately milder than the observed 0.65 - one week of data.
-PROJECTION_SHRINK_TO_SALARY = 0.75
+PROJECTION_SHRINK_TO_SALARY = 0.4  # Weeks 4-7 leave-one-week-out: shrinking another ~0.5x toward the salary line cut held-out MSE in every week (salary-implied value alone correlated 0.53 with actuals vs 0.50 for the model)
 
 # Week 5: only 22% of players reached their projected ceiling, because
 # each player's spread comes from just his last ~4 games. Upside/downside
