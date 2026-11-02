@@ -646,5 +646,86 @@
         "roster_slot": "DEF"
       }
     ]
+  },
+  {
+    "season": 2026,
+    "week": 8,
+    "contest": "unknown (1st place, $200,000 prize, chucky503)",
+    "prize_pool": "unknown",
+    "notes": "From the Week 8 lineup-scores screenshot. Salaries matched against inputs/salary.csv (135859 slate); sum $59,900. Total 247.28. Full CIN stack minus a bring-back (Burrow 45.5, Chase, Higgins) plus Pollard from the same TEN@CIN game (79 pts, posted total 45.5, CIN -13.5), Braelon Allen again (LV@NYJ, 71 pts), Tuten + JAC DST from a 42-7 blowout. Henry (Q, foot) scored 4.5 and the lineup still won.",
+    "players": [
+      {
+        "name": "J. Burrow",
+        "team": "CIN",
+        "position": "QB",
+        "salary": 8300,
+        "points": 45.48,
+        "roster_slot": "QB"
+      },
+      {
+        "name": "B. Allen",
+        "team": "NYJ",
+        "position": "RB",
+        "salary": 6600,
+        "points": 25.3,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "T. Pollard",
+        "team": "TEN",
+        "position": "RB",
+        "salary": 6200,
+        "points": 30.2,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "J. Chase",
+        "team": "CIN",
+        "position": "WR",
+        "salary": 8700,
+        "points": 28.6,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "M. Wilson",
+        "team": "ARI",
+        "position": "WR",
+        "salary": 6200,
+        "points": 25.8,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "T. Higgins",
+        "team": "CIN",
+        "position": "WR",
+        "salary": 7100,
+        "points": 35.5,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "H. Henry",
+        "team": "NE",
+        "position": "TE",
+        "salary": 5200,
+        "points": 4.5,
+        "roster_slot": "TE"
+      },
+      {
+        "name": "B. Tuten",
+        "team": "JAC",
+        "position": "RB",
+        "salary": 6900,
+        "points": 31.9,
+        "roster_slot": "FLEX"
+      },
+      {
+        "name": "JAC Jaguars",
+        "team": "JAC",
+        "position": "DST",
+        "salary": 4700,
+        "points": 20.0,
+        "roster_slot": "DEF"
+      }
+    ]
   }
 ]
