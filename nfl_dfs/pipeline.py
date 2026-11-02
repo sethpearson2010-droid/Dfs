@@ -142,6 +142,7 @@ class DfsPipeline:
         stack_first: bool = False,
         use_news: bool = False,
         simulate: bool = False,
+        cores: list[tuple[list[str], int]] | None = None,
     ) -> None:
         self._write_run_config(
             output_path,
@@ -378,6 +379,7 @@ class DfsPipeline:
                     lean_games=lean_games,
                     stack_first=stack_first,
                     seed_offset=seed_offset,
+                    cores=cores,
                 )
 
             if simulate:

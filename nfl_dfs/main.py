@@ -56,6 +56,24 @@ def _parse_include_players(raw: str) -> tuple[list[str], dict[str, int]]:
     return names, counts
 
 
+def parse_cores(raw_cores: list[str]) -> list[tuple[list[str], int]]:
+    """['A, B, C: 30'] -> [(['A','B','C'], 30)]. No ':N' means 10 lineups."""
+    cores: list[tuple[list[str], int]] = []
+    for raw in raw_cores:
+        text = raw.strip()
+        if not text:
+            continue
+        count = 10
+        if ":" in text:
+            head, _, tail = text.rpartition(":")
+            if tail.strip().isdigit():
+                text, count = head, int(tail.strip())
+        names = [n.strip() for n in text.split(",") if n.strip()]
+        if names:
+            cores.append((names, max(1, count)))
+    return cores
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run the FanDuel DFS vulnerability/value/lineup pipeline.")
     parser.add_argument("--season", type=int, required=True, help="Season year, e.g. 2026")
@@ -184,6 +202,15 @@ def main() -> None:
         "field, and keep the --num-lineups that best maximise the chance at least one finishes top 1%%. "
         "Slower (about a minute).",
     )
+    parser.add_argument(
+        "--core",
+        action="append",
+        default=[],
+        metavar='"NAME, NAME, ...: N"',
+        help="Lock a hand-picked group of players together into N lineups (repeatable). Example: "
+        '--core "Bo Nix, Courtland Sutton, Harold Fannin Jr., Jaylen Warren: 30". The optimizer fills the '
+        "remaining slots. Needs --num-lineups > 1. Cores are applied first; --stack-first fills what is left.",
+    )
     args = parser.parse_args()
     print(f"DEBUG received --exclude-players = [{args.exclude_players}]")
     print(f"DEBUG received --include-players = [{args.include_players}]")
@@ -248,6 +275,7 @@ def main() -> None:
         stack_first=args.stack_first,
         use_news=args.use_news,
         simulate=args.simulate,
+        cores=parse_cores(args.core),
     )
 
     print(f"Done. Wrote player values to {args.output}")

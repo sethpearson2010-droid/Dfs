@@ -457,6 +457,7 @@ class LineupBuilder:
         stack_first: bool = False,
         seed_offset: int = 0,
         max_count: int = MAX_LINEUPS,
+        cores: list[tuple[list[str], int]] | None = None,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
@@ -720,9 +721,17 @@ class LineupBuilder:
         # stack plus any user-forced players (not flyer/regression/lean
         # guarantees), so the locks can't crowd out the stack.
         user_forced_players = [p for p in players if p.force_included]
+        # user-specified cores (--core "A, B, C, D: N"): each core is locked
+        # into N consecutive lineups, the optimizer fills the remaining
+        # slots. Cores come first; the stack-first plan (if on) is sized to
+        # the lineups left over.
+        core_plan = self._resolve_cores(players, cores or [], count)
         stack_plan: list[list[PlayerValue]] = (
-            self._build_stack_plan(players, risk_level, count, max_player_salary) if stack_first else []
+            self._build_stack_plan(players, risk_level, max(1, count - len(core_plan)), max_player_salary)
+            if stack_first
+            else []
         )
+        stack_plan = core_plan + stack_plan
 
         lock_usage_count: dict[str, int] = {}
         game_slots: dict[frozenset, int] = {}
@@ -843,6 +852,42 @@ class LineupBuilder:
         return accepted
 
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _resolve_cores(
+        players: list[PlayerValue], cores: list[tuple[list[str], int]], count: int
+    ) -> list[list[PlayerValue]]:
+        """Turn (names, n) cores into a per-lineup lock plan. A core is
+        skipped (with a printed reason) if any name is unmatched or the
+        player can't be rostered (out / excluded / zero projection)."""
+        by_name = {normalize_name(p.player_name): p for p in players}
+        plan: list[list[PlayerValue]] = []
+        for names, n in cores:
+            resolved: list[PlayerValue] = []
+            problem = None
+            for raw in names:
+                p = by_name.get(normalize_name(raw))
+                if p is None:
+                    problem = f"'{raw}' not found on the slate"
+                elif p.is_out or p.manually_excluded or p.projection <= 0:
+                    problem = f"{p.player_name} is out/excluded/zero-projection"
+                else:
+                    resolved.append(p)
+                if problem:
+                    break
+            label = ", ".join(names)
+            if problem:
+                print(f"Core [{label}] skipped: {problem}.")
+                continue
+            if sum(p.salary for p in resolved) > 60000:
+                print(f"Core [{label}] skipped: salaries exceed the cap.")
+                continue
+            n = max(1, min(n, count - len(plan)))
+            if n <= 0:
+                break
+            print(f"Core [{label}] locked into {n} lineup(s).")
+            plan.extend([resolved] * n)
+        return plan[:count]
 
     def _build_stack_plan(
         self,
