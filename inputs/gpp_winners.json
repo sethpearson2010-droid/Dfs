@@ -727,5 +727,86 @@
         "roster_slot": "DEF"
       }
     ]
+  },
+  {
+    "season": 2026,
+    "week": 10,
+    "contest": "unknown (1st place, $200,000 prize, jsirvent4)",
+    "prize_pool": "unknown",
+    "notes": "From the Week 10 lineup-scores screenshot; salaries matched against inputs/salary.csv (136490 slate). Total 260.92 (248.92 offense). Four players from DAL@SF, the slate's highest posted total (55.5, finished 86 pts): Prescott 38.4 (5 TD, 51 att) + Pickens 41.0 (3 TD) + Flournoy 16.1 plus McCaffrey 47.3 as the opposing-RB bring-back. Rest from game-script winners: E. Johnson (KC 35-13), Hubbard (27 carries, 2 TD), Smith-Njigba 171 yds, Higbee (LAR 34-6) min-price TE TD, IND DST.",
+    "players": [
+      {
+        "name": "D. Prescott",
+        "team": "DAL",
+        "position": "QB",
+        "salary": 7900,
+        "points": 38.42,
+        "roster_slot": "QB"
+      },
+      {
+        "name": "E. Johnson",
+        "team": "KC",
+        "position": "RB",
+        "salary": 5100,
+        "points": 35.1,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "C. McCaffrey",
+        "team": "SF",
+        "position": "RB",
+        "salary": 9000,
+        "points": 47.3,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "G. Pickens",
+        "team": "DAL",
+        "position": "WR",
+        "salary": 7000,
+        "points": 41.0,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "J. Smith-Njigba",
+        "team": "SEA",
+        "position": "WR",
+        "salary": 9500,
+        "points": 30.1,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "R. Flournoy",
+        "team": "DAL",
+        "position": "WR",
+        "salary": 5500,
+        "points": 16.1,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "T. Higbee",
+        "team": "LAR",
+        "position": "TE",
+        "salary": 4600,
+        "points": 9.2,
+        "roster_slot": "TE"
+      },
+      {
+        "name": "C. Hubbard",
+        "team": "CAR",
+        "position": "RB",
+        "salary": 7200,
+        "points": 31.7,
+        "roster_slot": "FLEX"
+      },
+      {
+        "name": "IND Colts",
+        "team": "IND",
+        "position": "DST",
+        "salary": 4100,
+        "points": 12.0,
+        "roster_slot": "DEF"
+      }
+    ]
   }
 ]
