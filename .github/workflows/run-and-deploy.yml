@@ -52,6 +52,11 @@ on:
         description: "Comma-separated player names to LOCK into every lineup (e.g. a backup about to start due to an injury elsewhere the box scores don't reflect yet). For num_lineups > 1, append ':N' to a name to lock them into only N of the batch instead of all of it, e.g. 'Jayden Daniels:20'. Leave blank for none."
         required: false
         default: ""
+      max_per_game:
+        description: "Optional hard cap on offensive players (DST excluded) from the same game in any lineup, e.g. 4. Leave blank for no cap."
+        required: false
+        default: ""
+        type: string
       cores:
         description: "Optional hand-picked cores, separated by | (pipe). Each is 'Name, Name, Name: N' = lock those players together into N lineups, optimizer fills the rest. Example: Bo Nix, Courtland Sutton, Harold Fannin Jr., Jaylen Warren: 30 | Drake Maye, Hunter Henry: 20. Cores come first; stack_first fills the remainder."
         required: false
@@ -123,6 +128,7 @@ jobs:
           INCLUDE_PLAYERS: ${{ inputs.include_players }}
           LEAN_GAME: ${{ inputs.lean_game }}
           CORES: ${{ inputs.cores }}
+          MAX_PER_GAME: ${{ inputs.max_per_game }}
         run: |
           ARGS="--season ${{ inputs.season }} --salary-csv inputs/salary.csv --output output/players.json"
           if [ "${{ inputs.explore }}" = "true" ]; then
@@ -157,6 +163,7 @@ jobs:
           echo "DEBUG raw include_players input = [$INCLUDE_PLAYERS]"
           echo "Running: python -m nfl_dfs.main $ARGS --exclude-players [see above] --include-players [see above]"
           CORE_ARGS=()
+          if [ -n "$MAX_PER_GAME" ]; then CORE_ARGS+=(--max-per-game "$MAX_PER_GAME"); fi
           IFS='|' read -r -a CORE_PARTS <<< "$CORES"
           for part in "${CORE_PARTS[@]}"; do
             trimmed="$(printf '%s' "$part" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"

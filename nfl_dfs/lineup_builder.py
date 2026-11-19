@@ -458,6 +458,7 @@ class LineupBuilder:
         seed_offset: int = 0,
         max_count: int = MAX_LINEUPS,
         cores: list[tuple[list[str], int]] | None = None,
+        max_per_game: int | None = None,
     ) -> list[Lineup]:
         """Builds up to `count` (capped at MAX_LINEUPS) diverse
         lineups at one risk level. Each candidate lineup is built with
@@ -819,6 +820,18 @@ class LineupBuilder:
             )
             if candidate is None:
                 continue
+
+            if max_per_game:
+                # hard cap on offensive players from one game (DST excluded)
+                _gc: dict[frozenset, int] = {}
+                for slot in candidate.slots:
+                    sp = slot.player
+                    if sp.position != Position.DST and sp.opponent:
+                        _k = frozenset((sp.team.upper(), sp.opponent.upper()))
+                        _gc[_k] = _gc.get(_k, 0) + 1
+                if _gc and max(_gc.values()) > max_per_game:
+                    consecutive_rejections += 1
+                    continue
 
             if self._is_diverse_enough(candidate, accepted, current_max_overlap, current_position_overlap):
                 accepted.append(candidate)

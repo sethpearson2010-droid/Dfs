@@ -211,6 +211,14 @@ def main() -> None:
         '--core "Bo Nix, Courtland Sutton, Harold Fannin Jr., Jaylen Warren: 30". The optimizer fills the '
         "remaining slots. Needs --num-lineups > 1. Cores are applied first; --stack-first fills what is left.",
     )
+    parser.add_argument(
+        "--max-per-game",
+        type=int,
+        default=None,
+        metavar="N",
+        help="Hard cap: no lineup may hold more than N offensive players (DST excluded) from the same game. "
+        "Needs --num-lineups > 1.",
+    )
     args = parser.parse_args()
     print(f"DEBUG received --exclude-players = [{args.exclude_players}]")
     print(f"DEBUG received --include-players = [{args.include_players}]")
@@ -276,6 +284,7 @@ def main() -> None:
         use_news=args.use_news,
         simulate=args.simulate,
         cores=parse_cores(args.core),
+        max_per_game=args.max_per_game,
     )
 
     print(f"Done. Wrote player values to {args.output}")

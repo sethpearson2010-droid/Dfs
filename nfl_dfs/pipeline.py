@@ -143,6 +143,7 @@ class DfsPipeline:
         use_news: bool = False,
         simulate: bool = False,
         cores: list[tuple[list[str], int]] | None = None,
+        max_per_game: int | None = None,
     ) -> None:
         self._write_run_config(
             output_path,
@@ -380,6 +381,7 @@ class DfsPipeline:
                     stack_first=stack_first,
                     seed_offset=seed_offset,
                     cores=cores,
+                    max_per_game=max_per_game,
                 )
 
             if simulate:
