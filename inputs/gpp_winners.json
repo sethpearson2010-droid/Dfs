@@ -808,5 +808,86 @@
         "roster_slot": "DEF"
       }
     ]
+  },
+  {
+    "season": 2026,
+    "week": 11,
+    "contest": "unknown (1st place, $200,000 prize, breezeproduction)",
+    "prize_pool": "unknown",
+    "notes": "From the Week 11 lineup-scores screenshot. Total 221.2 (211.2 offense). Spread across six games with only two 2-player mini-stacks: Prescott + Pickens (DAL@TEN, 51-30), Emmett Johnson + Kelce (KC 34-7, no QB), Hubbard + CAR DST (CAR 35-33). Coleman (DEN RB $6,500) 3 TD = 35.9 was the swing piece (model: 13.2 proj / 26.6 ceil). DST scored 10 despite allowing 33. Every piece was in our player pool; our best of 150 scored ~174 offense-only (nflverse) vs ~208 for this lineup.",
+    "players": [
+      {
+        "name": "D. Prescott",
+        "team": "DAL",
+        "position": "QB",
+        "salary": 8200,
+        "points": 38.9,
+        "roster_slot": "QB"
+      },
+      {
+        "name": "C. Hubbard",
+        "team": "CAR",
+        "position": "RB",
+        "salary": 7900,
+        "points": 29.0,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "E. Johnson",
+        "team": "KC",
+        "position": "RB",
+        "salary": 6200,
+        "points": 25.3,
+        "roster_slot": "RB"
+      },
+      {
+        "name": "D. Moore",
+        "team": "BUF",
+        "position": "WR",
+        "salary": 6900,
+        "points": 19.1,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "G. Pickens",
+        "team": "DAL",
+        "position": "WR",
+        "salary": 7500,
+        "points": 23.3,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "P. Washington",
+        "team": "JAC",
+        "position": "WR",
+        "salary": 7200,
+        "points": 17.3,
+        "roster_slot": "WR"
+      },
+      {
+        "name": "T. Kelce",
+        "team": "KC",
+        "position": "TE",
+        "salary": 5400,
+        "points": 22.4,
+        "roster_slot": "TE"
+      },
+      {
+        "name": "J. Coleman",
+        "team": "DEN",
+        "position": "RB",
+        "salary": 6500,
+        "points": 35.9,
+        "roster_slot": "FLEX"
+      },
+      {
+        "name": "CAR Panthers",
+        "team": "CAR",
+        "position": "DST",
+        "salary": 3600,
+        "points": 10.0,
+        "roster_slot": "DEF"
+      }
+    ]
   }
 ]
